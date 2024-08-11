@@ -42,22 +42,22 @@ def filter_all_name():
 
 # 一行一行的读取json数组，并写入到excel中
 def export_json_to_excel():
-    chunk_size = 1000
+    all_data=[]
     # 打开文件准备读取
-    with open('dassbuff/data/base_name_copy_anallysis_add.txt', 'r', encoding='utf-8') as file:
-        df_chunk = pd.DataFrame()
-        for i, line in enumerate(file):
-            data = json.loads(line)
-            df_chunk = df_chunk._append(data, ignore_index=True)
-            # 确保在第一次迭代时不执行写入操作
-            if (i + 1) % chunk_size == 0:
-                with pd.ExcelWriter('output.xlsx', mode='w', engine='openpyxl', if_sheet_exists='replace') as writer:
-                    df_chunk.to_excel(writer, index=False, header=not writer.book.sheetnames)
-                df_chunk = pd.DataFrame()  # 重置df_chunk为空
-        # 处理最后一部分数据
-        if not df_chunk.empty:
-            with pd.ExcelWriter('output.xlsx', mode='w', engine='openpyxl', if_sheet_exists='replace') as writer:
-                df_chunk.to_excel(writer, index=False, header=False)
+    with open('dassbuff/data/base_name_copy_anallysis.txt', 'r', encoding='utf-8') as file:
+       for line in file:
+           json_data=json.loads(line)
+           for single in json_data:
+               all_data.append(single)
+
+
+    # 将JSON数据转换为pandas DataFrame
+    df = pd.DataFrame(all_data)
+    # 写入Excel文件
+    # 注意：如果你需要写入.xlsx文件，需要指定引擎为openpyxl
+    df.to_excel("output.xlsx", index=False, engine='openpyxl')
+
+
 
 if __name__ == '__main__':
     # case_name_analysis()
