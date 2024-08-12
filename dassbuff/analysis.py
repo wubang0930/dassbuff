@@ -1,6 +1,7 @@
 import json
 import pandas as pd
-
+from datetime import datetime
+import time
 
 
 # 通过获取的数据，解析出来箱子的中英文名称的json数据
@@ -26,12 +27,13 @@ def case_name_analysis():
 # 获取所有的中文和英文名称的饰品名称
 def filter_all_name():
     print("filter_all_name")
-    with open('dassbuff/data/base.json', 'r', encoding='utf-8') as base:
-        with open('dassbuff/data/base_name.txt', 'w', encoding='utf-8') as base_name:
+    with open('dassbuff/data/1_cs_buff_uu_c5_base.json', 'r', encoding='utf-8') as base:
+        with open('dassbuff/data/2_cs_all_product_all.txt', 'w', encoding='utf-8') as base_name:
             num = 0
             for line in base:
                 num += 1
                 line_date=json.loads(line)
+                # 只获取cs的饰品数据名称
                 if line_date["appid"]== 730 :
                     print(line_date["appid"])
                     all_names=line_date['cn_name']+':'+line_date['en_name']
@@ -42,11 +44,12 @@ def filter_all_name():
 
 # 一行一行的读取json数组，并写入到excel中
 def export_json_to_excel():
+    filename="dmakert_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
     all_data=[]
     # 打开文件准备读取
-    with open('dassbuff/data/base_name_copy_anallysis.txt', 'r', encoding='utf-8') as file:
+    with open('dassbuff/data/3_cs_dmarket_price_filter.txt', 'r', encoding='utf-8') as file:
        for line in file:
-           json_data=json.loads(line)
+           json_data=json.loads(line.replace("\\b",""))
            for single in json_data:
                all_data.append(single)
 
@@ -55,7 +58,7 @@ def export_json_to_excel():
     df = pd.DataFrame(all_data)
     # 写入Excel文件
     # 注意：如果你需要写入.xlsx文件，需要指定引擎为openpyxl
-    df.to_excel("output.xlsx", index=False, engine='openpyxl')
+    df.to_excel(filename, index=False, engine='openpyxl')
 
 
 

@@ -43,12 +43,42 @@ def get_offer_from_market_average(day,title):
 
 
 # 查询指定天数的平均销量数据，并构建目标数据
-def build_target_body_from_offer_avarage(title,drtitle,offers):
-    if offers is None:
+def build_target_body_from_offer_avarage(buff_price,market_price):
+    if market_price is None:
         return ""
+    buff_buy_price= buff_price['buff_buy']['price']
+    buff_sale_price= buff_price['buff_sell']['price']
+    c5_buy_price= buff_price['c5_buy']['price']
+    c5_sale_price= buff_price['c5_sell']['price']
+    igxe_buy_price= buff_price['igxe_buy']['price']
+    igxe_sale_price= buff_price['igxe_sell']['price']
+    uuyp_buy_price= buff_price['uuyp_buy']['price']
+    uuyp_sale_price= buff_price['uuyp_sell']['price']
+
+    min_buy_price=min(buff_buy_price,c5_buy_price,igxe_buy_price,igxe_buy_price)
+    min_sale_price=min(buff_sale_price,c5_sale_price,igxe_sale_price,uuyp_sale_price)
+
+
     correlationd_data=[
-        {"title":title,"drtitle":drtitle,"totalSales":int(total_sales),"date":datetime.fromtimestamp(int(date)).strftime('%Y-%m-%d'),"avgPrice":round(float(avg_price)*exchange_rate,2),"dayTotalAmount":round(float(total_sales)*float(avg_price)*exchange_rate,2),"totalAmount":round(float(total_sales)*float(avg_price)*exchange_rate,2)}
-        for total_sales,date,avg_price in zip(offers["totalSales"],offers["date"],offers["avgPrice"])
+        {"title":buff_price['cn_name'],
+         "drtitle":buff_price['en_name'],
+         "totalSales":int(total_sales),
+         "date":datetime.fromtimestamp(int(date)).strftime('%Y-%m-%d'),
+         "avgPrice":round(float(avg_price)*exchange_rate,2),
+         "dayTotalAmount":round(float(total_sales)*float(avg_price)*exchange_rate,2),
+         "buff_buy_price":buff_buy_price,
+         "buff_sale_price":buff_sale_price,
+         "c5_buy_price":c5_buy_price,
+         "c5_sale_price":c5_sale_price,
+         "igxe_buy_price":igxe_buy_price,
+         "igxe_sale_price":igxe_sale_price,
+         "uuyp_buy_price":uuyp_buy_price,
+         "uuyp_sale_price":uuyp_sale_price,
+         "min_buy_price":min_buy_price,
+         "min_sale_price":min_sale_price,
+         "price_duct": round(float(avg_price)*exchange_rate- min_buy_price, 2)  
+         }
+        for total_sales,date,avg_price in zip(market_price["totalSales"],market_price["date"],market_price["avgPrice"])
     ]
 
     # all_correlationd_num=0
@@ -63,21 +93,93 @@ def build_target_body_from_offer_avarage(title,drtitle,offers):
     return correlationd_data
 
 
+# 过滤出要查询的饰品的buff数据
 
-skins=get_skin_title()
+def filter_buff_data():
+    all_base_info=[]
+    with open("dassbuff/data/1_cs_buff_uu_c5_base.json", "r", encoding='utf-8') as cs_buff_uu_c5_base:
+        for base_info_line in cs_buff_uu_c5_base:
+            base_info_json=json.loads(base_info_line)
+            all_base_info.append(base_info_json)
 
 
-with open("dassbuff/data/base_name_copy.txt", "r", encoding='utf-8') as all_data_file:
-    with open("dassbuff/data/base_name_copy_anallysis.txt", "w", encoding='utf-8') as write_file:
-        num=0
-        for line in all_data_file:
-            cn_en=line.strip().split(":")
-            if len(cn_en)==2 and cn_en[1] != "":
-                time.sleep(1)
-                offer_from_market = get_offer_from_market_average(day=searchNum+searchUnit,title=cn_en[1])
-                correlationd_data=build_target_body_from_offer_avarage(title=cn_en[0],drtitle=cn_en[1],offers=offer_from_market)
-                write_file.write(json.dumps(correlationd_data,ensure_ascii=False)+"\n")
+    with open("dassbuff/data/0_origin_filter.json", "r", encoding='utf-8') as origin_filter:
+        duplicate_value=set()
+        with open("dassbuff/data/1_cs_buff_uu_c5_base_filter.json", "w", encoding='utf-8') as cs_buff_uu_c5_base_filter:
+            for origin_line in origin_filter:
+                origin_line_data=str(origin_line.replace("\n",""))
 
+                # 去重
+                if origin_line_data not in duplicate_value:
+                    duplicate_value.add(origin_line_data)
+                    print(origin_line_data)
+                    for base_info in all_base_info:
+                        if  origin_line_data == base_info['cn_name']:
+                                cs_buff_uu_c5_base_filter.write(json.dumps(base_info,ensure_ascii=False)+"\n")
+
+
+
+                # with open("dassbuff/data/1_cs_buff_uu_c5_base.json", "r", encoding='utf-8') as cs_buff_uu_c5_base:
+                #     for base_info_line in cs_buff_uu_c5_base:
+                #         base_info_json=json.loads(base_info_line)
+                #         if  origin_line_data == base_info_json['cn_name']:
+                #             # print(base_info_line)
+                #             cs_buff_uu_c5_base_filter.write(base_info_line)
+
+
+
+
+
+# skins=get_skin_title()
+
+def find_buff_dmarket_price():
+    with open("dassbuff/data/1_cs_buff_uu_c5_base_filter.json", "r", encoding='utf-8') as cs_buff_uu_c5_base_filter:
+        # with open("dassbuff/data/2_cs_all_product_filter.txt", "w", encoding='utf-8') as product_filter_file:
+        with open("dassbuff/data/3_cs_dmarket_price_filter.txt", "w", encoding='utf-8') as price_filter_file:
+            num=0
+            for base_filter_line in cs_buff_uu_c5_base_filter:
+                num += 1
+                base_filter_line_date=json.loads(base_filter_line)
+                # 只获取cs的饰品数据名称
+                if  "appid" in base_filter_line_date.keys() and base_filter_line_date["appid"]== 730 :
+                    all_names=base_filter_line_date['cn_name']+':'+base_filter_line_date['en_name']
+                    print(str(base_filter_line_date["appid"])+":"+all_names)
+
+                    time.sleep(1)
+                    market_price = get_offer_from_market_average(day=searchNum+searchUnit,title=base_filter_line_date['en_name'])
+                    correlationd_data=build_target_body_from_offer_avarage(buff_price=base_filter_line_date,market_price=market_price)
+                    price_filter_file.write(json.dumps(correlationd_data,ensure_ascii=False)+"\n")
+
+                    # product_filter_file.write(all_names+"\n")
+
+
+# 一行一行的读取json数组，并写入到excel中
+def export_json_to_excel():
+    print("开始导出数据")
+    filename="dmakert_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    all_data=[]
+    # 打开文件准备读取
+    with open('dassbuff/data/3_cs_dmarket_price_filter.txt', 'r', encoding='utf-8') as file:
+       for line in file:
+           json_data=json.loads(line.replace("\\b",""))
+           for single in json_data:
+               all_data.append(single)
+
+
+    # 将JSON数据转换为pandas DataFrame
+    df = pd.DataFrame(all_data)
+    # 写入Excel文件
+    # 注意：如果你需要写入.xlsx文件，需要指定引擎为openpyxl
+    df.to_excel(filename, index=False, engine='openpyxl')
+
+
+
+
+if __name__ == '__main__':
+    filter_buff_data()
+    find_buff_dmarket_price()
+    export_json_to_excel()
+                        
 # for key,value in skins.items():
 #     offer_from_market = get_offer_from_market_average(day=searchNum+searchUnit,title=value)
 #     build_target_body_from_offer_avarage(title=key,drtitle=value,offers=offer_from_market)
