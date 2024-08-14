@@ -44,10 +44,10 @@ def filter_all_name():
 
 # 一行一行的读取json数组，并写入到excel中
 def export_json_to_excel():
-    filename="dmakert_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    filename="dmakert_all_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
     all_data=[]
     # 打开文件准备读取
-    with open('dassbuff/data/3_cs_dmarket_price_filter.txt', 'r', encoding='utf-8') as file:
+    with open('dassbuff/data/3_cs_dmarket_price_all.txt', 'r', encoding='utf-8') as file:
        for line in file:
            json_data=json.loads(line.replace("\\b",""))
            for single in json_data:
@@ -62,10 +62,38 @@ def export_json_to_excel():
 
 
 
+# 获取所有的中文和英文名称的饰品名称
+def filter_test():
+    filename="filter_test_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    print("filter_test")
+    with open('dassbuff/data/filter_test.json', 'r', encoding='utf-8') as base:
+        all_datas=json.load(base)
+        # 只获取cs的饰品数据名称
+        objects=all_datas['objects']
+
+        num_list=[]
+        for obj in objects:
+            if obj['extra']['floatValue'] <0.24:
+                price={}
+                price['num_1']= round(float(obj['price']['USD'])/100*7.18,2)
+                price['num_2']= round(float(obj['extra']['floatValue']),4)
+                num_list.append(price)
+
+
+        # 按age字段降序排序字典列表
+        sorted_list = sorted(num_list, key=lambda x: x['num_1'], reverse=True)
+
+        # 将JSON数据转换为pandas DataFrame
+        df = pd.DataFrame(sorted_list)
+        # 写入Excel文件
+        # 注意：如果你需要写入.xlsx文件，需要指定引擎为openpyxl
+        df.to_excel(filename, index=False, engine='openpyxl')
+
+
 if __name__ == '__main__':
     # case_name_analysis()
     # filter_all_name()
-    export_json_to_excel()
+    filter_test()
 
 
 
