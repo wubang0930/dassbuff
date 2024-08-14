@@ -3,8 +3,8 @@ node_modules
 *.iml
 .DS_Store
 daassbuff/data/*
-.venv/
-venv/
+.venv/*
+venv/*
  
 # local env files
 .env.local
