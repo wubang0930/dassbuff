@@ -22,6 +22,8 @@ searchUnit="D"  #查询单位
 
 all_list=[]
 
+data_path="E:/pythonFile/python/python_data/dassbuff/data"
+
 filter_num=30   #过滤平均销量大于30的数量
 filter_list=[]   #过滤平均销量大于30的列表
 
@@ -287,15 +289,15 @@ def trans_buff_service_change():
 # 过滤出要查询的饰品的buff数据
 def filter_buff_data():
     all_base_info=[]
-    with open("dassbuff/data/analysis/1_cs_buff_uu_c5_base.json", "r", encoding='utf-8') as cs_buff_uu_c5_base:
+    with open(data_path+"/analysis/1_cs_buff_uu_c5_base.json", "r", encoding='utf-8') as cs_buff_uu_c5_base:
         for base_info_line in cs_buff_uu_c5_base:
             base_info_json=json.loads(base_info_line)
             all_base_info.append(base_info_json)
 
 
-    with open("dassbuff/data/analysis/0_origin_filter.json", "r", encoding='utf-8') as origin_filter:
+    with open("data/0_origin_filter.json", "r", encoding='utf-8') as origin_filter:
         duplicate_value=set()
-        with open("dassbuff/data/analysis/1_cs_buff_uu_c5_base_filter.json", "w", encoding='utf-8') as cs_buff_uu_c5_base_filter:
+        with open(data_path+"/analysis/1_cs_buff_uu_c5_base_filter.json", "w", encoding='utf-8') as cs_buff_uu_c5_base_filter:
             for origin_line in origin_filter:
                 origin_line_data=str(origin_line.replace("\n",""))
 
@@ -324,9 +326,9 @@ def filter_buff_data():
 
 def find_buff_dmarket_price(exchange_rate):
     print("开始查询数dmarket据")
-    with open("dassbuff/data/analysis/1_cs_buff_uu_c5_base_filter.json", "r", encoding='utf-8') as cs_buff_uu_c5_base_filter:
+    with open(data_path+"/analysis/1_cs_buff_uu_c5_base_filter.json", "r", encoding='utf-8') as cs_buff_uu_c5_base_filter:
         # with open("dassbuff/data/2_cs_all_product_filter.txt", "w", encoding='utf-8') as product_filter_file:
-        with open("dassbuff/data/analysis/3_cs_dmarket_price_filter.txt", "w", encoding='utf-8') as price_filter_file:
+        with open(data_path+"/analysis/3_cs_dmarket_price_filter.txt", "w", encoding='utf-8') as price_filter_file:
             num=0
             for base_filter_line in cs_buff_uu_c5_base_filter:
                 num += 1
@@ -350,7 +352,7 @@ def find_buff_dmarket_price(exchange_rate):
 # 一行一行的读取json数组，并写入到excel中
 def export_json_to_excel():
     print("开始导出数据")
-    filename="dassbuff/data/excel/"+"dmakert_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    filename=data_path+"/excel/"+"dmakert_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
     all_data=[]
 
         # 定义中文名和字段样式
@@ -404,7 +406,7 @@ def export_json_to_excel():
     }
 
     # 打开文件准备读取
-    with open('dassbuff/data/analysis/3_cs_dmarket_price_filter.txt', 'r', encoding='utf-8') as file:
+    with open(data_path+'/analysis/3_cs_dmarket_price_filter.txt', 'r', encoding='utf-8') as file:
        for line in file:
            json_data=json.loads(line.replace("\\b",""))
            for single in json_data:
@@ -491,13 +493,13 @@ def down_buff_zip_file(dir_name,file_name):
             'key': key
         }
                 # 下载文件的临时路径
-        temp_file_path = "dassbuff/data/zip/temp.zip"
+        temp_file_path = data_path+"/zip/temp.zip"
 
         # 最终保存的文件名
-        final_file_name="dassbuff/data/zip/"+"buff_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".zip"
+        final_file_name=data_path+"/zip/"+"buff_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".zip"
         
         # 解压缩到的目标文件夹
-        extract_dir = "dassbuff/data/analysis/"
+        extract_dir = data_path+"/analysis/"
         extract_file = "1_cs_buff_uu_c5_base.json"
         file_path = os.path.join(extract_dir, extract_file)
 
@@ -518,9 +520,9 @@ def down_buff_zip_file(dir_name,file_name):
             # 解压文件
             with ZipFile(final_file_name, 'r') as zip_ref:
                 # 如果extract_dir已经存在，先清空该文件夹
-                if os.path.exists(file_path):
-                    shutil.rmtree(file_path)
-                    print('该文件已存在，删除：'+extract_file)
+                # if os.path.exists(file_path):
+                #     shutil.rmtree(file_path)
+                #     print('该文件已存在，删除：'+extract_file)
                 
                 # 解压文件到指定文件夹，并覆盖已有文件
                 zip_ref.extractall(extract_dir)
@@ -536,7 +538,7 @@ def down_buff_zip_file(dir_name,file_name):
 
 
 if __name__ == '__main__':
-    # 下载buff数据
+    # # 下载buff数据
     # dir_name='base_archive'
     # buff_zip_file_data=get_buff_data_file_name(dir_name)
     # down_buff_zip_file(dir_name,buff_zip_file_data)
