@@ -90,10 +90,26 @@ def filter_test():
         df.to_excel(filename, index=False, engine='openpyxl')
 
 
+
+
+# 获取所有的中文饰品名称
+def filter_name_cs():
+    with open("dassbuff/data/analysis/1_cs_buff_uu_c5_base.json", "r", encoding='utf-8') as cs_buff_uu_c5_base:
+        with open("dassbuff/data/analysis/0_origin_names.json", "w", encoding='utf-8') as origin_names_file:
+            for base_info_line in cs_buff_uu_c5_base:
+                base_info_json=json.loads(base_info_line)
+                price=base_info_json['uuyp_sell']['price'] if base_info_json['uuyp_sell']['price'] else 99999
+                sale_num=base_info_json['uuyp_sell']['count'] if base_info_json['uuyp_sell']['count'] else 0
+
+                if base_info_json["appid"]== 730 and "印花" not in base_info_json['cn_name'] and "涂鸦" not in base_info_json['cn_name'] and price>1 and price<800 and sale_num>400:
+                    origin_names_file.write(base_info_json['cn_name']+'\n')  
+            
+
+
 if __name__ == '__main__':
     # case_name_analysis()
     # filter_all_name()
-    filter_test()
+    filter_name_cs()
 
 
 

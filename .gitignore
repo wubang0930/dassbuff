@@ -3,6 +3,7 @@ node_modules
 *.iml
 .DS_Store
 daassbuff/data/*
+data/*
 .venv/*
 venv/*
  
