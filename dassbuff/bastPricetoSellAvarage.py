@@ -164,17 +164,22 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
 
     buy_prices=[buff_buy_price,c5_buy_price,igxe_buy_price,uuyp_buy_price]
     sale_prices=[buff_sale_price,c5_sale_price,igxe_sale_price,uuyp_sale_price]
-    min_sale_price_num_all=max[buff_sale_count,c5_sale_count,igxe_sale_count,uuyp_sale_count]
-    min_sale_price_num=max[buff_sale_count,c5_sale_count,igxe_sale_count,uuyp_sale_count]
+    max_sale_price_num_all=[buff_sale_count,c5_sale_count,igxe_sale_count,uuyp_sale_count]
+
 
     buy_prices_none=[price for price in buy_prices if price is not None]
     sale_prices_none=[price for price in sale_prices if price is not None]
+    sale_price_num_all_none=[price for price in max_sale_price_num_all if price is not None]
 
     min_buy_price=min(buy_prices_none) if buy_prices_none else -99999
     min_sale_price=min(sale_prices_none) if sale_prices_none else -99999
     
     max_buy_price=max(buy_prices_none) if buy_prices_none else 99999
     max_sale_price=max(sale_prices_none) if sale_prices_none else 99999
+
+
+    max_sale_price_num=max(sale_price_num_all_none) if sale_price_num_all_none else 99999
+
 
     offer_price=key_info['offer_price'] if key_info['offer_price'] is not None else 999999
     target_price=key_info['target_price'] if key_info['target_price'] is not None else 999999
@@ -213,8 +218,8 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
          "steam_sale_count":steam_sale_count,
          "min_buy_price":min_buy_price,
          "min_sale_price":min_sale_price,
-         "min_sale_price_num_all":min_sale_price_num_all,
-         "min_sale_price_num":min_sale_price_num,
+         "max_sale_price_num_all":max_sale_price_num_all,
+         "max_sale_price_num":max_sale_price_num,
          "max_buy_price":max_buy_price,
          "max_sale_price":max_sale_price,
 
@@ -388,8 +393,8 @@ def export_json_to_excel():
         'steam_sale_count':'steam出售数量',
         'min_buy_price':'最低购买价',
         'min_sale_price':'最低出售价',
-        'min_sale_price_num':'最小出售数量',
-        'min_sale_price_num_all':'所有出售数量',
+        'max_sale_price_num':'最大出售数量',
+        'max_sale_price_num_all':'所有出售数量',
         'max_buy_price':'最高购买价',
         'max_sale_price':'最高出售价',
         'buff_buy_max_dmarket_sale_min':'buff购买dr平均价出售',
