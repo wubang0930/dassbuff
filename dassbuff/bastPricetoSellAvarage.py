@@ -105,6 +105,9 @@ def get_target_market(title,exchange_rate):
         return key_info
     except Exception as e:
         print(e)
+        key_info['target_price'] =0
+        key_info['target_account']=0
+        key_info['offer_price']=0
         return key_info
 
 
@@ -133,24 +136,24 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
 
     buff_buy_price= buff_price['buff_buy']['price']
     buff_sale_price= buff_price['buff_sell']['price']
-    buff_buy_count= buff_price['buff_buy']['count']
-    buff_sale_count= buff_price['buff_sell']['count']
+    buff_buy_count= buff_price['buff_buy']['count'] if buff_price['buff_buy']['count'] is not None else 0
+    buff_sale_count= buff_price['buff_sell']['count'] if buff_price['buff_sell']['count'] is not None else 0
 
     c5_buy_price= buff_price['c5_buy']['price']
     c5_sale_price= buff_price['c5_sell']['price']
-    c5_buy_count= buff_price['c5_buy']['count']
-    c5_sale_count= buff_price['c5_sell']['count']
+    c5_buy_count= buff_price['c5_buy']['count'] if buff_price['c5_buy']['count'] is not None else 0
+    c5_sale_count= buff_price['c5_sell']['count'] if buff_price['c5_sell']['count'] is not None else 0
 
     igxe_buy_price= buff_price['igxe_buy']['price']
     igxe_sale_price= buff_price['igxe_sell']['price']
-    igxe_buy_count= buff_price['igxe_buy']['count']
-    igxe_sale_count= buff_price['igxe_sell']['count']
+    igxe_buy_count= buff_price['igxe_buy']['count'] if buff_price['igxe_buy']['count'] is not None else 0
+    igxe_sale_count= buff_price['igxe_sell']['count'] if buff_price['igxe_sell']['count'] is not None else 0
 
 
     uuyp_buy_price= buff_price['uuyp_buy']['price']
     uuyp_sale_price= buff_price['uuyp_sell']['price']
-    uuyp_buy_count= buff_price['uuyp_buy']['count']
-    uuyp_sale_count= buff_price['uuyp_sell']['count']
+    uuyp_buy_count= buff_price['uuyp_buy']['count'] if buff_price['uuyp_buy']['count'] is not None else 0
+    uuyp_sale_count= buff_price['uuyp_sell']['count'] if buff_price['uuyp_sell']['count'] is not None else 0
 
 
     steam_buy_price= buff_price['steam_order']['buy_price']  if buff_price.get('steam_order', {}).get('buy_price') is not None else 99999
@@ -161,8 +164,8 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
 
     buy_prices=[buff_buy_price,c5_buy_price,igxe_buy_price,uuyp_buy_price]
     sale_prices=[buff_sale_price,c5_sale_price,igxe_sale_price,uuyp_sale_price]
-    min_buy_price_num=[buff_buy_count,uuyp_buy_count,igxe_buy_count,uuyp_buy_count]
-    min_sale_price_num=[buff_sale_count,c5_sale_count,igxe_sale_count,steam_sale_count]
+    min_sale_price_num_all=max[buff_sale_count,c5_sale_count,igxe_sale_count,uuyp_sale_count]
+    min_sale_price_num=max[buff_sale_count,c5_sale_count,igxe_sale_count,uuyp_sale_count]
 
     buy_prices_none=[price for price in buy_prices if price is not None]
     sale_prices_none=[price for price in sale_prices if price is not None]
@@ -210,7 +213,7 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
          "steam_sale_count":steam_sale_count,
          "min_buy_price":min_buy_price,
          "min_sale_price":min_sale_price,
-         "min_buy_price_num":min_buy_price_num,
+         "min_sale_price_num_all":min_sale_price_num_all,
          "min_sale_price_num":min_sale_price_num,
          "max_buy_price":max_buy_price,
          "max_sale_price":max_sale_price,
@@ -385,8 +388,8 @@ def export_json_to_excel():
         'steam_sale_count':'steam出售数量',
         'min_buy_price':'最低购买价',
         'min_sale_price':'最低出售价',
-        'min_buy_price_num':'购买数量',
-        'min_sale_price_num':'出售数量',
+        'min_sale_price_num':'最小出售数量',
+        'min_sale_price_num_all':'所有出售数量',
         'max_buy_price':'最高购买价',
         'max_sale_price':'最高出售价',
         'buff_buy_max_dmarket_sale_min':'buff购买dr平均价出售',
@@ -538,7 +541,7 @@ def down_buff_zip_file(dir_name,file_name):
 
 
 if __name__ == '__main__':
-    # # 下载buff数据
+    # 下载buff数据
     # dir_name='base_archive'
     # buff_zip_file_data=get_buff_data_file_name(dir_name)
     # down_buff_zip_file(dir_name,buff_zip_file_data)
