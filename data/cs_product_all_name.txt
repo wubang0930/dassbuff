@@ -1,0 +1,772 @@
+克拉斯沃特（三分熟） | 游击队----'Medium Rare' Crasswater | Guerrilla Warfare----95.9----526----526
+“医生”罗曼诺夫 | 军刀----'The Doctor' Romanov | Sabre----40.89----1000----1000
+第一中尉法洛 | 特警----1st Lieutenant Farlow | SWAT----34.0----677----677
+2020 RMR 挑战组战队胶囊----2020 RMR Challengers----1.1----1923----0
+2020 RMR 竞争组战队胶囊----2020 RMR Contenders----1.42----1923----0
+AK-47 | 深海复仇 (久经沙场)----AK-47 | Aquamarine Revenge (Field-Tested)----233.0----771----771
+AK-47 | 二西莫夫 (久经沙场)----AK-47 | Asiimov (Field-Tested)----188.8----1000----1000
+AK-47 | 二西莫夫 (略有磨损)----AK-47 | Asiimov (Minimal Wear)----392.0----1000----1000
+AK-47 | 巴洛克之紫 (略有磨损)----AK-47 | Baroque Purple (Minimal Wear)----44.54----767----767
+AK-47 | 血腥运动 (崭新出厂)----AK-47 | Bloodsport (Factory New)----879.9----1000----1000
+AK-47 | 血腥运动 (久经沙场)----AK-47 | Bloodsport (Field-Tested)----689.0----867----867
+AK-47 | 血腥运动 (略有磨损)----AK-47 | Bloodsport (Minimal Wear)----738.0----1000----1000
+AK-47 | 蓝色层压板 (崭新出厂)----AK-47 | Blue Laminate (Factory New)----78.78----1000----1000
+AK-47 | 蓝色层压板 (久经沙场)----AK-47 | Blue Laminate (Field-Tested)----64.97----1000----1000
+AK-47 | 蓝色层压板 (略有磨损)----AK-47 | Blue Laminate (Minimal Wear)----69.0----1000----1000
+AK-47 | 卡特尔 (崭新出厂)----AK-47 | Cartel (Factory New)----151.78----723----723
+AK-47 | 卡特尔 (久经沙场)----AK-47 | Cartel (Field-Tested)----62.22----1000----1000
+AK-47 | 卡特尔 (略有磨损)----AK-47 | Cartel (Minimal Wear)----79.3----1000----1000
+AK-47 | 表面淬火 (崭新出厂)----AK-47 | Case Hardened (Factory New)----2393.5----827----827
+AK-47 | 表面淬火 (久经沙场)----AK-47 | Case Hardened (Field-Tested)----1492.99----1000----1000
+AK-47 | 表面淬火 (略有磨损)----AK-47 | Case Hardened (Minimal Wear)----1710.0----1000----1000
+AK-47 | 精英之作 (战痕累累)----AK-47 | Elite Build (Battle-Scarred)----5.47----1000----1000
+AK-47 | 精英之作 (崭新出厂)----AK-47 | Elite Build (Factory New)----32.0----1000----1000
+AK-47 | 精英之作 (久经沙场)----AK-47 | Elite Build (Field-Tested)----7.82----1000----1000
+AK-47 | 精英之作 (略有磨损)----AK-47 | Elite Build (Minimal Wear)----12.3----1000----1000
+AK-47 | 精英之作 (破损不堪)----AK-47 | Elite Build (Well-Worn)----5.74----1000----1000
+AK-47 | 翡翠细条纹 (战痕累累)----AK-47 | Emerald Pinstripe (Battle-Scarred)----12.9----536----536
+AK-47 | 翡翠细条纹 (崭新出厂)----AK-47 | Emerald Pinstripe (Factory New)----58.87----593----593
+AK-47 | 翡翠细条纹 (久经沙场)----AK-47 | Emerald Pinstripe (Field-Tested)----17.0----1000----1000
+AK-47 | 翡翠细条纹 (略有磨损)----AK-47 | Emerald Pinstripe (Minimal Wear)----29.39----967----967
+AK-47 | 翡翠细条纹 (破损不堪)----AK-47 | Emerald Pinstripe (Well-Worn)----13.8----507----507
+AK-47 | 火蛇 (久经沙场)----AK-47 | Fire Serpent (Field-Tested)----5434.92----530----530
+AK-47 | 火蛇 (略有磨损)----AK-47 | Fire Serpent (Minimal Wear)----7944.5----556----556
+AK-47 | 前线迷雾 (久经沙场)----AK-47 | Frontside Misty (Field-Tested)----75.0----1000----1000
+AK-47 | 前线迷雾 (略有磨损)----AK-47 | Frontside Misty (Minimal Wear)----155.0----1000----1000
+AK-47 | 燃料喷射器 (久经沙场)----AK-47 | Fuel Injector (Field-Tested)----1051.5----913----913
+AK-47 | 燃料喷射器 (略有磨损)----AK-47 | Fuel Injector (Minimal Wear)----1435.0----790----790
+AK-47 | 一发入魂 (战痕累累)----AK-47 | Head Shot (Battle-Scarred)----28.95----527----527
+AK-47 | 一发入魂 (崭新出厂)----AK-47 | Head Shot (Factory New)----356.9----510----510
+AK-47 | 一发入魂 (久经沙场)----AK-47 | Head Shot (Field-Tested)----57.0----1000----1000
+AK-47 | 一发入魂 (略有磨损)----AK-47 | Head Shot (Minimal Wear)----118.49----1000----1000
+AK-47 | 一发入魂 (破损不堪)----AK-47 | Head Shot (Well-Worn)----38.87----618----618
+AK-47 | 可燃冰 (战痕累累)----AK-47 | Ice Coaled (Battle-Scarred)----26.9----553----553
+AK-47 | 可燃冰 (崭新出厂)----AK-47 | Ice Coaled (Factory New)----102.0----1000----1000
+AK-47 | 可燃冰 (久经沙场)----AK-47 | Ice Coaled (Field-Tested)----33.89----1000----1000
+AK-47 | 可燃冰 (略有磨损)----AK-47 | Ice Coaled (Minimal Wear)----58.19----1000----1000
+AK-47 | 丛林涂装 (久经沙场)----AK-47 | Jungle Spray (Field-Tested)----29.86----539----539
+AK-47 | 抽象派 1337 (久经沙场)----AK-47 | Leet Museo (Field-Tested)----115.0----1000----1000
+AK-47 | 抽象派 1337 (略有磨损)----AK-47 | Leet Museo (Minimal Wear)----248.0----523----523
+AK-47 | 阿努比斯军团 (崭新出厂)----AK-47 | Legion of Anubis (Factory New)----92.2----1000----1000
+AK-47 | 阿努比斯军团 (久经沙场)----AK-47 | Legion of Anubis (Field-Tested)----34.33----1000----1000
+AK-47 | 阿努比斯军团 (略有磨损)----AK-47 | Legion of Anubis (Minimal Wear)----51.38----1000----1000
+AK-47 | 霓虹革命 (久经沙场)----AK-47 | Neon Revolution (Field-Tested)----97.0----1000----1000
+AK-47 | 霓虹革命 (略有磨损)----AK-47 | Neon Revolution (Minimal Wear)----224.94----620----620
+AK-47 | 霓虹骑士 (久经沙场)----AK-47 | Neon Rider (Field-Tested)----294.33----874----874
+AK-47 | 夜愿 (战痕累累)----AK-47 | Nightwish (Battle-Scarred)----27.8----858----858
+AK-47 | 夜愿 (崭新出厂)----AK-47 | Nightwish (Factory New)----364.44----741----741
+AK-47 | 夜愿 (久经沙场)----AK-47 | Nightwish (Field-Tested)----53.1----1000----1000
+AK-47 | 夜愿 (略有磨损)----AK-47 | Nightwish (Minimal Wear)----115.0----1000----1000
+AK-47 | 夜愿 (破损不堪)----AK-47 | Nightwish (Well-Worn)----39.0----699----699
+AK-47 | 轨道 Mk01 (久经沙场)----AK-47 | Orbit Mk01 (Field-Tested)----75.0----523----523
+AK-47 | 轨道 Mk01 (略有磨损)----AK-47 | Orbit Mk01 (Minimal Wear)----91.99----605----605
+AK-47 | 幻影破坏者 (崭新出厂)----AK-47 | Phantom Disruptor (Factory New)----61.9----989----989
+AK-47 | 幻影破坏者 (久经沙场)----AK-47 | Phantom Disruptor (Field-Tested)----23.0----1000----1000
+AK-47 | 幻影破坏者 (略有磨损)----AK-47 | Phantom Disruptor (Minimal Wear)----35.78----1000----1000
+AK-47 | 混沌点阵 (崭新出厂)----AK-47 | Point Disarray (Factory New)----210.0----531----531
+AK-47 | 混沌点阵 (久经沙场)----AK-47 | Point Disarray (Field-Tested)----53.8----1000----1000
+AK-47 | 混沌点阵 (略有磨损)----AK-47 | Point Disarray (Minimal Wear)----95.0----1000----1000
+AK-47 | 复古浪潮 (久经沙场)----AK-47 | Rat Rod (Field-Tested)----19.27----808----808
+AK-47 | 红线 (久经沙场)----AK-47 | Redline (Field-Tested)----137.0----1000----1000
+AK-47 | 红线 (略有磨损)----AK-47 | Redline (Minimal Wear)----708.0----1000----1000
+AK-47 | 狩猎网格 (略有磨损)----AK-47 | Safari Mesh (Minimal Wear)----1.13----1000----1000
+AK-47 | 安全网 (崭新出厂)----AK-47 | Safety Net (Factory New)----34.3----980----980
+AK-47 | 安全网 (久经沙场)----AK-47 | Safety Net (Field-Tested)----14.35----903----903
+AK-47 | 墨岩 (战痕累累)----AK-47 | Slate (Battle-Scarred)----14.2----1000----1000
+AK-47 | 墨岩 (崭新出厂)----AK-47 | Slate (Factory New)----60.0----1000----1000
+AK-47 | 墨岩 (久经沙场)----AK-47 | Slate (Field-Tested)----17.22----1000----1000
+AK-47 | 墨岩 (略有磨损)----AK-47 | Slate (Minimal Wear)----29.0----1000----1000
+AK-47 | 墨岩 (破损不堪)----AK-47 | Slate (Well-Worn)----14.6----1000----1000
+AK-47 | 钢铁三角洲 (崭新出厂)----AK-47 | Steel Delta (Factory New)----14.87----877----877
+AK-47 | 钢铁三角洲 (久经沙场)----AK-47 | Steel Delta (Field-Tested)----7.78----806----806
+AK-47 | 钢铁三角洲 (略有磨损)----AK-47 | Steel Delta (Minimal Wear)----10.3----660----660
+AK-47 | 皇后 (久经沙场)----AK-47 | The Empress (Field-Tested)----210.0----1000----1000
+AK-47 | 皇后 (略有磨损)----AK-47 | The Empress (Minimal Wear)----397.0----1000----1000
+AK-47 | 迷踪秘境 (崭新出厂)----AK-47 | Uncharted (Factory New)----6.8----881----881
+AK-47 | 迷踪秘境 (久经沙场)----AK-47 | Uncharted (Field-Tested)----1.97----1000----1000
+AK-47 | 迷踪秘境 (略有磨损)----AK-47 | Uncharted (Minimal Wear)----3.1----1000----1000
+AK-47 | 火神 (崭新出厂)----AK-47 | Vulcan (Factory New)----4996.0----1000----1000
+AK-47 | 火神 (久经沙场)----AK-47 | Vulcan (Field-Tested)----1483.0----1000----1000
+AK-47 | 火神 (略有磨损)----AK-47 | Vulcan (Minimal Wear)----3029.5----1000----1000
+AUG | 极地孤狼 (久经沙场)----AUG | Arctic Wolf (Field-Tested)----10.35----512----512
+AUG | 璞玉 (崭新出厂)----AUG | Carved Jade (Factory New)----93.0----692----692
+AUG | 变色龙 (崭新出厂)----AUG | Chameleon (Factory New)----25.0----612----612
+AUG | 变色龙 (略有磨损)----AUG | Chameleon (Minimal Wear)----16.5----566----566
+AUG | 动量 (久经沙场)----AUG | Momentum (Field-Tested)----9.69----861----861
+AUG | 弹跳线条 (略有磨损)----AUG | Ricochet (Minimal Wear)----1.7----533----533
+AUG | 湖怪鸟 (久经沙场)----AUG | Stymphalian (Field-Tested)----7.7----616----616
+AUG | 席德.米德 (久经沙场)----AUG | Syd Mead (Field-Tested)----10.06----555----555
+AWP | 冥界之河 (战痕累累)----AWP | Acheron (Battle-Scarred)----1.29----1000----1000
+AWP | 冥界之河 (崭新出厂)----AWP | Acheron (Factory New)----8.37----1000----1000
+AWP | 冥界之河 (久经沙场)----AWP | Acheron (Field-Tested)----1.42----1000----1000
+AWP | 冥界之河 (略有磨损)----AWP | Acheron (Minimal Wear)----4.07----1000----1000
+AWP | 二西莫夫 (战痕累累)----AWP | Asiimov (Battle-Scarred)----490.9----1000----1000
+AWP | 二西莫夫 (久经沙场)----AWP | Asiimov (Field-Tested)----859.0----1000----1000
+AWP | 二西莫夫 (破损不堪)----AWP | Asiimov (Well-Worn)----622.0----773----773
+AWP | 树蝰 (战痕累累)----AWP | Atheris (Battle-Scarred)----13.58----930----930
+AWP | 树蝰 (崭新出厂)----AWP | Atheris (Factory New)----74.2----878----878
+AWP | 树蝰 (久经沙场)----AWP | Atheris (Field-Tested)----18.69----1000----1000
+AWP | 树蝰 (略有磨损)----AWP | Atheris (Minimal Wear)----34.47----1000----1000
+AWP | 树蝰 (破损不堪)----AWP | Atheris (Well-Worn)----13.98----517----517
+AWP | *嘣* (略有磨损)----AWP | BOOM (Minimal Wear)----643.0----803----803
+AWP | 尼罗河沃土 (崭新出厂)----AWP | Black Nile (Factory New)----25.97----858----858
+AWP | 尼罗河沃土 (久经沙场)----AWP | Black Nile (Field-Tested)----9.44----1000----1000
+AWP | 尼罗河沃土 (略有磨损)----AWP | Black Nile (Minimal Wear)----14.78----926----926
+AWP | 毛细血管 (略有磨损)----AWP | Capillary (Minimal Wear)----2.37----1000----1000
+AWP | 迷人眼 (崭新出厂)----AWP | Chromatic Aberration (Factory New)----97.9----1000----1000
+AWP | 迷人眼 (久经沙场)----AWP | Chromatic Aberration (Field-Tested)----39.86----1000----1000
+AWP | 迷人眼 (略有磨损)----AWP | Chromatic Aberration (Minimal Wear)----60.0----1000----1000
+AWP | 冲出重围 (久经沙场)----AWP | Containment Breach (Field-Tested)----522.48----571----571
+AWP | 珊瑚树 (略有磨损)----AWP | Corticera (Minimal Wear)----78.0----1000----1000
+AWP | 金粉肆蛇 (战痕累累)----AWP | Duality (Battle-Scarred)----9.27----701----701
+AWP | 金粉肆蛇 (崭新出厂)----AWP | Duality (Factory New)----65.0----1000----1000
+AWP | 金粉肆蛇 (久经沙场)----AWP | Duality (Field-Tested)----12.0----1000----1000
+AWP | 金粉肆蛇 (略有磨损)----AWP | Duality (Minimal Wear)----30.0----1000----1000
+AWP | 电子蜂巢 (崭新出厂)----AWP | Electric Hive (Factory New)----346.87----628----628
+AWP | 电子蜂巢 (略有磨损)----AWP | Electric Hive (Minimal Wear)----227.5----574----574
+AWP | 亡灵之主 (崭新出厂)----AWP | Exoskeleton (Factory New)----44.98----710----710
+AWP | 亡灵之主 (久经沙场)----AWP | Exoskeleton (Field-Tested)----19.69----947----947
+AWP | 亡灵之主 (略有磨损)----AWP | Exoskeleton (Minimal Wear)----25.6----1000----1000
+AWP | 渐变之色 (崭新出厂)----AWP | Fade (Factory New)----6898.0----790----790
+AWP | 浮生如梦 (崭新出厂)----AWP | Fever Dream (Factory New)----76.95----1000----1000
+AWP | 浮生如梦 (久经沙场)----AWP | Fever Dream (Field-Tested)----60.8----590----590
+AWP | 浮生如梦 (略有磨损)----AWP | Fever Dream (Minimal Wear)----63.0----1000----1000
+AWP | 石墨黑 (崭新出厂)----AWP | Graphite (Factory New)----892.62----1000----1000
+AWP | 暴怒野兽 (久经沙场)----AWP | Hyper Beast (Field-Tested)----168.0----639----639
+AWP | 雷击 (崭新出厂)----AWP | Lightning Strike (Factory New)----3599.5----918----918
+AWP | 无畏战神 (略有磨损)----AWP | Man-o'-war (Minimal Wear)----209.04----1000----1000
+AWP | 死神 (崭新出厂)----AWP | Mortis (Factory New)----39.88----781----781
+AWP | 死神 (久经沙场)----AWP | Mortis (Field-Tested)----10.6----1000----1000
+AWP | 死神 (略有磨损)----AWP | Mortis (Minimal Wear)----17.84----1000----1000
+AWP | 黑色魅影 (崭新出厂)----AWP | Neo-Noir (Factory New)----197.87----1000----1000
+AWP | 黑色魅影 (久经沙场)----AWP | Neo-Noir (Field-Tested)----129.0----1000----1000
+AWP | 黑色魅影 (略有磨损)----AWP | Neo-Noir (Minimal Wear)----157.19----1000----1000
+AWP | 猫猫狗狗 (崭新出厂)----AWP | PAW (Factory New)----23.5----1000----1000
+AWP | 猫猫狗狗 (久经沙场)----AWP | PAW (Field-Tested)----7.85----1000----1000
+AWP | 猫猫狗狗 (略有磨损)----AWP | PAW (Minimal Wear)----14.0----1000----1000
+AWP | 复古流行 (崭新出厂)----AWP | POP AWP (Factory New)----46.19----1000----1000
+AWP | 复古流行 (略有磨损)----AWP | POP AWP (Minimal Wear)----32.6----1000----1000
+AWP | 火卫一 (崭新出厂)----AWP | Phobos (Factory New)----11.09----1000----1000
+AWP | 火卫一 (久经沙场)----AWP | Phobos (Field-Tested)----5.98----908----908
+AWP | 火卫一 (略有磨损)----AWP | Phobos (Minimal Wear)----6.91----1000----1000
+AWP | 响尾蛇 (久经沙场)----AWP | Pit Viper (Field-Tested)----1.04----1000----1000
+AWP | 响尾蛇 (略有磨损)----AWP | Pit Viper (Minimal Wear)----2.82----1000----1000
+AWP | 红线 (久经沙场)----AWP | Redline (Field-Tested)----263.88----1000----1000
+AWP | 红线 (略有磨损)----AWP | Redline (Minimal Wear)----449.38----1000----1000
+AWP | 狮子之日 (崭新出厂)----AWP | Sun in Leo (Factory New)----219.0----1000----1000
+AWP | 狮子之日 (略有磨损)----AWP | Sun in Leo (Minimal Wear)----136.8----1000----1000
+AWP | 野火 (久经沙场)----AWP | Wildfire (Field-Tested)----358.99----901----901
+AWP | 野火 (略有磨损)----AWP | Wildfire (Minimal Wear)----542.0----1000----1000
+AWP | 蠕虫之神 (崭新出厂)----AWP | Worm God (Factory New)----14.13----1000----1000
+AWP | 蠕虫之神 (久经沙场)----AWP | Worm God (Field-Tested)----7.64----1000----1000
+AWP | 蠕虫之神 (略有磨损)----AWP | Worm God (Minimal Wear)----9.19----1000----1000
+2022年安特卫普锦标赛挑战组亲笔签名胶囊----Antwerp 2022 Challengers Autograph Capsule----1.9----1113----0
+2022年安特卫普锦标赛冠军亲笔签名胶囊----Antwerp 2022 Champions Autograph Capsule----1.4----969----0
+2022年安特卫普锦标赛竞争组亲笔签名胶囊----Antwerp 2022 Contenders Autograph Capsule----2.97----1054----0
+2022年安特卫普锦标赛传奇组亲笔签名胶囊----Antwerp 2022 Legends Autograph Capsule----1.41----1197----0
+阿努比斯收藏包----Anubis Collection Package----7.85----4167----0
+2019年柏林锦标赛传奇组亲笔签名胶囊----Berlin 2019 Legends Autograph Capsule----5.2----865----0
+残酷的达里尔（穷鬼）| 专业人士----Bloody Darryl The Strapped | The Professionals----134.0----622----622
+反恐精英20周年武器箱----CS20 Case----3.29----1428----0
+CZ75 | 战术高手 (崭新出厂)----CZ75-Auto | Tacticat (Factory New)----7.99----560----560
+CZ75 | 战术高手 (久经沙场)----CZ75-Auto | Tacticat (Field-Tested)----2.25----541----541
+CZ75 | 战术高手 (略有磨损)----CZ75-Auto | Tacticat (Minimal Wear)----4.26----585----585
+CZ75 | 燕尾 (崭新出厂)----CZ75-Auto | Tuxedo (Factory New)----6.48----856----856
+幻彩 2 号武器箱----Chroma 2 Case----15.6----621----0
+幻彩 3 号武器箱----Chroma 3 Case----13.77----2001----0
+命悬一线武器箱----Clutch Case----2.35----5333----0
+指挥官黛维达·费尔南德斯（护目镜） | 海豹蛙人----Cmdr. Davida 'Goggles' Fernandez | SEAL Frogman----309.5----566----566
+指挥官弗兰克·巴鲁德（湿袜） | 海豹蛙人----Cmdr. Frank 'Wet Sox' Baroud | SEAL Frogman----266.0----678----678
+指挥官 梅 “极寒” 贾米森 | 特警----Cmdr. Mae 'Dead Cold' Jamison | SWAT----53.7----601----601
+“头号特训”武器箱----Danger Zone Case----4.18----2493----0
+沙漠之鹰 | 炽烈之炎 (崭新出厂)----Desert Eagle | Blaze (Factory New)----3995.0----979----979
+沙漠之鹰 | 蓝色层压板 (崭新出厂)----Desert Eagle | Blue Ply (Factory New)----9.94----542----542
+沙漠之鹰 | 蓝色层压板 (久经沙场)----Desert Eagle | Blue Ply (Field-Tested)----1.3----1000----1000
+沙漠之鹰 | 蓝色层压板 (略有磨损)----Desert Eagle | Blue Ply (Minimal Wear)----2.84----1000----1000
+沙漠之鹰 | 青铜装饰 (崭新出厂)----Desert Eagle | Bronze Deco (Factory New)----2.55----1000----1000
+沙漠之鹰 | 青铜装饰 (略有磨损)----Desert Eagle | Bronze Deco (Minimal Wear)----1.35----1000----1000
+沙漠之鹰 | 钴蓝禁锢 (崭新出厂)----Desert Eagle | Cobalt Disruption (Factory New)----556.0----794----794
+沙漠之鹰 | 红色代号 (久经沙场)----Desert Eagle | Code Red (Field-Tested)----116.99----1000----1000
+沙漠之鹰 | 红色代号 (略有磨损)----Desert Eagle | Code Red (Minimal Wear)----198.0----883----883
+沙漠之鹰 | 阴谋者 (崭新出厂)----Desert Eagle | Conspiracy (Factory New)----59.19----1000----1000
+沙漠之鹰 | 阴谋者 (略有磨损)----Desert Eagle | Conspiracy (Minimal Wear)----41.57----1000----1000
+沙漠之鹰 | 科林斯遗产 (崭新出厂)----Desert Eagle | Corinthian (Factory New)----3.65----1000----1000
+沙漠之鹰 | 科林斯遗产 (久经沙场)----Desert Eagle | Corinthian (Field-Tested)----1.6----976----976
+沙漠之鹰 | 科林斯遗产 (略有磨损)----Desert Eagle | Corinthian (Minimal Wear)----2.13----807----807
+沙漠之鹰 | 深红之网 (久经沙场)----Desert Eagle | Crimson Web (Field-Tested)----47.99----791----791
+沙漠之鹰 | 深红之网 (略有磨损)----Desert Eagle | Crimson Web (Minimal Wear)----168.0----607----607
+沙漠之鹰 | 指挥 (久经沙场)----Desert Eagle | Directive (Field-Tested)----2.59----1000----1000
+沙漠之鹰 | 大佬龙 (久经沙场)----Desert Eagle | Kumicho Dragon (Field-Tested)----99.26----544----544
+沙漠之鹰 | 轻轨 (崭新出厂)----Desert Eagle | Light Rail (Factory New)----21.78----756----756
+沙漠之鹰 | 轻轨 (久经沙场)----Desert Eagle | Light Rail (Field-Tested)----4.0----1000----1000
+沙漠之鹰 | 轻轨 (略有磨损)----Desert Eagle | Light Rail (Minimal Wear)----9.87----1000----1000
+沙漠之鹰 | 机械工业 (崭新出厂)----Desert Eagle | Mecha Industries (Factory New)----53.8----1000----1000
+沙漠之鹰 | 机械工业 (久经沙场)----Desert Eagle | Mecha Industries (Field-Tested)----25.16----1000----1000
+沙漠之鹰 | 机械工业 (略有磨损)----Desert Eagle | Mecha Industries (Minimal Wear)----36.5----1000----1000
+沙漠之鹰 | 陨星 (崭新出厂)----Desert Eagle | Meteorite (Factory New)----6.49----1000----1000
+沙漠之鹰 | 陨星 (略有磨损)----Desert Eagle | Meteorite (Minimal Wear)----4.86----674----674
+沙漠之鹰 | 纵横波涛 (久经沙场)----Desert Eagle | Ocean Drive (Field-Tested)----112.0----879----879
+沙漠之鹰 | 锈蚀烈焰 (崭新出厂)----Desert Eagle | Oxide Blaze (Factory New)----3.88----1000----1000
+沙漠之鹰 | 锈蚀烈焰 (久经沙场)----Desert Eagle | Oxide Blaze (Field-Tested)----1.49----1000----1000
+沙漠之鹰 | 锈蚀烈焰 (略有磨损)----Desert Eagle | Oxide Blaze (Minimal Wear)----2.33----1000----1000
+沙漠之鹰 | 人造卫星 (崭新出厂)----Desert Eagle | Sputnik (Factory New)----14.0----1000----1000
+沙漠之鹰 | 人造卫星 (久经沙场)----Desert Eagle | Sputnik (Field-Tested)----6.8----556----556
+沙漠之鹰 | 人造卫星 (略有磨损)----Desert Eagle | Sputnik (Minimal Wear)----9.5----689----689
+沙漠之鹰 | 后发制人 (崭新出厂)----Desert Eagle | Trigger Discipline (Factory New)----18.52----1000----1000
+沙漠之鹰 | 后发制人 (久经沙场)----Desert Eagle | Trigger Discipline (Field-Tested)----3.84----1000----1000
+沙漠之鹰 | 后发制人 (略有磨损)----Desert Eagle | Trigger Discipline (Minimal Wear)----9.12----1000----1000
+沙漠之鹰 | 后发制人 (破损不堪)----Desert Eagle | Trigger Discipline (Well-Worn)----2.63----621----621
+沙漠之鹰 | 都市瓦砾 (崭新出厂)----Desert Eagle | Urban Rubble (Factory New)----2.94----890----890
+沙漠之鹰 | 都市瓦砾 (久经沙场)----Desert Eagle | Urban Rubble (Field-Tested)----1.12----1000----1000
+梦魇武器箱----Dreams & Nightmares Case----6.61----4188----0
+双持贝瑞塔 | 钴蓝石英 (崭新出厂)----Dual Berettas | Cobalt Quartz (Factory New)----1.23----1000----1000
+双持贝瑞塔 | 食人花 (久经沙场)----Dual Berettas | Flora Carnivora (Field-Tested)----2.69----1000----1000
+双持贝瑞塔 | 食人花 (略有磨损)----Dual Berettas | Flora Carnivora (Minimal Wear)----4.98----949----949
+双持贝瑞塔 | 瓜瓜 (久经沙场)----Dual Berettas | Melondrama (Field-Tested)----7.47----800----800
+双持贝瑞塔 | 瓜瓜 (略有磨损)----Dual Berettas | Melondrama (Minimal Wear)----17.1----509----509
+双持贝瑞塔 | 皇室伴侣 (略有磨损)----Dual Berettas | Royal Consorts (Minimal Wear)----4.59----516----516
+精锐捕兽者索尔曼 | 游击队----Elite Trapper Solman | Guerrilla Warfare----109.5----695----695
+法玛斯 | 纪念碑 (崭新出厂)----FAMAS | Commemoration (Factory New)----83.7----710----710
+法玛斯 | 纪念碑 (久经沙场)----FAMAS | Commemoration (Field-Tested)----39.47----531----531
+法玛斯 | 纪念碑 (略有磨损)----FAMAS | Commemoration (Minimal Wear)----49.54----750----750
+法玛斯 | 机械工业 (崭新出厂)----FAMAS | Mecha Industries (Factory New)----42.8----606----606
+法玛斯 | 机械工业 (久经沙场)----FAMAS | Mecha Industries (Field-Tested)----16.9----897----897
+法玛斯 | 机械工业 (略有磨损)----FAMAS | Mecha Industries (Minimal Wear)----24.9----1000----1000
+法玛斯 | 喵喵36 (崭新出厂)----FAMAS | Meow 36 (Factory New)----1.39----533----533
+法玛斯 | 目皆转睛 (久经沙场)----FAMAS | Rapid Eye Movement (Field-Tested)----7.23----882----882
+法玛斯 | 目皆转睛 (略有磨损)----FAMAS | Rapid Eye Movement (Minimal Wear)----17.0----524----524
+法玛斯 | 防滚架 (久经沙场)----FAMAS | Roll Cage (Field-Tested)----12.7----951----951
+法玛斯 | 防滚架 (略有磨损)----FAMAS | Roll Cage (Minimal Wear)----26.0----503----503
+法玛斯 | ZX81 彩色 (久经沙场)----FAMAS | ZX Spectron (Field-Tested)----7.6----715----715
+法玛斯 | ZX81 彩色 (略有磨损)----FAMAS | ZX Spectron (Minimal Wear)----14.78----549----549
+FN57 | 怒氓 (久经沙场)----Five-SeveN | Angry Mob (Field-Tested)----16.8----772----772
+FN57 | 表面淬火 (崭新出厂)----Five-SeveN | Case Hardened (Factory New)----110.0----651----651
+FN57 | 表面淬火 (久经沙场)----Five-SeveN | Case Hardened (Field-Tested)----62.8----869----869
+FN57 | 表面淬火 (略有磨损)----Five-SeveN | Case Hardened (Minimal Wear)----72.9----780----780
+FN57 | 焰色反应 (崭新出厂)----Five-SeveN | Flame Test (Factory New)----1.1----730----730
+FN57 | 神祗 (崭新出厂)----Five-SeveN | Kami (Factory New)----11.5----1000----1000
+FN57 | 神祗 (略有磨损)----Five-SeveN | Kami (Minimal Wear)----8.08----661----661
+FN57 | 耍猴把戏 (久经沙场)----Five-SeveN | Monkey Business (Field-Tested)----13.9----992----992
+FN57 | 银白石英 (崭新出厂)----Five-SeveN | Silver Quartz (Factory New)----3.05----603----603
+裂空武器箱----Fracture Case----1.38----10797----0
+G3SG1 | 梦之林地 (久经沙场)----G3SG1 | Dream Glade (Field-Tested)----1.39----1000----1000
+G3SG1 | 梦之林地 (略有磨损)----G3SG1 | Dream Glade (Minimal Wear)----2.97----600----600
+加利尔 AR | 迷人眼 (久经沙场)----Galil AR | Chromatic Aberration (Field-Tested)----11.83----922----922
+加利尔 AR | 迷人眼 (略有磨损)----Galil AR | Chromatic Aberration (Minimal Wear)----22.95----584----584
+加利尔 AR | 冰核聚变 (崭新出厂)----Galil AR | Cold Fusion (Factory New)----1.54----1000----1000
+加利尔 AR | 凤凰商号 (久经沙场)----Galil AR | Connexion (Field-Tested)----2.09----1000----1000
+加利尔 AR | 凤凰商号 (略有磨损)----Galil AR | Connexion (Minimal Wear)----4.07----791----791
+加利尔 AR | 毁灭者 (崭新出厂)----Galil AR | Destroyer (Factory New)----1.3----775----775
+加利尔 AR | 经济 (久经沙场)----Galil AR | Eco (Field-Tested)----30.9----1000----1000
+加利尔 AR | 火箭冰棒 (略有磨损)----Galil AR | Rocket Pop (Minimal Wear)----14.8----901----901
+加利尔 AR | 燕尾 (崭新出厂)----Galil AR | Tuxedo (Factory New)----7.29----1000----1000
+加利尔 AR | 燕尾 (久经沙场)----Galil AR | Tuxedo (Field-Tested)----2.38----1000----1000
+加利尔 AR | 燕尾 (略有磨损)----Galil AR | Tuxedo (Minimal Wear)----4.91----1000----1000
+伽玛 2 号武器箱----Gamma 2 Case----14.97----1629----0
+伽玛武器箱----Gamma Case----15.06----1216----0
+格洛克 18 型 | 子弹皇后 (久经沙场)----Glock-18 | Bullet Queen (Field-Tested)----34.69----1000----1000
+格洛克 18 型 | 子弹皇后 (略有磨损)----Glock-18 | Bullet Queen (Minimal Wear)----74.78----768----768
+格洛克 18 型 | 本生灯 (战痕累累)----Glock-18 | Bunsen Burner (Battle-Scarred)----1.4----938----938
+格洛克 18 型 | 本生灯 (久经沙场)----Glock-18 | Bunsen Burner (Field-Tested)----1.69----536----536
+格洛克 18 型 | 本生灯 (略有磨损)----Glock-18 | Bunsen Burner (Minimal Wear)----2.26----827----827
+格洛克 18 型 | 红苹果 (崭新出厂)----Glock-18 | Candy Apple (Factory New)----3.35----1000----1000
+格洛克 18 型 | 红苹果 (久经沙场)----Glock-18 | Candy Apple (Field-Tested)----1.5----610----610
+格洛克 18 型 | 红苹果 (略有磨损)----Glock-18 | Candy Apple (Minimal Wear)----1.96----1000----1000
+格洛克 18 型 | 一目了然 (略有磨损)----Glock-18 | Clear Polymer (Minimal Wear)----1.68----788----788
+格洛克 18 型 | 伽玛多普勒 (崭新出厂)----Glock-18 | Gamma Doppler (Factory New)----413.0----919----919
+格洛克 18 型 | 伽玛多普勒 (略有磨损)----Glock-18 | Gamma Doppler (Minimal Wear)----338.0----503----503
+格洛克 18 型 | 粉碎者 (崭新出厂)----Glock-18 | Grinder (Factory New)----12.2----707----707
+格洛克 18 型 | 粉碎者 (略有磨损)----Glock-18 | Grinder (Minimal Wear)----7.89----590----590
+格洛克 18 型 | 城里的月光 (崭新出厂)----Glock-18 | Moonrise (Factory New)----8.76----1000----1000
+格洛克 18 型 | 城里的月光 (久经沙场)----Glock-18 | Moonrise (Field-Tested)----2.19----1000----1000
+格洛克 18 型 | 城里的月光 (略有磨损)----Glock-18 | Moonrise (Minimal Wear)----4.23----1000----1000
+格洛克 18 型 | 黑色魅影 (久经沙场)----Glock-18 | Neo-Noir (Field-Tested)----60.99----710----710
+格洛克 18 型 | 核子花园 (崭新出厂)----Glock-18 | Nuclear Garden (Factory New)----32.6----1000----1000
+格洛克 18 型 | 核子花园 (久经沙场)----Glock-18 | Nuclear Garden (Field-Tested)----6.99----1000----1000
+格洛克 18 型 | 核子花园 (略有磨损)----Glock-18 | Nuclear Garden (Minimal Wear)----14.73----1000----1000
+格洛克 18 型 | 烈焰天使 (略有磨损)----Glock-18 | Sacrifice (Minimal Wear)----1.21----597----597
+格洛克 18 型 | 圆影玉兔 (崭新出厂)----Glock-18 | Umbral Rabbit (Factory New)----9.4----1000----1000
+格洛克 18 型 | 圆影玉兔 (久经沙场)----Glock-18 | Umbral Rabbit (Field-Tested)----2.0----1000----1000
+格洛克 18 型 | 圆影玉兔 (略有磨损)----Glock-18 | Umbral Rabbit (Minimal Wear)----4.3----1000----1000
+格洛克 18 型 | 摩登时代 (久经沙场)----Glock-18 | Vogue (Field-Tested)----16.96----1000----1000
+格洛克 18 型 | 摩登时代 (略有磨损)----Glock-18 | Vogue (Minimal Wear)----29.0----659----659
+格洛克 18 型 | 水灵 (崭新出厂)----Glock-18 | Water Elemental (Factory New)----70.05----734----734
+格洛克 18 型 | 水灵 (久经沙场)----Glock-18 | Water Elemental (Field-Tested)----22.48----1000----1000
+格洛克 18 型 | 水灵 (略有磨损)----Glock-18 | Water Elemental (Minimal Wear)----38.01----1000----1000
+格洛克 18 型 | 鼬鼠 (久经沙场)----Glock-18 | Weasel (Field-Tested)----1.97----759----759
+格洛克 18 型 | 鼬鼠 (略有磨损)----Glock-18 | Weasel (Minimal Wear)----3.94----704----704
+手套武器箱----Glove Case----40.74----1122----0
+海军上尉里克索尔 | 海军水面战中心海豹部队----Lt. Commander Ricksaw | NSWC SEAL----63.18----1000----1000
+M249 | 闹市区 (崭新出厂)----M249 | Downtown (Factory New)----9.26----518----518
+M249 | 闹市区 (久经沙场)----M249 | Downtown (Field-Tested)----2.59----1000----1000
+M249 | 闹市区 (略有磨损)----M249 | Downtown (Minimal Wear)----4.95----697----697
+M4A1 消音型 | 翼蜥 (久经沙场)----M4A1-S | Basilisk (Field-Tested)----29.87----671----671
+M4A1 消音型 | 翼蜥 (略有磨损)----M4A1-S | Basilisk (Minimal Wear)----37.0----825----825
+M4A1 消音型 | 澜磷 (崭新出厂)----M4A1-S | Blue Phosphor (Factory New)----4138.0----629----629
+M4A1 消音型 | 澄澈之水 (略有磨损)----M4A1-S | Bright Water (Minimal Wear)----166.99----631----631
+M4A1 消音型 | 女火神之炽焰 (久经沙场)----M4A1-S | Chantico's Fire (Field-Tested)----166.5----774----774
+M4A1 消音型 | 控制台 (久经沙场)----M4A1-S | Control Panel (Field-Tested)----34.12----684----684
+M4A1 消音型 | 控制台 (略有磨损)----M4A1-S | Control Panel (Minimal Wear)----68.3----533----533
+M4A1 消音型 | 次时代 (崭新出厂)----M4A1-S | Cyrex (Factory New)----255.42----661----661
+M4A1 消音型 | 次时代 (久经沙场)----M4A1-S | Cyrex (Field-Tested)----103.15----730----730
+M4A1 消音型 | 次时代 (略有磨损)----M4A1-S | Cyrex (Minimal Wear)----158.88----726----726
+M4A1 消音型 | 毁灭者 2000 (久经沙场)----M4A1-S | Decimator (Field-Tested)----64.67----1000----1000
+M4A1 消音型 | 毁灭者 2000 (略有磨损)----M4A1-S | Decimator (Minimal Wear)----113.99----1000----1000
+M4A1 消音型 | 隐伏帝王龙 (战痕累累)----M4A1-S | Emphorosaur-S (Battle-Scarred)----2.06----1000----1000
+M4A1 消音型 | 隐伏帝王龙 (崭新出厂)----M4A1-S | Emphorosaur-S (Factory New)----15.0----1000----1000
+M4A1 消音型 | 隐伏帝王龙 (久经沙场)----M4A1-S | Emphorosaur-S (Field-Tested)----2.39----1000----1000
+M4A1 消音型 | 隐伏帝王龙 (略有磨损)----M4A1-S | Emphorosaur-S (Minimal Wear)----5.79----1000----1000
+M4A1 消音型 | 气泡流行 (崭新出厂)----M4A1-S | Fizzy POP (Factory New)----13.99----1000----1000
+M4A1 消音型 | 气泡流行 (久经沙场)----M4A1-S | Fizzy POP (Field-Tested)----6.91----856----856
+M4A1 消音型 | 气泡流行 (略有磨损)----M4A1-S | Fizzy POP (Minimal Wear)----8.57----787----787
+M4A1 消音型 | 闪回 (久经沙场)----M4A1-S | Flashback (Field-Tested)----2.07----1000----1000
+M4A1 消音型 | 闪回 (略有磨损)----M4A1-S | Flashback (Minimal Wear)----4.27----712----712
+M4A1 消音型 | 守护者 (崭新出厂)----M4A1-S | Guardian (Factory New)----169.25----844----844
+M4A1 消音型 | 守护者 (略有磨损)----M4A1-S | Guardian (Minimal Wear)----127.78----719----719
+M4A1 消音型 | 暴怒野兽 (久经沙场)----M4A1-S | Hyper Beast (Field-Tested)----124.99----793----793
+M4A1 消音型 | 伊卡洛斯殒落 (崭新出厂)----M4A1-S | Icarus Fell (Factory New)----3300.0----801----801
+M4A1 消音型 | 破碎铅秋 (崭新出厂)----M4A1-S | Leaded Glass (Factory New)----65.98----555----555
+M4A1 消音型 | 破碎铅秋 (久经沙场)----M4A1-S | Leaded Glass (Field-Tested)----25.0----1000----1000
+M4A1 消音型 | 破碎铅秋 (略有磨损)----M4A1-S | Leaded Glass (Minimal Wear)----35.9----1000----1000
+M4A1 消音型 | 机械工业 (久经沙场)----M4A1-S | Mecha Industries (Field-Tested)----169.99----1000----1000
+M4A1 消音型 | 机械工业 (略有磨损)----M4A1-S | Mecha Industries (Minimal Wear)----330.0----822----822
+M4A1 消音型 | 泥斑迷彩 (战痕累累)----M4A1-S | Mud-Spec (Battle-Scarred)----2.85----1000----1000
+M4A1 消音型 | 泥斑迷彩 (崭新出厂)----M4A1-S | Mud-Spec (Factory New)----5.8----602----602
+M4A1 消音型 | 泥斑迷彩 (久经沙场)----M4A1-S | Mud-Spec (Field-Tested)----1.45----1000----1000
+M4A1 消音型 | 泥斑迷彩 (略有磨损)----M4A1-S | Mud-Spec (Minimal Wear)----2.06----951----951
+M4A1 消音型 | 夜无眠 (战痕累累)----M4A1-S | Night Terror (Battle-Scarred)----7.79----1000----1000
+M4A1 消音型 | 夜无眠 (崭新出厂)----M4A1-S | Night Terror (Factory New)----7.39----1000----1000
+M4A1 消音型 | 夜无眠 (久经沙场)----M4A1-S | Night Terror (Field-Tested)----1.99----1000----1000
+M4A1 消音型 | 夜无眠 (略有磨损)----M4A1-S | Night Terror (Minimal Wear)----3.5----1000----1000
+M4A1 消音型 | 梦魇 (久经沙场)----M4A1-S | Nightmare (Field-Tested)----54.5----1000----1000
+M4A1 消音型 | 梦魇 (略有磨损)----M4A1-S | Nightmare (Minimal Wear)----114.12----1000----1000
+M4A1 消音型 | 氮化处理 (战痕累累)----M4A1-S | Nitro (Battle-Scarred)----1.63----531----531
+M4A1 消音型 | 氮化处理 (崭新出厂)----M4A1-S | Nitro (Factory New)----26.88----1000----1000
+M4A1 消音型 | 氮化处理 (久经沙场)----M4A1-S | Nitro (Field-Tested)----2.28----1000----1000
+M4A1 消音型 | 氮化处理 (略有磨损)----M4A1-S | Nitro (Minimal Wear)----8.17----1000----1000
+M4A1 消音型 | 氮化处理 (破损不堪)----M4A1-S | Nitro (Well-Worn)----2.67----532----532
+M4A1 消音型 | 二号玩家 (久经沙场)----M4A1-S | Player Two (Field-Tested)----139.0----1000----1000
+M4A1 消音型 | 二号玩家 (略有磨损)----M4A1-S | Player Two (Minimal Wear)----339.0----856----856
+M4A1 消音型 | 多变迷彩 (崭新出厂)----M4A1-S | VariCamo (Factory New)----6.84----919----919
+M4A1 消音型 | 多变迷彩 (久经沙场)----M4A1-S | VariCamo (Field-Tested)----3.63----1000----1000
+M4A1 消音型 | 多变迷彩 (略有磨损)----M4A1-S | VariCamo (Minimal Wear)----5.88----648----648
+M4A4 | 二西莫夫 (久经沙场)----M4A4 | Asiimov (Field-Tested)----915.9----1000----1000
+M4A4 | 喧嚣杀戮 (崭新出厂)----M4A4 | Buzz Kill (Factory New)----176.0----898----898
+M4A4 | 喧嚣杀戮 (久经沙场)----M4A4 | Buzz Kill (Field-Tested)----46.0----1000----1000
+M4A4 | 喧嚣杀戮 (略有磨损)----M4A4 | Buzz Kill (Minimal Wear)----72.0----1000----1000
+M4A4 | 变频器 (崭新出厂)----M4A4 | Converter (Factory New)----3.8----1000----1000
+M4A4 | 变频器 (久经沙场)----M4A4 | Converter (Field-Tested)----2.27----807----807
+M4A4 | 变频器 (略有磨损)----M4A4 | Converter (Minimal Wear)----2.87----1000----1000
+M4A4 | 死寂空间 (久经沙场)----M4A4 | Desolate Space (Field-Tested)----31.98----1000----1000
+M4A4 | 死寂空间 (略有磨损)----M4A4 | Desolate Space (Minimal Wear)----51.9----1000----1000
+M4A4 | 杀意大名 (崭新出厂)----M4A4 | Evil Daimyo (Factory New)----28.96----1000----1000
+M4A4 | 杀意大名 (久经沙场)----M4A4 | Evil Daimyo (Field-Tested)----9.89----1000----1000
+M4A4 | 杀意大名 (略有磨损)----M4A4 | Evil Daimyo (Minimal Wear)----14.65----1000----1000
+M4A4 | 狮鹫 (久经沙场)----M4A4 | Griffin (Field-Tested)----9.76----526----526
+M4A4 | 狮鹫 (略有磨损)----M4A4 | Griffin (Minimal Wear)----13.14----604----604
+M4A4 | 活色生香 (崭新出厂)----M4A4 | In Living Color (Factory New)----175.0----651----651
+M4A4 | 活色生香 (久经沙场)----M4A4 | In Living Color (Field-Tested)----30.36----1000----1000
+M4A4 | 活色生香 (略有磨损)----M4A4 | In Living Color (Minimal Wear)----62.77----1000----1000
+M4A4 | 镁元素 (崭新出厂)----M4A4 | Magnesium (Factory New)----13.89----774----774
+M4A4 | 镁元素 (久经沙场)----M4A4 | Magnesium (Field-Tested)----1.1----1000----1000
+M4A4 | 镁元素 (略有磨损)----M4A4 | Magnesium (Minimal Wear)----3.26----1000----1000
+M4A4 | 黑色魅影 (崭新出厂)----M4A4 | Neo-Noir (Factory New)----186.0----1000----1000
+M4A4 | 黑色魅影 (久经沙场)----M4A4 | Neo-Noir (Field-Tested)----35.9----1000----1000
+M4A4 | 黑色魅影 (略有磨损)----M4A4 | Neo-Noir (Minimal Wear)----71.6----1000----1000
+M4A4 | 透明弹匣 (崭新出厂)----M4A4 | Poly Mag (Factory New)----1.95----811----811
+M4A4 | 皇家圣骑士 (久经沙场)----M4A4 | Royal Paladin (Field-Tested)----29.8----818----818
+M4A4 | 皇家圣骑士 (略有磨损)----M4A4 | Royal Paladin (Minimal Wear)----103.88----798----798
+M4A4 | 彼岸花 (久经沙场)----M4A4 | Spider Lily (Field-Tested)----19.55----673----673
+M4A4 | 彼岸花 (略有磨损)----M4A4 | Spider Lily (Minimal Wear)----36.7----670----670
+M4A4 | 反冲精英 (崭新出厂)----M4A4 | Temukau (Factory New)----690.0----885----885
+M4A4 | 反冲精英 (久经沙场)----M4A4 | Temukau (Field-Tested)----80.0----1000----1000
+M4A4 | 反冲精英 (略有磨损)----M4A4 | Temukau (Minimal Wear)----284.86----1000----1000
+M4A4 | 合纵 (久经沙场)----M4A4 | The Coalition (Field-Tested)----152.7----656----656
+M4A4 | 合纵 (略有磨损)----M4A4 | The Coalition (Minimal Wear)----400.0----546----546
+M4A4 | 皇帝 (久经沙场)----M4A4 | The Emperor (Field-Tested)----72.7----1000----1000
+M4A4 | 皇帝 (略有磨损)----M4A4 | The Emperor (Minimal Wear)----230.0----1000----1000
+M4A4 | 齿仙 (久经沙场)----M4A4 | Tooth Fairy (Field-Tested)----16.9----1000----1000
+M4A4 | 齿仙 (略有磨损)----M4A4 | Tooth Fairy (Minimal Wear)----27.5----622----622
+M4A4 | 都市 DDPAT (略有磨损)----M4A4 | Urban DDPAT (Minimal Wear)----1.2----1000----1000
+M4A4 | X 射线 (崭新出厂)----M4A4 | X-Ray (Factory New)----105.5----1000----1000
+M4A4 | 龙王 (崭新出厂)----M4A4 | 龍王 (Dragon King) (Factory New)----151.88----566----566
+M4A4 | 龙王 (久经沙场)----M4A4 | 龍王 (Dragon King) (Field-Tested)----37.86----1000----1000
+M4A4 | 龙王 (略有磨损)----M4A4 | 龍王 (Dragon King) (Minimal Wear)----74.0----985----985
+MAC-10 | 魅惑 (久经沙场)----MAC-10 | Allure (Field-Tested)----2.14----1000----1000
+MAC-10 | 魅惑 (略有磨损)----MAC-10 | Allure (Minimal Wear)----4.0----544----544
+MAC-10 | 战争手柄 (久经沙场)----MAC-10 | Button Masher (Field-Tested)----1.58----552----552
+MAC-10 | 渐变迪斯科 (崭新出厂)----MAC-10 | Disco Tech (Factory New)----76.98----504----504
+MAC-10 | 渐变迪斯科 (久经沙场)----MAC-10 | Disco Tech (Field-Tested)----14.48----1000----1000
+MAC-10 | 渐变迪斯科 (略有磨损)----MAC-10 | Disco Tech (Minimal Wear)----31.8----1000----1000
+MAC-10 | 鸣沙 (久经沙场)----MAC-10 | Echoing Sands (Field-Tested)----1.39----959----959
+MAC-10 | 坐牢 (崭新出厂)----MAC-10 | Ensnared (Factory New)----1.39----704----704
+MAC-10 | 渐变之色 (崭新出厂)----MAC-10 | Fade (Factory New)----212.0----597----597
+MAC-10 | 霓虹骑士 (略有磨损)----MAC-10 | Neon Rider (Minimal Wear)----42.38----637----637
+MAC-10 | 海洋 (崭新出厂)----MAC-10 | Oceanic (Factory New)----1.2----549----549
+MAC-10 | 错觉 (战痕累累)----MAC-10 | Sakkaku (Battle-Scarred)----1.41----1000----1000
+MAC-10 | 错觉 (久经沙场)----MAC-10 | Sakkaku (Field-Tested)----6.02----1000----1000
+MAC-10 | 错觉 (破损不堪)----MAC-10 | Sakkaku (Well-Worn)----2.24----1000----1000
+MAG-7 | 铋晶体 (崭新出厂)----MAG-7 | BI83 Spectrum (Factory New)----12.58----638----638
+MAG-7 | 铋晶体 (久经沙场)----MAG-7 | BI83 Spectrum (Field-Tested)----3.71----805----805
+MAG-7 | 铋晶体 (略有磨损)----MAG-7 | BI83 Spectrum (Minimal Wear)----6.48----562----562
+MAG-7 | 北冥有鱼 (久经沙场)----MAG-7 | Monster Call (Field-Tested)----2.15----1000----1000
+MAG-7 | 北冥有鱼 (略有磨损)----MAG-7 | Monster Call (Minimal Wear)----4.0----1000----1000
+MAG-7 | SWAG-7 (久经沙场)----MAG-7 | SWAG-7 (Field-Tested)----1.66----728----728
+MP5-SD | 猛烈冲锋 (久经沙场)----MP5-SD | Kitbash (Field-Tested)----2.1----903----903
+MP5-SD | 猛烈冲锋 (略有磨损)----MP5-SD | Kitbash (Minimal Wear)----4.07----562----562
+MP5-SD | 液化 (崭新出厂)----MP5-SD | Liquidation (Factory New)----1.48----568----568
+MP5-SD | 小小噩梦 (崭新出厂)----MP5-SD | Necro Jr. (Factory New)----1.15----564----564
+MP7 | 幽幻深渊 (久经沙场)----MP7 | Abyssal Apparition (Field-Tested)----7.22----749----749
+MP7 | 深蓝电镀处理 (崭新出厂)----MP7 | Anodized Navy (Factory New)----2.84----1000----1000
+MP7 | 血腥运动 (崭新出厂)----MP7 | Bloodsport (Factory New)----21.5----628----628
+MP7 | 血腥运动 (久经沙场)----MP7 | Bloodsport (Field-Tested)----7.65----1000----1000
+MP7 | 血腥运动 (略有磨损)----MP7 | Bloodsport (Minimal Wear)----12.0----1000----1000
+MP7 | 卷云 (崭新出厂)----MP7 | Cirrus (Factory New)----3.11----527----527
+MP7 | 卷云 (略有磨损)----MP7 | Cirrus (Minimal Wear)----1.09----761----761
+MP7 | 渐变之色 (崭新出厂)----MP7 | Fade (Factory New)----35.13----1000----1000
+MP7 | 渐变之色 (略有磨损)----MP7 | Fade (Minimal Wear)----23.0----695----695
+MP9 | 生化泄漏 (崭新出厂)----MP9 | Bioleak (Factory New)----1.65----676----676
+MP9 | 爆裂食物链 (久经沙场)----MP9 | Food Chain (Field-Tested)----12.0----1000----1000
+MP9 | 爆裂食物链 (略有磨损)----MP9 | Food Chain (Minimal Wear)----22.75----502----502
+MP9 | 富士山 (崭新出厂)----MP9 | Mount Fuji (Factory New)----62.36----841----841
+MP9 | 富士山 (略有磨损)----MP9 | Mount Fuji (Minimal Wear)----41.09----643----643
+MP9 | 星使 (崭新出厂)----MP9 | Starlight Protector (Factory New)----95.0----654----654
+MP9 | 星使 (久经沙场)----MP9 | Starlight Protector (Field-Tested)----17.99----1000----1000
+MP9 | 星使 (略有磨损)----MP9 | Starlight Protector (Minimal Wear)----39.99----1000----1000
+音乐盒 | 3kliksphilip - 追溯起源----Music Kit | 3kliksphilip, Heading for the Source----4.0----1000----1000
+音乐盒 | AWOLNATION - 就是我----Music Kit | AWOLNATION, I Am----21.0----902----902
+音乐盒 | Denzel Curry - 终极----Music Kit | Denzel Curry, ULTIMATE----14.5----889----889
+音乐盒 | Humanity's Last Breath - 虚空----Music Kit | Humanity's Last Breath, Void----2.43----1000----1000
+音乐盒 | Juelz - 神枪手----Music Kit | Juelz, Shooters----4.3----1000----1000
+音乐盒 | Knock2 - 冲击星*----Music Kit | Knock2, dashstar*----57.0----1000----1000
+音乐盒 | Meechy Darko - 哥特浮华----Music Kit | Meechy Darko, Gothic Luxury----5.5----723----723
+音乐盒 | Mord Fustang - 永恒之钻----Music Kit | Mord Fustang, Diamonds----12.5----560----560
+音乐盒 | Neck Deep - 躺平青年----Music Kit | Neck Deep, The Lowlife Pack----19.99----963----963
+音乐盒 | 完美世界 - 花脸----Music Kit | Perfect World, 花脸 Hua Lian (Painted Face)----22.88----1000----1000
+音乐盒 | Sullivan King - 困兽----Music Kit | Sullivan King, Lock Me Up----3.75----1000----1000
+音乐盒 | The Verkkars & n0thing - 闪光舞----Music Kit | The Verkkars & n0thing, Flashbang Dance----19.88----1000----1000
+音乐盒 | The Verkkars - EZ4ENCE----Music Kit | The Verkkars, EZ4ENCE----23.0----1000----1000
+音乐盒 | bbno$ - 你急了！----Music Kit | bbno$, u mad!----17.42----630----630
+名称标签----Name Tag----9.96----1000----1000
+内格夫 | 狮子鱼 (久经沙场)----Negev | Lionfish (Field-Tested)----1.8----588----588
+内格夫 | 飞羽 (崭新出厂)----Negev | Ultralight (Factory New)----1.09----709----709
+内格夫 | 橙灰之名 (久经沙场)----Negev | dev_texture (Field-Tested)----1.6----998----998
+新星 | 狂野六号 (久经沙场)----Nova | Wild Six (Field-Tested)----1.69----755----755
+新星 | 随风 (崭新出厂)----Nova | Windblown (Factory New)----2.41----536----536
+老K | 专业人士----Number K | The Professionals----279.0----1000----1000
+“突围大行动”武器箱----Operation Breakout Weapon Case----41.0----596----0
+“狂牙大行动”武器箱----Operation Broken Fang Case----27.96----1225----0
+“野火大行动”武器箱----Operation Wildfire Case----13.5----549----0
+P2000 | 酸蚀 (久经沙场)----P2000 | Acid Etched (Field-Tested)----2.23----785----785
+P2000 | 酸蚀 (略有磨损)----P2000 | Acid Etched (Minimal Wear)----4.4----515----515
+P2000 | 渐变琥珀 (崭新出厂)----P2000 | Amber Fade (Factory New)----56.38----1000----1000
+P2000 | 渐变琥珀 (久经沙场)----P2000 | Amber Fade (Field-Tested)----17.23----961----961
+P2000 | 渐变琥珀 (略有磨损)----P2000 | Amber Fade (Minimal Wear)----27.17----1000----1000
+P2000 | 至高帝皇 (崭新出厂)----P2000 | Imperial (Factory New)----2.63----592----592
+P2000 | 变态杀戮 (久经沙场)----P2000 | Wicked Sick (Field-Tested)----11.54----647----647
+P250 | 二西莫夫 (久经沙场)----P250 | Asiimov (Field-Tested)----17.3----1000----1000
+P250 | 卡带 (崭新出厂)----P250 | Cassette (Factory New)----1.13----1000----1000
+P250 | 赛博先锋 (久经沙场)----P250 | Cyber Shell (Field-Tested)----1.55----657----657
+P250 | 天旱 (崭新出厂)----P250 | Drought (Factory New)----4.08----650----650
+P250 | 富兰克林 (崭新出厂)----P250 | Franklin (Factory New)----7.82----1000----1000
+P250 | 富兰克林 (久经沙场)----P250 | Franklin (Field-Tested)----3.3----836----836
+P250 | 富兰克林 (略有磨损)----P250 | Franklin (Minimal Wear)----4.8----754----754
+P250 | 影魔 (崭新出厂)----P250 | Nevermore (Factory New)----8.74----960----960
+P250 | 影魔 (略有磨损)----P250 | Nevermore (Minimal Wear)----4.95----846----846
+P250 | 生化短吻鳄 (久经沙场)----P250 | See Ya Later (Field-Tested)----13.5----1000----1000
+P250 | 生化短吻鳄 (略有磨损)----P250 | See Ya Later (Minimal Wear)----25.57----928----928
+P250 | 超新星 (崭新出厂)----P250 | Supernova (Factory New)----7.87----689----689
+P250 | 超新星 (略有磨损)----P250 | Supernova (Minimal Wear)----5.32----607----607
+P250 | 元素轮廓 (略有磨损)----P250 | Valence (Minimal Wear)----1.09----522----522
+P250 | 铜绿 (战痕累累)----P250 | Verdigris (Battle-Scarred)----1.4----507----507
+P250 | 迷人幻象 (久经沙场)----P250 | Visions (Field-Tested)----17.49----785----785
+P250 | X 射线 (崭新出厂)----P250 | X-Ray (Factory New)----3.07----1000----1000
+P250 | X 射线 (略有磨损)----P250 | X-Ray (Minimal Wear)----1.69----906----906
+P90 | 二西莫夫 (久经沙场)----P90 | Asiimov (Field-Tested)----44.0----1000----1000
+P90 | 二西莫夫 (略有磨损)----P90 | Asiimov (Minimal Wear)----90.0----814----814
+P90 | 夺命器 (久经沙场)----P90 | Chopper (Field-Tested)----2.99----503----503
+P90 | 大怪兽 RUSH (崭新出厂)----P90 | Cocoa Rampage (Factory New)----5.75----540----540
+P90 | 精英之作 (略有磨损)----P90 | Elite Build (Minimal Wear)----1.75----544----544
+P90 | 设施系列·底片图 (崭新出厂)----P90 | Facility Negative (Factory New)----2.81----511----511
+P90 | 冷血无情 (崭新出厂)----P90 | Grim (Factory New)----2.96----532----532
+P90 | 元女王 (战痕累累)----P90 | Neoqueen (Battle-Scarred)----2.24----1000----1000
+P90 | 元女王 (崭新出厂)----P90 | Neoqueen (Factory New)----8.22----838----838
+P90 | 元女王 (久经沙场)----P90 | Neoqueen (Field-Tested)----1.88----1000----1000
+P90 | 元女王 (略有磨损)----P90 | Neoqueen (Minimal Wear)----3.99----974----974
+P90 | 摧枯拉朽 (崭新出厂)----P90 | Teardown (Factory New)----2.83----584----584
+P90 | 摧枯拉朽 (略有磨损)----P90 | Teardown (Minimal Wear)----1.78----588----588
+P90 | 给爷冲 (久经沙场)----P90 | Vent Rush (Field-Tested)----2.58----1000----1000
+P90 | 给爷冲 (略有磨损)----P90 | Vent Rush (Minimal Wear)----4.86----707----707
+PP-野牛 | 黄铜 (崭新出厂)----PP-Bizon | Brass (Factory New)----10.47----713----713
+PP-野牛 | 黄铜 (久经沙场)----PP-Bizon | Brass (Field-Tested)----3.14----916----916
+PP-野牛 | 黄铜 (略有磨损)----PP-Bizon | Brass (Minimal Wear)----5.99----621----621
+PP-野牛 | 阿努比斯之审判 (崭新出厂)----PP-Bizon | Judgement of Anubis (Factory New)----50.57----507----507
+PP-野牛 | 阿努比斯之审判 (久经沙场)----PP-Bizon | Judgement of Anubis (Field-Tested)----26.2----816----816
+PP-野牛 | 阿努比斯之审判 (略有磨损)----PP-Bizon | Judgement of Anubis (Minimal Wear)----35.3----726----726
+PP-野牛 | 太空猫 (崭新出厂)----PP-Bizon | Space Cat (Factory New)----6.32----848----848
+PP-野牛 | 太空猫 (久经沙场)----PP-Bizon | Space Cat (Field-Tested)----1.43----1000----1000
+PP-野牛 | 太空猫 (略有磨损)----PP-Bizon | Space Cat (Minimal Wear)----3.06----1000----1000
+2023年巴黎锦标赛远古遗迹纪念包----Paris 2023 Ancient Souvenir Package----14.58----1338----0
+2023年巴黎锦标赛阿努比斯纪念包----Paris 2023 Anubis Souvenir Package----8.98----1920----0
+2023年巴黎锦标赛炼狱小镇纪念包----Paris 2023 Inferno Souvenir Package----10.34----1037----0
+2023年巴黎锦标赛荒漠迷城纪念包----Paris 2023 Mirage Souvenir Package----12.65----4745----0
+2023年巴黎锦标赛殒命大厦纪念包----Paris 2023 Vertigo Souvenir Package----10.28----2046----0
+海报女郎胶囊----Pinups Capsule----4.87----953----0
+棱彩2号武器箱----Prisma 2 Case----4.2----1159----0
+棱彩武器箱----Prisma Case----3.57----1255----0
+R8 左轮手枪 | 渐变琥珀 (崭新出厂)----R8 Revolver | Amber Fade (Factory New)----5.06----1000----1000
+R8 左轮手枪 | 渐变琥珀 (略有磨损)----R8 Revolver | Amber Fade (Minimal Wear)----3.4----687----687
+R8 左轮手枪 | 蕉农炮 (战痕累累)----R8 Revolver | Banana Cannon (Battle-Scarred)----1.55----628----628
+R8 左轮手枪 | 蕉农炮 (久经沙场)----R8 Revolver | Banana Cannon (Field-Tested)----1.89----926----926
+R8 左轮手枪 | 蕉农炮 (略有磨损)----R8 Revolver | Banana Cannon (Minimal Wear)----3.8----587----587
+R8 左轮手枪 | 炽烈之炎 (崭新出厂)----R8 Revolver | Blaze (Factory New)----10.16----1000----1000
+R8 左轮手枪 | 疯狂老八 (久经沙场)----R8 Revolver | Crazy 8 (Field-Tested)----2.68----1000----1000
+R8 左轮手枪 | 疯狂老八 (略有磨损)----R8 Revolver | Crazy 8 (Minimal Wear)----4.9----892----892
+R8 左轮手枪 | 深红之网 (略有磨损)----R8 Revolver | Crimson Web (Minimal Wear)----2.27----983----983
+R8 左轮手枪 | 沙漠伪装 (崭新出厂)----R8 Revolver | Desert Brush (Factory New)----5.11----508----508
+R8 左轮手枪 | 渐变之色 (略有磨损)----R8 Revolver | Fade (Minimal Wear)----50.0----523----523
+变革武器箱----Revolution Case----1.57----12350----0
+准备就绪的列赞 | 军刀----Rezan The Ready | Sabre----26.55----570----570
+2022年里约热内卢锦标赛竞争组亲笔签名胶囊----Rio 2022 Contenders Autograph Capsule----1.5----520----0
+2022年里约热内卢锦标赛炙热沙城 II 纪念包----Rio 2022 Dust II Souvenir Package----14.94----2422----0
+2022年里约热内卢锦标赛传奇组亲笔签名胶囊----Rio 2022 Legends Autograph Capsule----1.89----1198----0
+SCAR-20 | 执行者 (久经沙场)----SCAR-20 | Enforcer (Field-Tested)----2.26----610----610
+SCAR-20 | 碎片 (崭新出厂)----SCAR-20 | Fragments (Factory New)----1.16----591----591
+SCAR-20 | 暗夜活死鸡 (崭新出厂)----SCAR-20 | Poultrygeist (Factory New)----1.1----1000----1000
+SG 553 | 阿罗哈 (崭新出厂)----SG 553 | Aloha (Factory New)----1.14----1000----1000
+SG 553 | 深蓝电镀处理 (崭新出厂)----SG 553 | Anodized Navy (Factory New)----2.78----1000----1000
+SG 553 | 大马士革钢 (久经沙场)----SG 553 | Damascus Steel (Field-Tested)----3.12----686----686
+SG 553 | 黯翼 (久经沙场)----SG 553 | Darkwing (Field-Tested)----2.21----627----627
+SG 553 | 黯翼 (略有磨损)----SG 553 | Darkwing (Minimal Wear)----4.18----538----538
+SG 553 | 青龙 (崭新出厂)----SG 553 | Dragon Tech (Factory New)----9.75----915----915
+SG 553 | 青龙 (久经沙场)----SG 553 | Dragon Tech (Field-Tested)----2.62----1000----1000
+SG 553 | 青龙 (略有磨损)----SG 553 | Dragon Tech (Minimal Wear)----4.96----1000----1000
+SG 553 | 意式拉力 (崭新出厂)----SG 553 | Integrale (Factory New)----506.8----722----722
+SG 553 | 意式拉力 (久经沙场)----SG 553 | Integrale (Field-Tested)----60.67----901----901
+SG 553 | 意式拉力 (略有磨损)----SG 553 | Integrale (Minimal Wear)----166.0----874----874
+SG 553 | 锈蚀之刃 (崭新出厂)----SG 553 | Ol' Rusty (Factory New)----1.1----559----559
+SSG 08 | 无尽深海 (崭新出厂)----SSG 08 | Abyss (Factory New)----17.52----1000----1000
+SSG 08 | 无尽深海 (久经沙场)----SSG 08 | Abyss (Field-Tested)----1.05----1000----1000
+SSG 08 | 无尽深海 (略有磨损)----SSG 08 | Abyss (Minimal Wear)----3.23----1000----1000
+SSG 08 | 渐变强酸 (崭新出厂)----SSG 08 | Acid Fade (Factory New)----4.96----1000----1000
+SSG 08 | 碧蓝雕文 (久经沙场)----SSG 08 | Azure Glyph (Field-Tested)----1.35----815----815
+SSG 08 | 炎龙之焰 (略有磨损)----SSG 08 | Dragonfire (Minimal Wear)----81.0----689----689
+SSG 08 | 浮生如梦 (久经沙场)----SSG 08 | Fever Dream (Field-Tested)----3.18----1000----1000
+SSG 08 | 浮生如梦 (略有磨损)----SSG 08 | Fever Dream (Minimal Wear)----6.9----730----730
+SSG 08 | 幽灵战士 (久经沙场)----SSG 08 | Ghost Crusader (Field-Tested)----3.42----860----860
+SSG 08 | 手刹 (崭新出厂)----SSG 08 | Hand Brake (Factory New)----4.68----543----543
+SSG 08 | 手刹 (久经沙场)----SSG 08 | Hand Brake (Field-Tested)----2.18----735----735
+SSG 08 | 手刹 (略有磨损)----SSG 08 | Hand Brake (Minimal Wear)----2.89----547----547
+SSG 08 | 主机001 (崭新出厂)----SSG 08 | Mainframe 001 (Factory New)----1.36----690----690
+SSG 08 | 春季方巾 (崭新出厂)----SSG 08 | Spring Twilly (Factory New)----10.23----633----633
+飞贼波兹曼 | 专业人士----Safecracker Voltzmann | The Professionals----79.0----1000----1000
+截短霰弹枪 | 渐变琥珀 (崭新出厂)----Sawed-Off | Amber Fade (Factory New)----2.86----907----907
+截短霰弹枪 | 刹车灯 (崭新出厂)----Sawed-Off | Brake Light (Factory New)----3.82----1000----1000
+截短霰弹枪 | 逮捕者 (崭新出厂)----Sawed-Off | Full Stop (Factory New)----2.87----594----594
+截短霰弹枪 | 么么 (久经沙场)----Sawed-Off | Kiss♥Love (Field-Tested)----17.49----861----861
+截短霰弹枪 | 么么 (略有磨损)----Sawed-Off | Kiss♥Love (Minimal Wear)----30.64----837----837
+暗影武器箱----Shadow Case----5.39----646----0
+“裂网大行动”武器箱----Shattered Web Case----21.8----956----0
+残酷的达里尔爵士（皇家）| 专业人士----Sir Bloody Darryl Royale | The Professionals----191.9----703----703
+残酷的达里尔爵士（聒噪）| 专业人士----Sir Bloody Loudmouth Darryl | The Professionals----313.11----700----700
+残酷的达里尔爵士（头盖骨）| 专业人士----Sir Bloody Skullhead Darryl | The Professionals----154.0----664----664
+蛇噬武器箱----Snakebite Case----1.05----12050----0
+爱娃特工 | 联邦调查局（FBI）----Special Agent Ava | FBI----92.0----1000----1000
+光谱 2 号武器箱----Spectrum 2 Case----11.99----1056----0
+光谱武器箱----Spectrum Case----17.79----1472----0
+AK-47（StatTrak™） | 蓝色层压板 (久经沙场)----StatTrak™ AK-47 | Blue Laminate (Field-Tested)----155.47----523----523
+AK-47（StatTrak™） | 精英之作 (战痕累累)----StatTrak™ AK-47 | Elite Build (Battle-Scarred)----16.7----580----580
+AK-47（StatTrak™） | 精英之作 (久经沙场)----StatTrak™ AK-47 | Elite Build (Field-Tested)----23.7----1000----1000
+AK-47（StatTrak™） | 精英之作 (略有磨损)----StatTrak™ AK-47 | Elite Build (Minimal Wear)----40.7----1000----1000
+AK-47（StatTrak™） | 精英之作 (破损不堪)----StatTrak™ AK-47 | Elite Build (Well-Worn)----17.78----541----541
+AK-47（StatTrak™） | 可燃冰 (崭新出厂)----StatTrak™ AK-47 | Ice Coaled (Factory New)----266.49----522----522
+AK-47（StatTrak™） | 可燃冰 (久经沙场)----StatTrak™ AK-47 | Ice Coaled (Field-Tested)----68.9----1000----1000
+AK-47（StatTrak™） | 可燃冰 (略有磨损)----StatTrak™ AK-47 | Ice Coaled (Minimal Wear)----130.0----875----875
+AK-47（StatTrak™） | 阿努比斯军团 (久经沙场)----StatTrak™ AK-47 | Legion of Anubis (Field-Tested)----102.5----551----551
+AK-47（StatTrak™） | 红线 (久经沙场)----StatTrak™ AK-47 | Redline (Field-Tested)----314.35----1000----1000
+AK-47（StatTrak™） | 墨岩 (战痕累累)----StatTrak™ AK-47 | Slate (Battle-Scarred)----56.28----766----766
+AK-47（StatTrak™） | 墨岩 (崭新出厂)----StatTrak™ AK-47 | Slate (Factory New)----229.5----797----797
+AK-47（StatTrak™） | 墨岩 (久经沙场)----StatTrak™ AK-47 | Slate (Field-Tested)----62.76----1000----1000
+AK-47（StatTrak™） | 墨岩 (略有磨损)----StatTrak™ AK-47 | Slate (Minimal Wear)----97.88----1000----1000
+AK-47（StatTrak™） | 墨岩 (破损不堪)----StatTrak™ AK-47 | Slate (Well-Worn)----56.65----697----697
+AK-47（StatTrak™） | 迷踪秘境 (久经沙场)----StatTrak™ AK-47 | Uncharted (Field-Tested)----11.0----697----697
+AWP（StatTrak™） | 二西莫夫 (久经沙场)----StatTrak™ AWP | Asiimov (Field-Tested)----1514.5----640----640
+AWP（StatTrak™） | 毛细血管 (久经沙场)----StatTrak™ AWP | Capillary (Field-Tested)----6.38----786----786
+AWP（StatTrak™） | 毛细血管 (略有磨损)----StatTrak™ AWP | Capillary (Minimal Wear)----11.0----593----593
+AWP（StatTrak™） | 死神 (久经沙场)----StatTrak™ AWP | Mortis (Field-Tested)----24.59----537----537
+AWP（StatTrak™） | 猫猫狗狗 (崭新出厂)----StatTrak™ AWP | PAW (Factory New)----74.46----594----594
+AWP（StatTrak™） | 蠕虫之神 (崭新出厂)----StatTrak™ AWP | Worm God (Factory New)----37.9----575----575
+AWP（StatTrak™） | 蠕虫之神 (略有磨损)----StatTrak™ AWP | Worm God (Minimal Wear)----24.85----554----554
+沙漠之鹰（StatTrak™） | 蓝色层压板 (久经沙场)----StatTrak™ Desert Eagle | Blue Ply (Field-Tested)----5.4----687----687
+沙漠之鹰（StatTrak™） | 蓝色层压板 (略有磨损)----StatTrak™ Desert Eagle | Blue Ply (Minimal Wear)----9.86----506----506
+沙漠之鹰（StatTrak™） | 青铜装饰 (崭新出厂)----StatTrak™ Desert Eagle | Bronze Deco (Factory New)----11.19----1000----1000
+沙漠之鹰（StatTrak™） | 青铜装饰 (久经沙场)----StatTrak™ Desert Eagle | Bronze Deco (Field-Tested)----3.97----614----614
+沙漠之鹰（StatTrak™） | 青铜装饰 (略有磨损)----StatTrak™ Desert Eagle | Bronze Deco (Minimal Wear)----7.64----700----700
+沙漠之鹰（StatTrak™） | 阴谋者 (崭新出厂)----StatTrak™ Desert Eagle | Conspiracy (Factory New)----166.0----611----611
+沙漠之鹰（StatTrak™） | 锈蚀烈焰 (崭新出厂)----StatTrak™ Desert Eagle | Oxide Blaze (Factory New)----13.7----770----770
+沙漠之鹰（StatTrak™） | 锈蚀烈焰 (久经沙场)----StatTrak™ Desert Eagle | Oxide Blaze (Field-Tested)----5.39----584----584
+沙漠之鹰（StatTrak™） | 锈蚀烈焰 (略有磨损)----StatTrak™ Desert Eagle | Oxide Blaze (Minimal Wear)----9.34----513----513
+沙漠之鹰（StatTrak™） | 后发制人 (久经沙场)----StatTrak™ Desert Eagle | Trigger Discipline (Field-Tested)----12.19----503----503
+沙漠之鹰（StatTrak™） | 后发制人 (略有磨损)----StatTrak™ Desert Eagle | Trigger Discipline (Minimal Wear)----27.0----516----516
+FN57（StatTrak™） | 神祗 (崭新出厂)----StatTrak™ Five-SeveN | Kami (Factory New)----18.88----729----729
+FN57（StatTrak™） | 神祗 (略有磨损)----StatTrak™ Five-SeveN | Kami (Minimal Wear)----12.68----664----664
+格洛克 18 型（StatTrak™） | 本生灯 (久经沙场)----StatTrak™ Glock-18 | Bunsen Burner (Field-Tested)----3.99----637----637
+格洛克 18 型（StatTrak™） | 城里的月光 (崭新出厂)----StatTrak™ Glock-18 | Moonrise (Factory New)----29.0----552----552
+格洛克 18 型（StatTrak™） | 城里的月光 (久经沙场)----StatTrak™ Glock-18 | Moonrise (Field-Tested)----5.9----935----935
+格洛克 18 型（StatTrak™） | 城里的月光 (略有磨损)----StatTrak™ Glock-18 | Moonrise (Minimal Wear)----12.99----700----700
+格洛克 18 型（StatTrak™） | 异星世界 (久经沙场)----StatTrak™ Glock-18 | Off World (Field-Tested)----1.73----533----533
+M4A1 消音型（StatTrak™） | 隐伏帝王龙 (久经沙场)----StatTrak™ M4A1-S | Emphorosaur-S (Field-Tested)----9.55----781----781
+M4A1 消音型（StatTrak™） | 隐伏帝王龙 (略有磨损)----StatTrak™ M4A1-S | Emphorosaur-S (Minimal Wear)----20.0----532----532
+M4A1 消音型（StatTrak™） | 夜无眠 (战痕累累)----StatTrak™ M4A1-S | Night Terror (Battle-Scarred)----26.0----653----653
+M4A1 消音型（StatTrak™） | 夜无眠 (久经沙场)----StatTrak™ M4A1-S | Night Terror (Field-Tested)----10.6----771----771
+M4A4（StatTrak™） | 杀意大名 (崭新出厂)----StatTrak™ M4A4 | Evil Daimyo (Factory New)----86.12----647----647
+M4A4（StatTrak™） | 杀意大名 (略有磨损)----StatTrak™ M4A4 | Evil Daimyo (Minimal Wear)----40.0----507----507
+M4A4（StatTrak™） | 镁元素 (久经沙场)----StatTrak™ M4A4 | Magnesium (Field-Tested)----6.05----639----639
+M4A4（StatTrak™） | 镁元素 (略有磨损)----StatTrak™ M4A4 | Magnesium (Minimal Wear)----13.2----895----895
+M4A4（StatTrak™） | 透明弹匣 (略有磨损)----StatTrak™ M4A4 | Poly Mag (Minimal Wear)----2.35----502----502
+MAC-10（StatTrak™） | 错觉 (久经沙场)----StatTrak™ MAC-10 | Sakkaku (Field-Tested)----19.47----1000----1000
+音乐盒（StatTrak™） | Blitz Kids - 有为青年----StatTrak™ Music Kit | Blitz Kids, The Good Youth----94.5----1000----1000
+音乐盒（StatTrak™） | Hundredth - 冲破藩篱----StatTrak™ Music Kit | Hundredth, FREE----3.98----501----501
+音乐盒（StatTrak™） | Neck Deep - 人生何处不青山----StatTrak™ Music Kit | Neck Deep, Life's Not Out To Get You----78.7----1000----1000
+音乐盒（StatTrak™） | 完美世界 - 花脸----StatTrak™ Music Kit | Perfect World, 花脸 Hua Lian (Painted Face)----35.0----814----814
+音乐盒（StatTrak™） | Roam - 决心----StatTrak™ Music Kit | Roam, Backbone----13.06----609----609
+音乐盒（StatTrak™） | Twin Atlantic - GLA----StatTrak™ Music Kit | Twin Atlantic, GLA----6.23----576----576
+内格夫（StatTrak™） | 无畏战神 (略有磨损)----StatTrak™ Negev | Man-o'-war (Minimal Wear)----2.39----574----574
+P250（StatTrak™） | 元素轮廓 (久经沙场)----StatTrak™ P250 | Valence (Field-Tested)----1.43----626----626
+P250（StatTrak™） | 元素轮廓 (略有磨损)----StatTrak™ P250 | Valence (Minimal Wear)----4.27----588----588
+P90（StatTrak™） | 冷血无情 (略有磨损)----StatTrak™ P90 | Grim (Minimal Wear)----2.74----613----613
+P90（StatTrak™） | 元女王 (久经沙场)----StatTrak™ P90 | Neoqueen (Field-Tested)----3.47----533----533
+PP-野牛（StatTrak™） | 太空猫 (久经沙场)----StatTrak™ PP-Bizon | Space Cat (Field-Tested)----2.4----672----672
+SG 553（StatTrak™） | 阿罗哈 (崭新出厂)----StatTrak™ SG 553 | Aloha (Factory New)----4.03----621----621
+SSG 08（StatTrak™） | 无尽深海 (战痕累累)----StatTrak™ SSG 08 | Abyss (Battle-Scarred)----2.8----809----809
+SSG 08（StatTrak™） | 无尽深海 (久经沙场)----StatTrak™ SSG 08 | Abyss (Field-Tested)----4.98----1000----1000
+SSG 08（StatTrak™） | 无尽深海 (略有磨损)----StatTrak™ SSG 08 | Abyss (Minimal Wear)----11.7----1000----1000
+SSG 08（StatTrak™） | 无尽深海 (破损不堪)----StatTrak™ SSG 08 | Abyss (Well-Worn)----2.88----666----666
+SSG 08（StatTrak™） | 主机001 (略有磨损)----StatTrak™ SSG 08 | Mainframe 001 (Minimal Wear)----1.51----592----592
+StatTrak™ 数据互换器----StatTrak™ Swap Tool----2.75----1000----1000
+Tec-9（StatTrak™） | 沙尘暴 (久经沙场)----StatTrak™ Tec-9 | Sandstorm (Field-Tested)----4.58----506----506
+USP 消音版（StatTrak™） | 脑洞大开 (久经沙场)----StatTrak™ USP-S | Cortex (Field-Tested)----28.6----569----569
+USP 消音版（StatTrak™） | 守护者 (崭新出厂)----StatTrak™ USP-S | Guardian (Factory New)----79.88----698----698
+USP 消音版（StatTrak™） | 不锈钢 (久经沙场)----StatTrak™ USP-S | Stainless (Field-Tested)----90.99----640----640
+USP 消音版（StatTrak™） | 不锈钢 (略有磨损)----StatTrak™ USP-S | Stainless (Minimal Wear)----176.07----572----572
+USP 消音版（StatTrak™） | 地狱门票 (久经沙场)----StatTrak™ USP-S | Ticket to Hell (Field-Tested)----7.09----544----544
+USP 消音版（StatTrak™） | 力矩 (崭新出厂)----StatTrak™ USP-S | Torque (Factory New)----26.0----543----543
+斯德哥尔摩 2021 荒漠迷城纪念包----Stockholm 2021 Mirage Souvenir Package----19.63----694----0
+糖果脸谱胶囊----Sugarface Capsule----5.19----692----0
+Tec-9 | 竹林 (崭新出厂)----Tec-9 | Bamboo Forest (Factory New)----43.83----638----638
+Tec-9 | 青竹伪装 (久经沙场)----Tec-9 | Bamboozle (Field-Tested)----2.23----604----604
+Tec-9 | 兄弟连 (久经沙场)----Tec-9 | Brother (Field-Tested)----2.2----993----993
+Tec-9 | 燃料喷射器 (久经沙场)----Tec-9 | Fuel Injector (Field-Tested)----19.68----714----714
+Tec-9 | 冰冠 (崭新出厂)----Tec-9 | Ice Cap (Factory New)----3.33----1000----1000
+Tec-9 | 冰冠 (久经沙场)----Tec-9 | Ice Cap (Field-Tested)----1.03----544----544
+Tec-9 | 冰冠 (略有磨损)----Tec-9 | Ice Cap (Minimal Wear)----1.68----932----932
+精英穆哈里克先生 | 精锐分子----The Elite Mr. Muhlik | Elite Crew----35.39----1000----1000
+UMP-45 | 白狼 (久经沙场)----UMP-45 | Arctic Wolf (Field-Tested)----1.74----937----937
+UMP-45 | 白狼 (略有磨损)----UMP-45 | Arctic Wolf (Minimal Wear)----3.37----612----612
+UMP-45 | 城里的月光 (崭新出厂)----UMP-45 | Moonrise (Factory New)----6.6----1000----1000
+UMP-45 | 城里的月光 (略有磨损)----UMP-45 | Moonrise (Minimal Wear)----3.01----623----623
+UMP-45 | 野孩子 (久经沙场)----UMP-45 | Wild Child (Field-Tested)----11.27----705----705
+USP 消音版 | 黑莲花 (久经沙场)----USP-S | Black Lotus (Field-Tested)----8.46----781----781
+USP 消音版 | 黑莲花 (略有磨损)----USP-S | Black Lotus (Minimal Wear)----16.0----943----943
+USP 消音版 | 蓝图 (久经沙场)----USP-S | Blueprint (Field-Tested)----24.69----1000----1000
+USP 消音版 | 蓝图 (略有磨损)----USP-S | Blueprint (Minimal Wear)----52.92----1000----1000
+USP 消音版 | 引擎故障灯 (崭新出厂)----USP-S | Check Engine (Factory New)----6.27----1000----1000
+USP 消音版 | 引擎故障灯 (久经沙场)----USP-S | Check Engine (Field-Tested)----2.5----1000----1000
+USP 消音版 | 引擎故障灯 (略有磨损)----USP-S | Check Engine (Minimal Wear)----3.98----1000----1000
+USP 消音版 | 脑洞大开 (崭新出厂)----USP-S | Cortex (Factory New)----64.0----538----538
+USP 消音版 | 脑洞大开 (久经沙场)----USP-S | Cortex (Field-Tested)----12.6----1000----1000
+USP 消音版 | 脑洞大开 (略有磨损)----USP-S | Cortex (Minimal Wear)----22.2----1000----1000
+USP 消音版 | 脑洞大开 (破损不堪)----USP-S | Cortex (Well-Worn)----11.37----522----522
+USP 消音版 | 次时代 (崭新出厂)----USP-S | Cyrex (Factory New)----17.0----1000----1000
+USP 消音版 | 次时代 (久经沙场)----USP-S | Cyrex (Field-Tested)----5.24----1000----1000
+USP 消音版 | 次时代 (略有磨损)----USP-S | Cyrex (Minimal Wear)----10.0----1000----1000
+USP 消音版 | 沙漠战术 (久经沙场)----USP-S | Desert Tactical (Field-Tested)----1.32----712----712
+USP 消音版 | 闪回 (久经沙场)----USP-S | Flashback (Field-Tested)----3.34----1000----1000
+USP 消音版 | 闪回 (略有磨损)----USP-S | Flashback (Minimal Wear)----4.58----572----572
+USP 消音版 | 守护者 (崭新出厂)----USP-S | Guardian (Factory New)----36.99----1000----1000
+USP 消音版 | 守护者 (略有磨损)----USP-S | Guardian (Minimal Wear)----30.3----671----671
+USP 消音版 | 枪响人亡 (久经沙场)----USP-S | Kill Confirmed (Field-Tested)----273.5----538----538
+USP 消音版 | 黑色魅影 (崭新出厂)----USP-S | Neo-Noir (Factory New)----220.77----637----637
+USP 消音版 | 黑色魅影 (久经沙场)----USP-S | Neo-Noir (Field-Tested)----76.69----1000----1000
+USP 消音版 | 黑色魅影 (略有磨损)----USP-S | Neo-Noir (Minimal Wear)----115.99----1000----1000
+USP 消音版 | 午夜行动 (崭新出厂)----USP-S | Night Ops (Factory New)----2.97----769----769
+USP 消音版 | 午夜行动 (久经沙场)----USP-S | Night Ops (Field-Tested)----1.26----685----685
+USP 消音版 | 午夜行动 (略有磨损)----USP-S | Night Ops (Minimal Wear)----1.93----636----636
+USP 消音版 | 猎户 (崭新出厂)----USP-S | Orion (Factory New)----371.0----531----531
+USP 消音版 | 不锈钢 (久经沙场)----USP-S | Stainless (Field-Tested)----28.17----1000----1000
+USP 消音版 | 不锈钢 (略有磨损)----USP-S | Stainless (Minimal Wear)----48.0----1000----1000
+USP 消音版 | 倒吊人 (久经沙场)----USP-S | The Traitor (Field-Tested)----64.0----1000----1000
+USP 消音版 | 倒吊人 (略有磨损)----USP-S | The Traitor (Minimal Wear)----104.0----1000----1000
+USP 消音版 | 地狱门票 (崭新出厂)----USP-S | Ticket to Hell (Factory New)----8.38----1000----1000
+USP 消音版 | 地狱门票 (久经沙场)----USP-S | Ticket to Hell (Field-Tested)----1.86----1000----1000
+USP 消音版 | 地狱门票 (略有磨损)----USP-S | Ticket to Hell (Minimal Wear)----3.86----1000----1000
+USP 消音版 | 力矩 (崭新出厂)----USP-S | Torque (Factory New)----10.4----1000----1000
+USP 消音版 | 力矩 (久经沙场)----USP-S | Torque (Field-Tested)----4.0----1000----1000
+USP 消音版 | 力矩 (略有磨损)----USP-S | Torque (Minimal Wear)----7.49----800----800
+USP 消音版 | 银装素裹 (略有磨损)----USP-S | Whiteout (Minimal Wear)----314.49----816----816
+XM1014 | 埋葬之影 (久经沙场)----XM1014 | Entombed (Field-Tested)----17.38----860----860
+XM1014 | 埋葬之影 (略有磨损)----XM1014 | Entombed (Minimal Wear)----26.69----547----547
+XM1014 | 要抱抱 (久经沙场)----XM1014 | XOXO (Field-Tested)----8.17----1000----1000
+XM1014 | 要抱抱 (略有磨损)----XM1014 | XOXO (Minimal Wear)----19.35----584----584
+XM1014 | 行尸攻势 (崭新出厂)----XM1014 | Zombie Offensive (Factory New)----6.1----1000----1000
+XM1014 | 行尸攻势 (久经沙场)----XM1014 | Zombie Offensive (Field-Tested)----1.47----1000----1000
+XM1014 | 行尸攻势 (略有磨损)----XM1014 | Zombie Offensive (Minimal Wear)----2.76----562----562
+刺刀（★） | 多普勒 (崭新出厂)----★ Bayonet | Doppler (Factory New)----4134.0----1000----1000
+蝴蝶刀（★） | 多普勒 (崭新出厂)----★ Butterfly Knife | Doppler (Factory New)----17190.0----715----715
+蝴蝶刀（★） | 伽玛多普勒 (崭新出厂)----★ Butterfly Knife | Gamma Doppler (Factory New)----19270.0----780----780
+蝴蝶刀（★） | 渐变大理石 (崭新出厂)----★ Butterfly Knife | Marble Fade (Factory New)----14492.0----836----836
+驾驶手套（★） | 西装革履 (久经沙场)----★ Driver Gloves | Black Tie (Field-Tested)----1365.0----932----932
+驾驶手套（★） | 王蛇 (久经沙场)----★ Driver Gloves | King Snake (Field-Tested)----2170.0----1000----1000
+驾驶手套（★） | 王蛇 (略有磨损)----★ Driver Gloves | King Snake (Minimal Wear)----8742.99----981----981
+驾驶手套（★） | 雪豹 (久经沙场)----★ Driver Gloves | Snow Leopard (Field-Tested)----2778.0----719----719
+折叠刀（★） | 多普勒 (崭新出厂)----★ Flip Knife | Doppler (Factory New)----3055.0----1000----1000
+裹手（★） | 钴蓝骷髅 (久经沙场)----★ Hand Wraps | Cobalt Skulls (Field-Tested)----2650.0----604----604
+裹手（★） | 套印 (久经沙场)----★ Hand Wraps | Overprint (Field-Tested)----1375.0----983----983
+九头蛇手套（★） | 表面淬火 (久经沙场)----★ Hydra Gloves | Case Hardened (Field-Tested)----654.0----583----583
+爪子刀（★） | 多普勒 (崭新出厂)----★ Karambit | Doppler (Factory New)----10389.5----1000----1000
+爪子刀（★） | 渐变大理石 (崭新出厂)----★ Karambit | Marble Fade (Factory New)----9846.0----699----699
+M9 刺刀（★） | 多普勒 (崭新出厂)----★ M9 Bayonet | Doppler (Factory New)----8599.0----1000----1000
+摩托手套（★） | 终点线 (久经沙场)----★ Moto Gloves | Finish Line (Field-Tested)----941.0----599----599
+摩托手套（★） | 嘭！ (久经沙场)----★ Moto Gloves | POW! (Field-Tested)----1333.0----1000----1000
+摩托手套（★） | 小心烟雾弹 (久经沙场)----★ Moto Gloves | Smoke Out (Field-Tested)----990.0----520----520
+摩托手套（★） | 玳瑁 (久经沙场)----★ Moto Gloves | Turtle (Field-Tested)----863.0----540----540
+骷髅匕首（★） | 渐变之色 (崭新出厂)----★ Skeleton Knife | Fade (Factory New)----10474.5----539----539
+专业手套（★） | 深红和服 (久经沙场)----★ Specialist Gloves | Crimson Kimono (Field-Tested)----14420.0----600----600
+专业手套（★） | 深红之网 (久经沙场)----★ Specialist Gloves | Crimson Web (Field-Tested)----1570.0----780----780
+专业手套（★） | 渐变之色 (久经沙场)----★ Specialist Gloves | Fade (Field-Tested)----2348.5----924----924
+专业手套（★） | 渐变之色 (略有磨损)----★ Specialist Gloves | Fade (Minimal Wear)----7041.5----531----531
+专业手套（★） | 一线特工 (久经沙场)----★ Specialist Gloves | Field Agent (Field-Tested)----1610.0----860----860
+专业手套（★） | 渐变大理石 (久经沙场)----★ Specialist Gloves | Marble Fade (Field-Tested)----1728.3----558----558
+专业手套（★） | 大腕 (久经沙场)----★ Specialist Gloves | Mogul (Field-Tested)----1090.0----560----560
+专业手套（★） | 老虎精英 (久经沙场)----★ Specialist Gloves | Tiger Strike (Field-Tested)----2799.0----877----877
+运动手套（★） | 双栖 (久经沙场)----★ Sport Gloves | Amphibious (Field-Tested)----4725.0----822----822
+运动手套（★） | 大型猎物 (久经沙场)----★ Sport Gloves | Big Game (Field-Tested)----1456.66----888----888
+运动手套（★） | 欧米伽 (久经沙场)----★ Sport Gloves | Omega (Field-Tested)----2848.0----816----816
+运动手套（★） | 弹弓 (久经沙场)----★ Sport Gloves | Slingshot (Field-Tested)----5217.0----839----839
+运动手套（★） | 迈阿密风云 (久经沙场)----★ Sport Gloves | Vice (Field-Tested)----7675.0----1000----1000
+锯齿爪刀（★） | 多普勒 (崭新出厂)----★ Talon Knife | Doppler (Factory New)----6888.0----552----552
+锯齿爪刀（★） | 渐变大理石 (崭新出厂)----★ Talon Knife | Marble Fade (Factory New)----5608.0----533----533
+熊刀（★） | 多普勒 (崭新出厂)----★ Ursus Knife | Doppler (Factory New)----2824.0----621----621
+熊刀（★） | 渐变大理石 (崭新出厂)----★ Ursus Knife | Marble Fade (Factory New)----2318.0----514----514
+AK-47 | 传承 (久经沙场)----AK-47 | Inheritance (Field-Tested)----425.0----590----590
+格洛克 18 型 | 崩络克-18 (崭新出厂)----Glock-18 | Block-18 (Factory New)----14.5----555----555
+格洛克 18 型 | 崩络克-18 (久经沙场)----Glock-18 | Block-18 (Field-Tested)----5.85----902----902
+千瓦武器箱----Kilowatt Case----3.97----5123----0
+M4A1 消音型 | 黑莲花 (久经沙场)----M4A1-S | Black Lotus (Field-Tested)----67.8----1000----1000
+M4A1 消音型 | 黑莲花 (略有磨损)----M4A1-S | Black Lotus (Minimal Wear)----89.0----844----844
+M4A4 | 蚀刻领主 (战痕累累)----M4A4 | Etch Lord (Battle-Scarred)----4.95----699----699
+音乐盒 | DRYDEN - 触摸能量----Music Kit | DRYDEN, Feel The Power----13.43----1000----1000
+音乐盒 | ISOxo - 非人类----Music Kit | ISOxo, inhuman----38.6----525----525
+音乐盒 | KILL SCRIPT - 通宵达旦----Music Kit | KILL SCRIPT, All Night----22.7----931----931
+音乐盒 | Knock2 - 燥起来！----Music Kit | Knock2, Make U SWEAT!----8.03----1000----1000
+音乐盒 | Rad Cat - 理由----Music Kit | Rad Cat, Reason----13.4----598----598
+音乐盒 | TWERL 和 Ekko & Sidetrack - 万众瞩目----Music Kit | TWERL and Ekko & Sidetrack, Under Bright Lights----50.8----1000----1000
+USP 消音版 | 破颚者 (久经沙场)----USP-S | Jawbreaker (Field-Tested)----41.8----501----501
+宙斯 X27 电击枪 | 奥林匹斯 (久经沙场)----Zeus x27 | Olympus (Field-Tested)----41.0----567----567
+蝴蝶刀（★） | 渐变之色 (崭新出厂)----★ Butterfly Knife | Fade (Factory New)----23899.0----832----832
+爪子刀（★） | 伽玛多普勒 (崭新出厂)----★ Karambit | Gamma Doppler (Factory New)----15550.0----722----722
+运动手套（★） | 迈阿密风云 (略有磨损)----★ Sport Gloves | Vice (Minimal Wear)----26767.5----946----946
+2024年哥本哈根锦标赛挑战组亲笔签名胶囊----Copenhagen 2024 Challengers Autograph Capsule----1.1----2001----0
+2024年哥本哈根锦标赛竞争组亲笔签名胶囊----Copenhagen 2024 Contenders Autograph Capsule----1.09----7009----0
+2024年哥本哈根锦标赛传奇组亲笔签名胶囊----Copenhagen 2024 Legends Autograph Capsule----1.09----4903----0
+2024年哥本哈根锦标赛死亡游乐园纪念包----Copenhagen 2024 Overpass Souvenir Package----13.88----660----0

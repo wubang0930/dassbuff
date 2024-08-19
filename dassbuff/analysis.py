@@ -4,6 +4,9 @@ from datetime import datetime
 import time
 
 
+data_path="E:/pythonFile/python/python_data/dassbuff/data"
+
+
 # 通过获取的数据，解析出来箱子的中英文名称的json数据
 def case_name_analysis():
     print("case_name_analysis")
@@ -27,17 +30,73 @@ def case_name_analysis():
 # 获取所有的中文和英文名称的饰品名称
 def filter_all_name():
     print("filter_all_name")
-    with open('dassbuff/data/1_cs_buff_uu_c5_base.json', 'r', encoding='utf-8') as base:
-        with open('dassbuff/data/2_cs_all_product_all.txt', 'w', encoding='utf-8') as base_name:
-            num = 0
-            for line in base:
-                num += 1
-                line_date=json.loads(line)
-                # 只获取cs的饰品数据名称
-                if line_date["appid"]== 730 :
-                    print(line_date["appid"])
-                    all_names=line_date['cn_name']+':'+line_date['en_name']
-                    base_name.write(all_names+'\n')
+    with open(data_path+'/analysis/1_cs_buff_uu_c5_base.json', 'r', encoding='utf-8') as base:
+        with open('data/cs_product_all_name.txt', 'w', encoding='utf-8') as all_name:
+            with open('data/cs_product_cn_name.txt', 'w', encoding='utf-8') as cn_name:
+                num = 0
+                for line in base:
+                    num += 1
+                    line_date=json.loads(line)
+
+                    
+                    buff_buy_price= line_date['buff_buy']['price']
+                    buff_sale_price= line_date['buff_sell']['price']
+                    buff_sale_count= line_date['buff_sell']['count'] if line_date['buff_sell']['count'] is not None else 0
+
+                    c5_buy_price= line_date['c5_buy']['price']
+                    c5_sale_price= line_date['c5_sell']['price']
+                    c5_sale_count= line_date['c5_sell']['count'] if line_date['c5_sell']['count'] is not None else 0
+
+                    igxe_buy_price= line_date['igxe_buy']['price']
+                    igxe_sale_price= line_date['igxe_sell']['price']
+                    igxe_sale_count= line_date['igxe_sell']['count'] if line_date['igxe_sell']['count'] is not None else 0
+
+
+                    uuyp_buy_price= line_date['uuyp_buy']['price']
+                    uuyp_sale_price= line_date['uuyp_sell']['price']
+                    uuyp_sale_count= line_date['uuyp_sell']['count'] if line_date['uuyp_sell']['count'] is not None else 0
+
+
+                    steam_buy_price= line_date['steam_order']['buy_price']  
+                    steam_sale_price= line_date['steam_order']['sell_price']  
+                    steam_buy_count= line_date['steam_order']['buy_order_count']  if line_date['steam_order']['buy_order_count'] is not None else 99999
+                    steam_sale_count= line_date['steam_order']['sell_order_count']  if line_date['steam_order']['sell_order_count'] is not None else 99999
+
+
+                    buy_prices=[buff_buy_price,c5_buy_price,igxe_buy_price,uuyp_buy_price]
+                    sale_prices=[buff_sale_price,c5_sale_price,igxe_sale_price,uuyp_sale_price]
+                    sale_account=[buff_sale_count,c5_sale_count,igxe_sale_count,uuyp_sale_count]
+
+
+                    buy_prices_none=[price for price in buy_prices if price is not None]
+                    sale_prices_none=[price for price in sale_prices if price is not None]
+                    sale_account_none=[price for price in sale_account if price is not None]
+
+                    min_buy_price=min(buy_prices_none) if buy_prices_none else 0
+                    min_sale_price=min(sale_prices_none) if sale_prices_none else 0
+                    
+                    max_buy_price=max(buy_prices_none) if buy_prices_none else 0
+                    max_sale_price=max(sale_prices_none) if sale_prices_none else 0
+
+
+
+                    max_sale_account=max(sale_account_none) if sale_account_none else 0
+                    # 优先以buff的出售数量为准
+                    if buff_sale_count >0:
+                        max_sale_account=buff_sale_count
+                    
+
+                    
+
+
+
+                    # 只获取cs的饰品数据名称
+                    if line_date["appid"]== 730 and "印花" not in line_date['cn_name'] and "涂鸦" not in line_date['cn_name'] and "纪念品" not in line_date['cn_name'] and min_sale_price>1 and max_sale_account>500 :
+                        print(line_date["appid"])
+                        all_names=line_date['cn_name']+'----'+line_date['en_name']+'----'+str(min_sale_price)+'----'+str(max_sale_account)+'----'+str(buff_sale_count)
+
+                        all_name.write(all_names+'\n')
+                        cn_name.write(line_date['cn_name']+'\n')
 
         
 
@@ -108,8 +167,8 @@ def filter_name_cs():
 
 if __name__ == '__main__':
     # case_name_analysis()
-    # filter_all_name()
-    filter_name_cs()
+    filter_all_name()
+    # filter_name_cs()
 
 
 
