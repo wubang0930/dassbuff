@@ -16,7 +16,7 @@ rootApiUrl = "https://api.dmarket.com"
 # exchange_rate=7.19   #实际汇率
 recharge_rate=1.027   #充值手续费
 bank_rate=0.985   #实际汇率*实际提现到手
-steam_exchange_rate=0.7   #实际汇率*实际提现到手
+steam_exchange_rate=0.79   #实际汇率*实际提现到手
 searchNum="7"  #查询天数
 searchUnit="D"  #查询单位
 
@@ -130,7 +130,8 @@ def get_offer_from_market_average(day,title):
 # 查询指定天数的平均销量数据，并构建目标数据
 def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchange_rate):
     #
-    if market_price is None:
+    if market_price is None or market_price["totalSales"]:
+        print("近期销售数据为空")
         return ""
 
 
@@ -185,17 +186,61 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
     target_price=key_info['target_price'] if key_info['target_price'] is not None else 999999
     target_account=key_info['target_account'] if key_info['target_account'] is not None else 999999
 
+
     correlationd_data=[
         {"title":buff_price['cn_name'],
          "drtitle":buff_price['en_name'],
          "totalSales":int(total_sales),
          "date":datetime.fromtimestamp(int(date)).strftime('%Y-%m-%d'),
          "dmarket_sale_Price":round(float(avg_price)*exchange_rate,2),
-         "dmarket_buy_Price":round(float(avg_price)*exchange_rate*bank_rate,2),
-         "offer_price":offer_price,
-         "target_price":target_price,
-         "target_account":target_account,
-         "dayTotalAmount":round(float(total_sales)*float(avg_price)*exchange_rate,2),
+         "offer_price":round(offer_price,2),
+         "target_price":round(target_price,2),
+         "target_account":round(target_account,2),
+         "dayTotalAmount":round(float(total_sales)*float(avg_price)*exchange_rate,0),
+         "min_sale_price":min_sale_price,
+
+
+
+        # buff直接购买出售的，dmarket平均价格直接出售
+         "buff_buy_max_dmarket_sale_min": round(float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=min_sale_price)- min_sale_price, 2),
+         "buff_buy_max_dmarket_sale_min_rate": round((float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=min_sale_price)- min_sale_price)/min_buy_price,3),
+
+        # buff直接购买的，dmarket直接的当前价格出售
+         "buff_buy_max_dmarket_sale_current": round(float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- min_sale_price, 2),
+         "buff_buy_max_dmarket_sale_current_rate": round((float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- min_sale_price)/min_buy_price,3),
+
+        # # buff挂采购单，然后dmarket最低价出售
+        #  "buff_buy_min_dmarket_sale_min": round(float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=max_sale_price)- max_sale_price, 2),
+        #  "buff_buy_min_dmarket_sale_min_rate": "{:.1f}%".format((float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=max_sale_price)- max_sale_price)/min_buy_price*100),
+
+        # dmarket直接购买出售，buff直接出售
+         "dmarket_buy_min_buff_sale_max": round(min_sale_price*trans_buff_service_change()-offer_price*recharge_rate, 2),
+         "dmarket_buy_min_buff_sale_max_rate": round((min_sale_price*trans_buff_service_change()-offer_price*recharge_rate)/min_sale_price,3),
+
+        # dmarket采购单，buff直接出售
+         "dmarket_target_min_buff_sale_max": round(min_sale_price*trans_buff_service_change()-target_price*recharge_rate, 2),
+         "dmarket_target_min_buff_sale_max_rate": round((min_sale_price*trans_buff_service_change()-target_price*recharge_rate)/min_sale_price,3),
+
+ 
+        # steam购买后，buff直接出售
+         "steam_buy": round(min_sale_price-steam_buy_price*steam_exchange_rate, 2)*trans_buff_bank_change(),
+         "steam_buy_rate": round((min_sale_price-steam_buy_price*steam_exchange_rate)*trans_buff_bank_change()/(steam_buy_price*steam_exchange_rate),3),
+
+        # steam购买后，dm直接出售
+         "steam_buy_dm_sale": round(float(avg_price)*exchange_rate*trans_dm_service_change(price=min_sale_price)-steam_buy_price*steam_exchange_rate, 2),
+         "steam_buy_dm_sale_rate": round((float(avg_price)*exchange_rate*trans_dm_service_change(price=min_sale_price)-steam_buy_price*steam_exchange_rate)/steam_buy_price*steam_exchange_rate, 3),
+
+       # dmarket直接购买出售，buff满足采购单
+         "dmarket_buy_min_buff_sale_min": round(max_buy_price*trans_buff_service_change()-float(avg_price)*exchange_rate, 2),
+         "dmarket_buy_min_buff_sale_min_rate": round((max_buy_price*trans_buff_service_change()-float(avg_price)*exchange_rate)/min_sale_price,3),
+
+
+         "min_buy_price":min_buy_price,
+         "max_sale_price_num_all":max_sale_price_num_all,
+         "max_sale_price_num":max_sale_price_num,
+         "max_buy_price":max_buy_price,
+         "max_sale_price":max_sale_price,
+
          "buff_buy_price":buff_buy_price,
          "buff_buy_count":buff_buy_count,
          "buff_sale_price":buff_sale_price,
@@ -216,45 +261,6 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
          "steam_sale_price":steam_sale_price,
          "steam_buy_count":steam_buy_count,
          "steam_sale_count":steam_sale_count,
-         "min_buy_price":min_buy_price,
-         "min_sale_price":min_sale_price,
-         "max_sale_price_num_all":max_sale_price_num_all,
-         "max_sale_price_num":max_sale_price_num,
-         "max_buy_price":max_buy_price,
-         "max_sale_price":max_sale_price,
-
-
-        # buff直接购买出售的，dmarket平均价格直接出售
-         "buff_buy_max_dmarket_sale_min": round(float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=min_sale_price)- min_sale_price, 2),
-         "buff_buy_max_dmarket_sale_min_rate": round((float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=min_sale_price)- min_sale_price)/min_buy_price,3),
-
-        # buff直接购买的，dmarket直接的当前价格出售
-         "buff_buy_max_dmarket_sale_current": round(float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- min_sale_price, 2),
-         "buff_buy_max_dmarket_sale_current_rate": round((float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- min_sale_price)/min_buy_price,3),
-
-         
-        # # buff挂采购单，然后dmarket最低价出售
-        #  "buff_buy_min_dmarket_sale_min": round(float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=max_sale_price)- max_sale_price, 2),
-        #  "buff_buy_min_dmarket_sale_min_rate": "{:.1f}%".format((float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=max_sale_price)- max_sale_price)/min_buy_price*100),
-
-
-        # dmarket直接购买出售，buff直接出售
-         "dmarket_buy_min_buff_sale_max": round(min_sale_price*trans_buff_service_change()-offer_price*recharge_rate, 2),
-         "dmarket_buy_min_buff_sale_max_rate": round((min_sale_price*trans_buff_service_change()-offer_price*recharge_rate)/min_sale_price,3),
-
-
-        # dmarket采购单，buff直接出售
-         "dmarket_target_min_buff_sale_max": round(min_sale_price*trans_buff_service_change()-target_price*recharge_rate, 2),
-         "dmarket_target_min_buff_sale_max_rate": round((min_sale_price*trans_buff_service_change()-target_price*recharge_rate)/min_sale_price,3),
-
-
-        # dmarket直接购买出售，buff满足采购单
-         "dmarket_buy_min_buff_sale_min": round(max_buy_price*trans_buff_service_change()-float(avg_price)*exchange_rate, 2),
-         "dmarket_buy_min_buff_sale_min_rate": round((max_buy_price*trans_buff_service_change()-float(avg_price)*exchange_rate)/min_sale_price,3),
-
-        # steam购买后，buff直接出售
-         "steam_buy": round(min_sale_price-steam_buy_price*steam_exchange_rate, 2),
-         "steam_buy_rate": round((min_sale_price-steam_buy_price*steam_exchange_rate)/(steam_buy_price*steam_exchange_rate),3),
 
 
          }
@@ -289,9 +295,14 @@ def trans_dm_service_change(price):
         return 1
     
 
-# 手续费 
+# 交易费用+提现手续费 
 def trans_buff_service_change():
     return 0.975
+
+
+# 提现手续费 
+def trans_buff_bank_change():
+    return 0.99
 
 
 # 过滤出要查询的饰品的buff数据
@@ -370,11 +381,27 @@ def export_json_to_excel():
         'totalSales':'销售数量',
         'date':'日期',
         'dmarket_sale_Price':'平均购买价',
-        'dmarket_buy_Price':'平均购买价-提现价',
         'offer_price':'当前出售价',
         'target_price':'当前采购价',
         'target_account':'当前采购数量',
         'dayTotalAmount':'每天销售总价',
+        'min_sale_price':'最低出售价',
+        'buff_buy_max_dmarket_sale_min':'buff购买dr平均价出售',
+        'buff_buy_max_dmarket_sale_min_rate':'buff购买dr平均价出售率',
+        'buff_buy_max_dmarket_sale_current':'buff购买dr当前价出售',
+        'buff_buy_max_dmarket_sale_current_rate':'buff购买dr当前价出售率',
+        # 'buff_buy_min_dmarket_sale_min':'buff采购dr出售',
+        # 'buff_buy_min_dmarket_sale_min_rate':'buff采购dr出售率',
+        'dmarket_buy_min_buff_sale_max':'dr购买buff出售',
+        'dmarket_buy_min_buff_sale_max_rate':'dr购买buff出售率',
+        'dmarket_target_min_buff_sale_max':'dm采购单buff出售',
+        'dmarket_target_min_buff_sale_max_rate':'dm采购单buff出售率',
+        'dmarket_buy_min_buff_sale_min':'dr购买buff满足采购单',
+        'dmarket_buy_min_buff_sale_min_rate':'dr购买buff满足采购单率',
+        'steam_buy':'steam购买buff出售',
+        'steam_buy_rate':'steam购买buff出售率',
+        'steam_buy_dm_sale':'steam购买dm出售',
+        'steam_buy_dm_sale_rate':'steam购买dm出售率',
         'buff_buy_price':'buff购买价',
         'buff_buy_count':'buff购买数量',
         'buff_sale_price':'buff出售价',
@@ -391,26 +418,11 @@ def export_json_to_excel():
         'steam_sale_price':'steam出售价',
         'steam_buy_count':'steam购买数量',
         'steam_sale_count':'steam出售数量',
-        'min_buy_price':'最低购买价',
-        'min_sale_price':'最低出售价',
-        'max_sale_price_num':'最大出售数量',
-        'max_sale_price_num_all':'所有出售数量',
         'max_buy_price':'最高购买价',
         'max_sale_price':'最高出售价',
-        'buff_buy_max_dmarket_sale_min':'buff购买dr平均价出售',
-        'buff_buy_max_dmarket_sale_min_rate':'buff购买dr平均价出售率',
-        'buff_buy_max_dmarket_sale_current':'buff购买dr当前价出售',
-        'buff_buy_max_dmarket_sale_current_rate':'buff购买dr当前价出售率',
-        # 'buff_buy_min_dmarket_sale_min':'buff采购dr出售',
-        # 'buff_buy_min_dmarket_sale_min_rate':'buff采购dr出售率',
-        'dmarket_buy_min_buff_sale_max':'dr购买buff出售',
-        'dmarket_buy_min_buff_sale_max_rate':'dr购买buff出售率',
-        'dmarket_target_min_buff_sale_max':'dm采购单buff出售',
-        'dmarket_target_min_buff_sale_max_rate':'dm采购单buff出售率',
-        'dmarket_buy_min_buff_sale_min':'dr购买buff满足采购单',
-        'dmarket_buy_min_buff_sale_min_rate':'dr购买buff满足采购单率',
-        'steam_buy':'steam购买buff出售',
-        'steam_buy_rate':'steam购买buff出售率',
+        'max_sale_price_num':'最大出售数量',
+        'max_sale_price_num_all':'所有出售数量',
+        'min_buy_price':'最低购买价',
     }
 
     # 打开文件准备读取
@@ -436,12 +448,26 @@ def export_json_to_excel():
         
         # 定义加粗和颜色格式
         bold_format = workbook.add_format({'bold': True})
-        red_format = workbook.add_format({'bold': True, 'font_color': 'red'})
-        
+        yellow_format = workbook.add_format({'bold': True, 'bg_color': '#ffff00'})  # 黄色背景色代码
+
+        #指定列 设置黄色背景
+        yellow_format_columns={'min_sale_price','buff_buy_max_dmarket_sale_min','buff_buy_max_dmarket_sale_current','dmarket_buy_min_buff_sale_max','dmarket_target_min_buff_sale_max','steam_buy','steam_buy_dm_sale','dmarket_buy_min_buff_sale_min'}
+
         # 设置列标题的中文名和样式
         for col_num, value in enumerate(df.columns.values):
+            
+            # 设置列宽
+            column_width = 8  # 你可以根据需要调整这个值
+            worksheet.set_column(col_num, col_num, column_width)
+
             # 设置中文名
-            worksheet.write(0, col_num, chinese_columns[value], bold_format)
+            if value in yellow_format_columns:
+                worksheet.write(0, col_num, chinese_columns[value], yellow_format)
+            else:
+                worksheet.write(0, col_num, chinese_columns[value], bold_format)
+
+
+            
             
             # # 如果需要，根据某些条件设置列的颜色（例如，分数列）
             # if value == 'score':

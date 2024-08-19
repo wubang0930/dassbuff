@@ -85,11 +85,6 @@ def filter_all_name():
                     if buff_sale_count >0:
                         max_sale_account=buff_sale_count
                     
-
-                    
-
-
-
                     # 只获取cs的饰品数据名称
                     if line_date["appid"]== 730 and "印花" not in line_date['cn_name'] and "涂鸦" not in line_date['cn_name'] and "纪念品" not in line_date['cn_name'] and min_sale_price>1 and max_sale_account>500 :
                         print(line_date["appid"])
