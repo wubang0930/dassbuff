@@ -61,6 +61,66 @@ def get_current_market(limit,title):
         return key_info
     
 
+
+
+# 获取当前的采购饰品情况
+def get_my_target_List(exchange_rate=7.14):
+    target_list=[]
+    
+    try:
+        # 设置请求的URL
+        url = 'https://api.dmarket.com/exchange/v1/user/targets'
+        # 设置请求头
+        headers = {
+            'accept': 'application/json, text/plain, */*',
+            'authorization': 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNjk0NjQzNy0wN2ZlLTRhMWYtOTMxYi1jN2JiZmYzMzdlMWEiLCJleHAiOjE3MjYwNTU4MTQsImlhdCI6MTcyMzQ2MzgxNCwic2lkIjoiNDM1ZTEzMTMtNjEyOC00OGY4LWEyNmEtMTA3YmVlMTRiMWIzIiwidHlwIjoiYWNjZXNzIiwiaWQiOiI0MWU0Y2RlZC1hMDcxLTRiMDUtODRjYS1lYzM2OWEzZjYyZjUiLCJwdmQiOiJyZWd1bGFyIiwicHJ0IjoiMjQwOCIsImF0dHJpYnV0ZXMiOnsid2FsbGV0X2lkIjoiZjg1MTM4Yjc0NWFiNGIyY2FjNTY3ZTFmMDVmN2VmNGZlNDJjMTUzYzJkMTg0NDM1Yjg2OTk3ODNkMDljOTgxNSIsInNhZ2Ffd2FsbGV0X2FkZHJlc3MiOiIweEM3OWZlMzhjM0I4MzJkODU2ZDJGMUVmQTBGYzAwRUUzMThBOTM2NjQiLCJhY2NvdW50X2lkIjoiODZhZmQxZmYtMDVlOC00NzM5LTkzNmQtN2I2NWUwOWQ3ODVlIn19.Bnig8ltKoIqd8XHScE5RlDjBC3yRh5DYMdabUJibWD1In5MQTrnTngYBUbioXrRsHzxDZWThoEOpKqQhd5_-mQ',
+            'accept-language': 'zh-CN,zh;q=0.9',
+            'content-type': 'application/json',
+            'jkkat': '50788078',
+            'language': 'ZH',
+            'origin': 'https://dmarket.com',
+            'payment-session-id': '77af0392-9f37-40c8-9e68-4bbaf9f5cf00',
+            'priority': 'u=1, i',
+            'sec-ch-ua': '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-site',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
+        }
+        # 设置请求的数据
+        params = {
+            "gameId": "a8db",
+            "limit": 100,
+            "currency": "USD",
+            "platform": "browser",
+            "priceTo": 0,
+            "priceFrom": 0,
+            "orderDir": "desc",
+            "orderBy": "updated",
+            "side": "user"
+        }
+
+        # 发送POST请求
+        response = requests.get(url, params=params,headers=headers)
+        reponse_json = json.loads(response.text)
+        offers=reponse_json['objects']
+        for offer in offers:
+            target={}
+            target['title']=offer['title']
+            target['amount']=offer['amount']
+            target['price']=round(float(offer['price']['USD'])/100*exchange_rate,2)
+            target['createdAt']=datetime.fromtimestamp(int(offer['createdAt'])).strftime('%Y-%m-%d')
+            target_list.append(target)
+            
+    except Exception as e:
+        print(e)
+        return None
+
+    print(target_list)
+    return target_list
+
 # 获取最采购高价和出售最低价
 def get_target_market(title,exchange_rate):
     key_info={}
@@ -119,6 +179,8 @@ def get_offer_from_market_average(day,title):
         # f.write(json.dumps(offers))
         # f.close()
         # print(offers)   
+        if offers["totalSales"] is None:
+            return None
         return offers
     except Exception as e:
         print(e)
@@ -130,7 +192,8 @@ def get_offer_from_market_average(day,title):
 # 查询指定天数的平均销量数据，并构建目标数据
 def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchange_rate):
     #
-    if market_price is None or market_price["totalSales"]:
+    print(market_price)
+    if market_price is None or market_price["totalSales"] is None:
         print("近期销售数据为空")
         return ""
 
@@ -519,7 +582,7 @@ def down_buff_zip_file(dir_name,file_name):
     print("开始下载buff数据,dir_name:"+dir_name+",file_name:"+file_name)
     try:
             # 设置API endpoint
-        key="7LONCJBBWIZWMX2FXTQM"
+        key="M04VML9CQ683EA47X2E5"
         url = "https://api.iflow.work/export/download"
         params = {
             'dir_name': dir_name,
@@ -572,19 +635,24 @@ def down_buff_zip_file(dir_name,file_name):
 
 
 if __name__ == '__main__':
-    # 下载buff数据
-    # dir_name='base_archive'
+
+    get_my_target_List()
+
+
+
+    # # 下载buff数据
+    # dir_name='priority_archive'
     # buff_zip_file_data=get_buff_data_file_name(dir_name)
     # down_buff_zip_file(dir_name,buff_zip_file_data)
 
-    start_time=int(time.time())
-    exchange_rate=find_us_exchange()
-    print("当前的美元汇率是："+str(exchange_rate))
-    filter_buff_data()
-    find_buff_dmarket_price(exchange_rate)
-    export_json_to_excel()
-    end_time=int(time.time())
-    print("运行时间："+str(end_time-start_time))
+    # start_time=int(time.time())
+    # exchange_rate=find_us_exchange()
+    # print("当前的美元汇率是："+str(exchange_rate))
+    # filter_buff_data()
+    # find_buff_dmarket_price(exchange_rate)
+    # export_json_to_excel()
+    # end_time=int(time.time())
+    # print("运行时间："+str(end_time-start_time))
 
 
 

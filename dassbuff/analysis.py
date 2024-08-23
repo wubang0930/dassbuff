@@ -30,7 +30,7 @@ def case_name_analysis():
 # 获取所有的中文和英文名称的饰品名称
 def filter_all_name():
     print("filter_all_name")
-    with open(data_path+'/analysis/1_cs_buff_uu_c5_base.json', 'r', encoding='utf-8') as base:
+    with open(data_path+'/analysis/all_buff_product.json', 'r', encoding='utf-8') as base:
         with open('data/cs_product_all_name.txt', 'w', encoding='utf-8') as all_name:
             with open('data/cs_product_cn_name.txt', 'w', encoding='utf-8') as cn_name:
                 num = 0
@@ -85,10 +85,11 @@ def filter_all_name():
                     if buff_sale_count >0:
                         max_sale_account=buff_sale_count
                     
-                    # 只获取cs的饰品数据名称
-                    if line_date["appid"]== 730 and "印花" not in line_date['cn_name'] and "涂鸦" not in line_date['cn_name'] and "纪念品" not in line_date['cn_name'] and min_sale_price>1 and max_sale_account>500 :
+                    # 只获取cs的饰品数据名称  排除：印花、涂鸦、纪念品、价格小于1、国内平台出售小于500的
+                    # if line_date["appid"]== 730 and "印花" not in line_date['cn_name'] and "涂鸦" not in line_date['cn_name'] and "纪念品" not in line_date['cn_name'] and min_sale_price>1 and max_sale_account>500 :
+                    if line_date["appid"]== 730 :
                         print(line_date["appid"])
-                        all_names=line_date['cn_name']+'----'+line_date['en_name']+'----'+str(min_sale_price)+'----'+str(max_sale_account)+'----'+str(buff_sale_count)
+                        all_names=line_date['cn_name']+'----'+line_date['en_name']
 
                         all_name.write(all_names+'\n')
                         cn_name.write(line_date['cn_name']+'\n')
