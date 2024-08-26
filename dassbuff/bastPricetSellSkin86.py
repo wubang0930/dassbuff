@@ -59,7 +59,9 @@ def get_skin_86_market(page=1,page_size=10):
         params = {
             "page": page,
             "page_size": page_size,
-            "price_start": 1,
+            "price_start": 30,
+            "price_end": 2000,
+            "selling_num_start": 100,
             "platform": 'BUFF',
             "order_key": 'sell_max_num',
             "order_type": 2,
@@ -200,13 +202,13 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
      
 
         
-        # buff直接购买出售的，dmarket平均价格直接出售
-         "buff_buy_dm_sale_avg": round(float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=float(avg_price)*exchange_rate)- buff_avg_price, 2),
-         "buff_buy_dm_sale_avg_rate": round((float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=float(avg_price)*exchange_rate)- buff_avg_price)/buff_avg_price,3),
+        # # buff直接购买出售的，dmarket平均价格直接出售
+        #  "buff_buy_dm_sale_avg": round(float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=float(avg_price)*exchange_rate)- buff_avg_price, 2),
+        #  "buff_buy_dm_sale_avg_rate": round((float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=float(avg_price)*exchange_rate)- buff_avg_price)/buff_avg_price,3),
 
-        # buff直接购买的，dmarket直接的当前价格出售
-         "buff_buy_dm_sale_min": round(float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- offer_price, 2),
-         "buff_buy_dm_sale_min_rate": round((float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- offer_price)/offer_price,3),
+        # # buff直接购买的，dmarket直接的当前价格出售
+        #  "buff_buy_dm_sale_min": round(float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- offer_price, 2),
+        #  "buff_buy_dm_sale_min_rate": round((float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- offer_price)/offer_price,3),
 
      
         # dmarket平均价购买出售，buff直接出售
@@ -232,9 +234,9 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
         
         
         # dmarket采购价和buff出售价的差价和利润
-         "current_target_price_diff": round(buff_avg_price*trans_buff_service_change()-current_target_price*recharge_rate, 2),
-         "current_target_price_diff_rate": round((buff_avg_price*trans_buff_service_change()-current_target_price*recharge_rate)/current_target_price,2),
-         "current_target_price_diff_avg": round(current_target_price*recharge_rate-float(avg_price)*recharge_rate, 2),
+         "current_target_price_diff": round(buff_avg_price*trans_buff_service_change()-target_price*recharge_rate, 2),
+         "current_target_price_diff_rate": round((buff_avg_price*trans_buff_service_change()-target_price*recharge_rate)/target_price,2),
+         "current_target_price_diff_avg": round(target_price*recharge_rate-float(avg_price)*recharge_rate, 2),
 
         
 
@@ -513,13 +515,13 @@ def export_json_to_excel():
         "price_alter_value_7d":'buff-7天价格变化价格',
         "category_group_name":'饰品类型',
     
-    # buff直接购买出售的，dmarket平均价格直接出售
-        "buff_buy_dm_sale_avg": 'buff购买dm出售-平均价',
-        "buff_buy_dm_sale_avg_rate": 'buff购买dm出售-平均价率',
+    # # buff直接购买出售的，dmarket平均价格直接出售
+    #     "buff_buy_dm_sale_avg": 'buff购买dm出售-平均价',
+    #     "buff_buy_dm_sale_avg_rate": 'buff购买dm出售-平均价率',
 
-    # buff直接购买的，dmarket直接的当前价格出售
-        "buff_buy_dm_sale_min": 'buff购买dm出售-当前价',
-        "buff_buy_dm_sale_min_rate": 'buff购买dm出售-当前价',
+    # # buff直接购买的，dmarket直接的当前价格出售
+    #     "buff_buy_dm_sale_min": 'buff购买dm出售-当前价',
+    #     "buff_buy_dm_sale_min_rate": 'buff购买dm出售-当前价',
 
     
     # dmarket平均价购买出售，buff直接出售
@@ -537,7 +539,7 @@ def export_json_to_excel():
 
         "current_target_price_diff":'当前采购价盈利',
         "current_target_price_diff_rate":'当前采购价盈利率',
-        "current_target_price_diff_avg":'当前采购价',
+        "current_target_price_diff_avg":'当前采购价和平均价的差价',
     
     }
 
@@ -574,7 +576,7 @@ def export_json_to_excel():
         buff_format_columns={'buff_avg_price','buff_statistic','buff_sum_price'}
         
         
-        cul_format_columns={'buff_buy_dm_sale_avg','buff_buy_dm_sale_min','dm_buy_buff_sale_avg','dm_buy_buff_sale_min'}
+        cul_format_columns={'dm_buy_buff_sale_avg','dm_buy_buff_sale_min'}
         
         
 
@@ -697,7 +699,7 @@ if __name__ == '__main__':
     start_time=int(time.time())
 
     # 初始化数据
-    # get_skin_86_market_all(page_size=100,limit_page=50)
+    get_skin_86_market_all(page_size=100,limit_page=50)
     
     exchange_rate=find_us_exchange()
     target_list=get_my_target_List(exchange_rate)

@@ -23,23 +23,22 @@ searchUnit="D"  #查询单位
 
 all_list=[]
 
-data_path="E:/pythonFile/python/python_data/dassbuff/data"
-skin_86_path="/analysis/skin_86_product_all.txt"
 
 filter_num=30   #过滤平均销量大于30的数量
 filter_list=[]   #过滤平均销量大于30的列表
 
 
+data_path="E:/pythonFile/python/python_data/dassbuff/data"
+file_name="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_list.txt"
+buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_product_all.txt"
+my_buy_current_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_current_list.txt"
 
 
-# 实现追加
-def get_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14):
-    file_name="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_list.txt"
-    buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_product_all.txt"
+
+def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14):
     history_list=[]
-    page=1
-
     product_name_list=[]
+
     with open("data/cs_product_all_name.txt", 'r', encoding='utf-8') as all_name_file:
         for line in all_name_file:
             product_name_list.append(line.strip())
@@ -49,14 +48,7 @@ def get_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14):
             json_item=json.loads(cur_data)
             history_list.append(json_item)
 
-    
-    buff_file_list=[]
-    with open(buff_file, 'r', encoding='utf-8') as buff_file:
-        for buff_data in buff_file:
-            buff_data_item=json.loads(buff_data)
-            buff_file_list.append(buff_data_item)
-
-
+    page=1
     with open(file_name, 'a+', encoding='utf-8') as my_buy_list_file:
         while True:
             print("获取第"+str(page)+"页数据"+"offset="+str(offset)+" limit="+str(limit))
@@ -70,24 +62,20 @@ def get_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14):
             if reponse_json['objects'] is None or len(reponse_json['objects'])<1  :
                 print("获取数据完成")
                 break
-
             buy_data_list=[]
             offers=reponse_json['objects']
             total=reponse_json['total']
             print("总数据量："+str(total))
-            
-           
             for item in offers:
                 try:
                     print(item['subject'])
                     buy_data={}
                     buy_data['id']=item['id']
+                    buy_data['action']=item['action']
                     buy_data['subject']=item['subject']
                     buy_data['price']=round(float(item['changes'][0]['money']['amount'])*recharge_rate*exchange_rate,2) 
                     buy_data['updatedAt']=datetime.fromtimestamp(int(item['updatedAt'])).strftime('%Y-%m-%d')
                     buy_data_list.append(buy_data)
-
-
                     # 匹配英文名称
                     buy_data['cn_name']="0"
                     for cur_name in product_name_list:
@@ -105,19 +93,6 @@ def get_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14):
                             old_flag=False
                             break
 
-                    
-                    buy_data['buff_price']=0.01
-                    buy_data['buff_price_divided']=0.01
-                    buy_data['buff_price_divided_rate']=0.01
-                    for buff_info in buff_file_list:
-                        if buff_info['market_name'] == buy_data['cn_name']:
-                                print(buy_data['cn_name'])
-                                buy_data['buff_price']=buff_info['sell_min_price']
-                                buy_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-buy_data['price'],2)
-                                buy_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-buy_data['price'])/buy_data['price'],2)
-
-
-
                     # 追加到最后一行
                     if old_flag:
                         my_buy_list_file.write(json.dumps(buy_data,ensure_ascii=False)+"\n")
@@ -129,7 +104,38 @@ def get_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14):
                 break
             offset=offset+limit
             page=page+1
-                
+
+
+def find_buff_price():
+    buff_file_list=[]
+    with open(buff_file, 'r', encoding='utf-8') as buff_file_read:
+        for buff_data in buff_file_read:
+            buff_data_item=json.loads(buff_data)
+            buff_file_list.append(buff_data_item)
+
+
+    second_list=[]
+    with open(file_name, 'r', encoding='utf-8') as second_read_file:
+        for second in second_read_file:
+            second_item=json.loads(second)
+            second_list.append(second_item) 
+
+    with open(my_buy_current_file, 'w', encoding='utf-8') as my_buy_current_file_read:
+        for send_data in second_list:
+            send_data['buff_price']=0.01
+            send_data['buff_price_divided']=0.01
+            send_data['buff_price_divided_rate']=0.01
+
+            for buff_info in buff_file_list:
+                if buff_info['market_name'] == send_data['cn_name']:
+                    print(send_data['cn_name'])
+                    send_data['buff_price']=buff_info['sell_min_price']
+                    send_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'],2)
+                    send_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'])/send_data['price'],2)
+                    
+            # 追加到最后一行
+            my_buy_current_file_read.write(json.dumps(send_data,ensure_ascii=False)+"\n")
+                    
   
 
 
@@ -189,8 +195,8 @@ def get_my_buy_List(exchange_rate=7.14,offset=0,limit=10):
             "version": "V3",
             "offset": offset,
             "limit": limit,
-            "activities": 'purchase',
             "statuses": 'success',
+            "activities": 'purchase,target_closed,withdraw,cash_deposit',
         }
 
         # 发送POST请求
@@ -213,6 +219,7 @@ def export_json_to_excel():
         # 定义中文名和字段样式
     chinese_columns = {
         "id":'id',
+        "action":'类型',
         "cn_name":'饰品名称',
         "subject":'饰品名称-英文',
         "price":'购买',
@@ -222,11 +229,10 @@ def export_json_to_excel():
         "buff_price_divided_rate":'盈利价率',
     
     }
-    column_order = ['id', 'cn_name', 'subject','price','updatedAt','buff_price','buff_price_divided','buff_price_divided_rate']
+    column_order = ['id', 'action', 'cn_name', 'subject','price','updatedAt','buff_price','buff_price_divided','buff_price_divided_rate']
 
     # 打开文件准备读取
-    file_name="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_list.txt"
-    with open(file_name, 'r', encoding='utf-8') as file:
+    with open(my_buy_current_file, 'r', encoding='utf-8') as file:
        for line in file:
            json_data=json.loads(line.replace("\\b",""))
            all_data.append(json_data)
@@ -273,7 +279,8 @@ if __name__ == '__main__':
     start_time=int(time.time())
 
     # 初始化数据
-    get_my_buy_List_all(40,10,7.14)
+    # create_my_buy_List_all(1,100,7.14)
+    find_buff_price()
     export_json_to_excel()
 
 
