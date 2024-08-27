@@ -59,8 +59,8 @@ def get_skin_86_market(page=1,page_size=10):
         params = {
             "page": page,
             "page_size": page_size,
-            "price_start": 30,
-            "price_end": 2000,
+            "price_start": 1,
+            # "price_end": 2000,
             "selling_num_start": 100,
             "platform": 'BUFF',
             "order_key": 'sell_max_num',
@@ -701,15 +701,15 @@ if __name__ == '__main__':
     # 初始化数据
     get_skin_86_market_all(page_size=100,limit_page=50)
     
-    exchange_rate=find_us_exchange()
-    target_list=get_my_target_List(exchange_rate)
+    # exchange_rate=find_us_exchange()
+    # target_list=get_my_target_List(exchange_rate)
     
-    print("当前的美元汇率是："+str(exchange_rate))
+    # print("当前的美元汇率是："+str(exchange_rate))
 
-    # find_buff_dmarket_price(exchange_rate,target_list)
-    thread_size=5
-    process_file_in_threads(thread_size,exchange_rate,target_list)
-    export_json_to_excel()
+    # # find_buff_dmarket_price(exchange_rate,target_list)
+    # thread_size=5
+    # process_file_in_threads(thread_size,exchange_rate,target_list)
+    # export_json_to_excel()
 
 
     end_time=int(time.time())

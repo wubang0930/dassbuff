@@ -30,7 +30,7 @@ filter_list=[]   #过滤平均销量大于30的列表
 
 data_path="E:/pythonFile/python/python_data/dassbuff/data"
 file_name="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_list.txt"
-buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_product_all.txt"
+buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_product_all-20240826.txt"
 my_buy_current_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_current_list.txt"
 
 
