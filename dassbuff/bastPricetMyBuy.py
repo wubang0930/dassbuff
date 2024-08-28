@@ -9,6 +9,7 @@ import os
 import shutil
 from zipfile import ZipFile
 import threading
+import Skin86BaseData
 
 import config
 
@@ -30,10 +31,8 @@ filter_list=[]   #过滤平均销量大于30的列表
 
 data_path="E:/pythonFile/python/python_data/dassbuff/data"
 file_name="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_list.txt"
-buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_product_all-20240826.txt"
+buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_my_buy_list.txt"
 my_buy_current_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_current_list.txt"
-
-
 
 def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14):
     history_list=[]
@@ -278,8 +277,11 @@ def export_json_to_excel():
 if __name__ == '__main__':
     start_time=int(time.time())
 
+
+    # 下载所有的buff饰品名称
+    Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=10,page=1,page_size=500,price_start=1,price_end=10000,selling_num_start=100)
     # 初始化数据
-    # create_my_buy_List_all(1,100,7.14)
+    create_my_buy_List_all(1,100,7.14)
     find_buff_price()
     export_json_to_excel()
 
