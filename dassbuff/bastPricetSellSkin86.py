@@ -78,17 +78,17 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
     target_account=key_info['target_account'] if key_info['target_account'] is not None else 999999
 
 
-    current_target_price=0.001
-    current_target_amount=0
-    current_target_createdAt=0
-    if target_list is not None and len(target_list)>1:
-        for current_target in target_list:
-            if current_target['title']==buff_price['en_name']:
-                print("找到当前求购数据"+str(current_target))
-                current_target_price=current_target['price']*recharge_rate
-                current_target_amount=current_target['amount']
-                current_target_createdAt=current_target['createdAt']
-                break
+    # current_target_price=0.001
+    # current_target_amount=0
+    # current_target_createdAt=0
+    # if target_list is not None and len(target_list)>1:
+    #     for current_target in target_list:
+    #         if current_target['title']==buff_price['en_name']:
+    #             print("找到当前求购数据"+str(current_target))
+    #             current_target_price=current_target['price']*recharge_rate
+    #             current_target_amount=current_target['amount']
+    #             current_target_createdAt=current_target['createdAt']
+    #             break
         
 
 
@@ -139,16 +139,16 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
         "price_alter_value_7d":price_alter_value_7d,
         "category_group_name":category_group_name,
 
-        "current_target_price":current_target_price,
-        "current_target_amount":current_target_amount,
-        "current_target_createdAt":current_target_createdAt,
+        # "current_target_price":current_target_price,
+        # "current_target_amount":current_target_amount,
+        # "current_target_createdAt":current_target_createdAt,
 
         
         
         # dmarket采购价和buff出售价的差价和利润
-         "current_target_price_diff": round(buff_avg_price*trans_buff_service_change()-target_price*recharge_rate, 2),
-         "current_target_price_diff_rate": round((buff_avg_price*trans_buff_service_change()-target_price*recharge_rate)/target_price,2),
-         "current_target_price_diff_avg": round(target_price*recharge_rate-float(avg_price)*recharge_rate, 2),
+        #  "current_target_price_diff": round(buff_avg_price*trans_buff_service_change()-target_price*recharge_rate, 2),
+        #  "current_target_price_diff_rate": round((buff_avg_price*trans_buff_service_change()-target_price*recharge_rate)/target_price,2),
+        #  "current_target_price_diff_avg": round(target_price*recharge_rate-float(avg_price)*recharge_rate, 2),
 
         
 
@@ -195,61 +195,61 @@ def trans_buff_bank_change():
 
 
 
-# 获取最采购高价和出售最低价
-# 获取当前的采购饰品情况
-def get_my_target_List(exchange_rate=7.14):
-    target_list=[]
-    try:
-        # 设置请求的URL
-        url = 'https://api.dmarket.com/exchange/v1/user/targets'
-        # 设置请求头
-        headers = {
-            'accept': 'application/json, text/plain, */*',
-            'authorization': 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNjk0NjQzNy0wN2ZlLTRhMWYtOTMxYi1jN2JiZmYzMzdlMWEiLCJleHAiOjE3MjYwNTU4MTQsImlhdCI6MTcyMzQ2MzgxNCwic2lkIjoiNDM1ZTEzMTMtNjEyOC00OGY4LWEyNmEtMTA3YmVlMTRiMWIzIiwidHlwIjoiYWNjZXNzIiwiaWQiOiI0MWU0Y2RlZC1hMDcxLTRiMDUtODRjYS1lYzM2OWEzZjYyZjUiLCJwdmQiOiJyZWd1bGFyIiwicHJ0IjoiMjQwOCIsImF0dHJpYnV0ZXMiOnsid2FsbGV0X2lkIjoiZjg1MTM4Yjc0NWFiNGIyY2FjNTY3ZTFmMDVmN2VmNGZlNDJjMTUzYzJkMTg0NDM1Yjg2OTk3ODNkMDljOTgxNSIsInNhZ2Ffd2FsbGV0X2FkZHJlc3MiOiIweEM3OWZlMzhjM0I4MzJkODU2ZDJGMUVmQTBGYzAwRUUzMThBOTM2NjQiLCJhY2NvdW50X2lkIjoiODZhZmQxZmYtMDVlOC00NzM5LTkzNmQtN2I2NWUwOWQ3ODVlIn19.Bnig8ltKoIqd8XHScE5RlDjBC3yRh5DYMdabUJibWD1In5MQTrnTngYBUbioXrRsHzxDZWThoEOpKqQhd5_-mQ',
-            'accept-language': 'zh-CN,zh;q=0.9',
-            'content-type': 'application/json',
-            'jkkat': '50788078',
-            'language': 'ZH',
-            'origin': 'https://dmarket.com',
-            'payment-session-id': '77af0392-9f37-40c8-9e68-4bbaf9f5cf00',
-            'priority': 'u=1, i',
-            'sec-ch-ua': '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-site',
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
-        }
-        # 设置请求的数据
-        params = {
-            "gameId": "a8db",
-            "limit": 100,
-            "currency": "USD",
-            "platform": "browser",
-            "priceTo": 0,
-            "priceFrom": 0,
-            "orderDir": "desc",
-            "orderBy": "updated",
-            "side": "user"
-        }
+# # 获取最采购高价和出售最低价
+# # 获取当前的采购饰品情况
+# def get_my_target_List(exchange_rate=7.14):
+#     target_list=[]
+#     try:
+#         # 设置请求的URL
+#         url = 'https://api.dmarket.com/exchange/v1/user/targets'
+#         # 设置请求头
+#         headers = {
+#             'accept': 'application/json, text/plain, */*',
+#             'authorization': 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNjk0NjQzNy0wN2ZlLTRhMWYtOTMxYi1jN2JiZmYzMzdlMWEiLCJleHAiOjE3MjYwNTU4MTQsImlhdCI6MTcyMzQ2MzgxNCwic2lkIjoiNDM1ZTEzMTMtNjEyOC00OGY4LWEyNmEtMTA3YmVlMTRiMWIzIiwidHlwIjoiYWNjZXNzIiwiaWQiOiI0MWU0Y2RlZC1hMDcxLTRiMDUtODRjYS1lYzM2OWEzZjYyZjUiLCJwdmQiOiJyZWd1bGFyIiwicHJ0IjoiMjQwOCIsImF0dHJpYnV0ZXMiOnsid2FsbGV0X2lkIjoiZjg1MTM4Yjc0NWFiNGIyY2FjNTY3ZTFmMDVmN2VmNGZlNDJjMTUzYzJkMTg0NDM1Yjg2OTk3ODNkMDljOTgxNSIsInNhZ2Ffd2FsbGV0X2FkZHJlc3MiOiIweEM3OWZlMzhjM0I4MzJkODU2ZDJGMUVmQTBGYzAwRUUzMThBOTM2NjQiLCJhY2NvdW50X2lkIjoiODZhZmQxZmYtMDVlOC00NzM5LTkzNmQtN2I2NWUwOWQ3ODVlIn19.Bnig8ltKoIqd8XHScE5RlDjBC3yRh5DYMdabUJibWD1In5MQTrnTngYBUbioXrRsHzxDZWThoEOpKqQhd5_-mQ',
+#             'accept-language': 'zh-CN,zh;q=0.9',
+#             'content-type': 'application/json',
+#             'jkkat': '50788078',
+#             'language': 'ZH',
+#             'origin': 'https://dmarket.com',
+#             'payment-session-id': '77af0392-9f37-40c8-9e68-4bbaf9f5cf00',
+#             'priority': 'u=1, i',
+#             'sec-ch-ua': '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
+#             'sec-ch-ua-mobile': '?0',
+#             'sec-ch-ua-platform': '"Windows"',
+#             'sec-fetch-dest': 'empty',
+#             'sec-fetch-mode': 'cors',
+#             'sec-fetch-site': 'same-site',
+#             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
+#         }
+#         # 设置请求的数据
+#         params = {
+#             "gameId": "a8db",
+#             "limit": 100,
+#             "currency": "USD",
+#             "platform": "browser",
+#             "priceTo": 0,
+#             "priceFrom": 0,
+#             "orderDir": "desc",
+#             "orderBy": "updated",
+#             "side": "user"
+#         }
 
-        # 发送POST请求
-        response = requests.get(url, params=params,headers=headers)
-        reponse_json = json.loads(response.text)
-        offers=reponse_json['objects']
-        for offer in offers:
-            target={}
-            target['title']=offer['title']
-            target['amount']=offer['amount']
-            target['price']=round(float(offer['price']['USD'])/100*exchange_rate,2)
-            target['createdAt']=datetime.fromtimestamp(int(offer['createdAt'])).strftime('%Y-%m-%d')
-            target_list.append(target)
+#         # 发送POST请求
+#         response = requests.get(url, params=params,headers=headers)
+#         reponse_json = json.loads(response.text)
+#         offers=reponse_json['objects']
+#         for offer in offers:
+#             target={}
+#             target['title']=offer['title']
+#             target['amount']=offer['amount']
+#             target['price']=round(float(offer['price']['USD'])/100*exchange_rate,2)
+#             target['createdAt']=datetime.fromtimestamp(int(offer['createdAt'])).strftime('%Y-%m-%d')
+#             target_list.append(target)
             
-    except Exception as e:
-        print(e)
-        return None
-    return target_list
+#     except Exception as e:
+#         print(e)
+#         return None
+#     return target_list
 
 
 
@@ -445,13 +445,13 @@ def export_json_to_excel():
         "dm_buy_buff_sale_min_rate": 'dm购买buff出售-当前价率',
 
 
-         "current_target_price":'当前采购价',
-        "current_target_amount":'当前采购数量',
-        "current_target_createdAt":'创建时间',
+        #  "current_target_price":'当前采购价',
+        # "current_target_amount":'当前采购数量',
+        # "current_target_createdAt":'创建时间',
 
-        "current_target_price_diff":'当前采购价盈利',
-        "current_target_price_diff_rate":'当前采购价盈利率',
-        "current_target_price_diff_avg":'当前采购价和平均价的差价',
+        # "current_target_price_diff":'当前采购价盈利',
+        # "current_target_price_diff_rate":'当前采购价盈利率',
+        # "current_target_price_diff_avg":'当前采购价和平均价的差价',
     
     }
 
@@ -609,19 +609,19 @@ def down_buff_zip_file(dir_name,file_name):
 
 if __name__ == '__main__':
     start_time=int(time.time())
-
+    buff_file=data_path+skin_86_path
     # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name=data_path+skin_86_path,limit_page=10,page=1,page_size=500,price_start=1,price_end=10000,selling_num_start=100)
+    Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=100,page=1,page_size=1,price_start=30,price_end=500,selling_num_start=100)
 
 
     exchange_rate=find_us_exchange()
-    target_list=get_my_target_List(exchange_rate)
+    # target_list=get_my_target_List(exchange_rate)
     
     print("当前的美元汇率是："+str(exchange_rate))
 
     # find_buff_dmarket_price(exchange_rate,target_list)
     thread_size=5
-    process_file_in_threads(thread_size,exchange_rate,target_list)
+    process_file_in_threads(thread_size,None,target_list)
     export_json_to_excel()
 
 

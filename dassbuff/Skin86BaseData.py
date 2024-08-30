@@ -74,11 +74,16 @@ def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_sta
     while True:
         print("获取第"+str(page)+"页数据")
         time.sleep(1)
-        if page_data is None or limit_page<page  :
-            print("获取数据完成")
+        if limit_page<page  :
+            print("获取数据结束了，退出")
             break
 
         page_data=get_skin_86_market(page,page_size,price_start,price_end,selling_num_start)
+
+        if page_data is None :
+            print("获取数据为空，退出")
+            break
+
         with open(file_name, 'a+', encoding='utf-8') as skin_file:
             list=page_data['list']
             if len(list)<1:
