@@ -321,7 +321,16 @@ def process_file_in_threads(thread_size,exchange_rate,target_list):
     with open(origin_file_path, 'r',encoding='utf-8') as fileA:
         lines = fileA.readlines()
 
-    chunk_size = len(lines) // thread_size  # 这里除以线程数10
+    # 过滤印花
+    filter_list=[]
+    for line in lines:
+        if "印花" in line:
+            filter_list.append(line)
+
+
+
+
+    chunk_size = len(filter_list) // thread_size  # 这里除以线程数10
 
 
     # 创建线程列表
@@ -331,10 +340,10 @@ def process_file_in_threads(thread_size,exchange_rate,target_list):
     for i in range(thread_size):
         # 计算每个线程的起始和结束索引
         start = i * chunk_size
-        end = start + chunk_size if i < thread_size+1 else len(lines)
+        end = start + chunk_size if i < thread_size+1 else len(filter_list)
         print(f"线程{i}处理数据: {start} - {end}")
         # 获取对应的数据批次
-        chunks = lines[start:end]
+        chunks = filter_list[start:end]
         
         # 创建线程
         thread = threading.Thread(target=process_line, args=(chunks,exchange_rate,target_list,target_file_path))
@@ -611,7 +620,7 @@ if __name__ == '__main__':
     start_time=int(time.time())
     buff_file=data_path+skin_86_path
     # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=100,page=1,page_size=1,price_start=30,price_end=500,selling_num_start=100)
+    Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=100,page=1,page_size=100,price_start=30,price_end=1000,selling_num_start=100)
 
 
     exchange_rate=find_us_exchange()
@@ -621,7 +630,7 @@ if __name__ == '__main__':
 
     # find_buff_dmarket_price(exchange_rate,target_list)
     thread_size=5
-    process_file_in_threads(thread_size,None,target_list)
+    process_file_in_threads(thread_size,exchange_rate,None)
     export_json_to_excel()
 
 
