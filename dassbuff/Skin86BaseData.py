@@ -100,6 +100,10 @@ def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_sta
                     except Exception as e:  
                         print(e)    
                         continue
+                    
+                # 过滤掉印花
+                if '印花' in item['market_name']:
+                    continue
 
                 item_json=json.dumps(item, ensure_ascii=False)
                 skin_file.write(item_json+'\n')

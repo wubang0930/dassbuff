@@ -324,7 +324,7 @@ def process_file_in_threads(thread_size,exchange_rate,target_list):
     # 过滤印花
     filter_list=[]
     for line in lines:
-        if "印花" in line:
+        if "印花" not in line:
             filter_list.append(line)
 
 
@@ -620,15 +620,13 @@ if __name__ == '__main__':
     start_time=int(time.time())
     buff_file=data_path+skin_86_path
     # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=100,page=1,page_size=100,price_start=30,price_end=1000,selling_num_start=100)
+    # Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=100,page=1,page_size=100,price_start=30,price_end=1000,selling_num_start=200)
 
 
     exchange_rate=find_us_exchange()
-    # target_list=get_my_target_List(exchange_rate)
     
     print("当前的美元汇率是："+str(exchange_rate))
 
-    # find_buff_dmarket_price(exchange_rate,target_list)
     thread_size=5
     process_file_in_threads(thread_size,exchange_rate,None)
     export_json_to_excel()
