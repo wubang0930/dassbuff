@@ -32,7 +32,8 @@ filter_list=[]   #过滤平均销量大于30的列表
 
 data_path="E:/pythonFile/python/python_data/dassbuff/data"
 file_name="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_list.txt"
-buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_my_buy_list.txt"
+# buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_my_buy_list.txt"
+buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_product_all.txt"
 my_buy_current_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_current_list.txt"
 my_target_current_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_target_current_list.txt"
 
@@ -122,8 +123,13 @@ def find_buy_price():
     second_list=[]
     with open(file_name, 'r', encoding='utf-8') as second_read_file:
         for second in second_read_file:
-            second_item=json.loads(second)
-            second_list.append(second_item) 
+            if '印花' not in second:
+                second_item=json.loads(second)
+                second_list.append(second_item) 
+    
+    # 按照时间排序second_list
+    
+    second_list.sort(key=lambda x:x['updatedAt'],reverse=True)
 
     with open(my_buy_current_file, 'w', encoding='utf-8') as my_buy_current_file_write:
         for send_data in second_list:
@@ -142,6 +148,18 @@ def find_buy_price():
             my_buy_current_file_write.write(json.dumps(send_data,ensure_ascii=False)+"\n")
 
 
+def tranStrToDatetime(str_time):
+
+    # 指定日期格式
+    date_format = "%Y-%m-%d"
+
+    # 使用strptime方法将日期字符串转换为datetime对象
+    date_obj = datetime.strptime(str_time, date_format)
+
+    # 使用timestamp()方法将datetime对象转换为以秒为单位的时间戳
+    timestamp = int(date_obj.timestamp())
+    return timestamp
+
                 
             
 def find_target_price(target_list):
@@ -150,6 +168,22 @@ def find_target_price(target_list):
         for buff_data in buff_file_read:
             buff_data_item=json.loads(buff_data)
             buff_file_list.append(buff_data_item)
+
+
+    # 获取所有的已购买的数据 安装名称
+    second_list=[]
+    with open(file_name, 'r', encoding='utf-8') as second_read_file:
+        for second in second_read_file:
+            second_item=json.loads(second)
+            second_list.append(second_item) 
+
+
+    # 使用字典来存储每个产品名称的最大购买时间
+    max_purchase_times = {}
+    for second_line in second_list:
+        if second_line['subject'] not in max_purchase_times or tranStrToDatetime(second_line['updatedAt']) > tranStrToDatetime(max_purchase_times[second_line['subject']]['updatedAt']):
+            max_purchase_times[second_line['subject']] = second_line
+
 
 
     with open(my_target_current_file, 'w', encoding='utf-8') as my_target_current_write:
@@ -166,6 +200,24 @@ def find_target_price(target_list):
                     target_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-target_data['price'],2)
                     target_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-target_data['price'])/target_data['price'],2)
                     break
+
+            
+
+            if target_data['title'] in max_purchase_times:
+                max_purchase=max_purchase_times[target_data['title']]
+                target_data['recent_purchase_time']=max_purchase['updatedAt']
+                target_data['recent_purchase_price']=max_purchase['price']
+                target_data['recent_purchase_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-target_data['recent_purchase_price'],2)
+                target_data['recent_purchase_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-target_data['recent_purchase_price'])/target_data['recent_purchase_price'],2)
+                  
+            else:
+                target_data['recent_purchase_time']="" 
+                target_data['recent_purchase_price']=0
+                target_data['recent_purchase_price_divided']=0
+                target_data['recent_purchase_price_divided_rate']=0
+                
+
+            
             my_target_current_write.write(json.dumps(target_data,ensure_ascii=False)+"\n")
 
                         
@@ -325,9 +377,13 @@ def export_target_to_excel():
         "buff_price":'当前buff售价',
         "buff_price_divided":'盈利价',
         "buff_price_divided_rate":'盈利价率',
+        "recent_purchase_time":'最近购买时间',
+        "recent_purchase_price":'最近购买价格',
+        "recent_purchase_price_divided":'最近购买-盈利',
+        "recent_purchase_price_divided_rate":'最近购买-盈利率',
     
     }
-    column_order = ['cn_name', 'title', 'amount','price','createdAt','buff_price','buff_price_divided','buff_price_divided_rate']
+    column_order = ['cn_name', 'title', 'amount','price','createdAt','buff_price','buff_price_divided','buff_price_divided_rate','recent_purchase_time','recent_purchase_price','recent_purchase_price_divided','recent_purchase_price_divided_rate']
 
     # 打开文件准备读取
     with open(my_target_current_file, 'r', encoding='utf-8') as file:
@@ -431,21 +487,23 @@ if __name__ == '__main__':
 
 
     # 下载所有的buff饰品名称
-    # Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=50,page=1,page_size=100,price_start=1,price_end=300,selling_num_start=100)
+    # Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=200,page=1,page_size=100,price_start=0.6,price_end=300,selling_num_start=200)
    
+    
+   
+
+
+    # 追加所有的已购买  
+    # create_my_buy_List_all(1,100,7.14,2)
+    # find_buy_price()
+    # export_json_to_excel()
+
+
     # # 查看所有的采购单
-    # exchange_rate=bastPricetSellSkin86.find_us_exchange()
-    # target_list=get_my_target_List(exchange_rate)
-    # find_target_price(target_list)
-    # export_target_to_excel()
-
-
-    # 追加所有的已购买
-    create_my_buy_List_all(1,10,7.14,1)
-    find_buy_price()
-    export_json_to_excel()
-
-
+    exchange_rate=bastPricetSellSkin86.find_us_exchange()
+    target_list=get_my_target_List(exchange_rate)
+    find_target_price(target_list)
+    export_target_to_excel()
 
 
     end_time=int(time.time())
