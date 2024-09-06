@@ -207,14 +207,12 @@ def find_target_price(target_list):
                 max_purchase=max_purchase_times[target_data['title']]
                 target_data['recent_purchase_time']=max_purchase['updatedAt']
                 target_data['recent_purchase_price']=max_purchase['price']
-                target_data['recent_purchase_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-target_data['recent_purchase_price'],2)
-                target_data['recent_purchase_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-target_data['recent_purchase_price'])/target_data['recent_purchase_price'],2)
+                target_data['recent_purchase_price_divided']=round(target_data['recent_purchase_price']-target_data['price'],2)
                   
             else:
                 target_data['recent_purchase_time']="" 
                 target_data['recent_purchase_price']=0
                 target_data['recent_purchase_price_divided']=0
-                target_data['recent_purchase_price_divided_rate']=0
                 
 
             
@@ -379,11 +377,10 @@ def export_target_to_excel():
         "buff_price_divided_rate":'盈利价率',
         "recent_purchase_time":'最近购买时间',
         "recent_purchase_price":'最近购买价格',
-        "recent_purchase_price_divided":'最近购买-盈利',
-        "recent_purchase_price_divided_rate":'最近购买-盈利率',
+        "recent_purchase_price_divided":'最近购买和当前购买价差额',
     
     }
-    column_order = ['cn_name', 'title', 'amount','price','createdAt','buff_price','buff_price_divided','buff_price_divided_rate','recent_purchase_time','recent_purchase_price','recent_purchase_price_divided','recent_purchase_price_divided_rate']
+    column_order = ['cn_name', 'title', 'amount','price','createdAt','buff_price','buff_price_divided','buff_price_divided_rate','recent_purchase_time','recent_purchase_price','recent_purchase_price_divided']
 
     # 打开文件准备读取
     with open(my_target_current_file, 'r', encoding='utf-8') as file:
