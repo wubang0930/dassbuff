@@ -59,7 +59,7 @@ skins=get_skin_title()
 all_list=[]
 
 for key,value in skins.items():
-    offer_from_market = get_offer_from_market(limit="5",title=value,orderBy="best_discount")
+    offer_from_market = get_offer_from_market(limit="5",title=value,orderBy="price")
     best_price = int(build_target_body_from_offer(offers=offer_from_market))/100*7.24
     all_list.append({key:best_price})
 
