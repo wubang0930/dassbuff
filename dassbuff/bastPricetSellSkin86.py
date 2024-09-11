@@ -12,6 +12,7 @@ import threading
 import Skin86BaseData
 
 import config
+import offer_buy_product
 
 # change url to prod
 rootApiUrl = "https://api.dmarket.com"
@@ -624,7 +625,7 @@ if __name__ == '__main__':
     start_time=int(time.time())
     buff_file=data_path+skin_86_path
     # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=500,page=1,page_size=100,price_start=0.8,price_end=1000,selling_num_start=80)
+    Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=500,page=5,page_size=10,price_start=0.8,price_end=1000,selling_num_start=80)
 
 
     exchange_rate=find_us_exchange()
