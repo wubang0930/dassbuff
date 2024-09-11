@@ -126,6 +126,8 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
         # dmarket平均价购买出售，buff直接出售
         "dm_buy_buff_sale_avg": round(buff_avg_price*trans_buff_service_change()-float(avg_price)*exchange_rate*recharge_rate, 2),
         "dm_buy_buff_sale_avg_rate": round((buff_avg_price*trans_buff_service_change()-float(avg_price)*exchange_rate*recharge_rate)/buff_avg_price,3),
+       
+        "dm_buy_buff_sale_seven_rate": round((buff_avg_price*trans_buff_service_change()-float(avg_price)*exchange_rate*recharge_rate)/buff_avg_price,3)-price_alter_percentage_7d,
 
 
         # dmarket最低价购买出售，buff直接出售
@@ -449,6 +451,8 @@ def export_json_to_excel():
         "dm_buy_buff_sale_avg": 'dm购买buff出售-平均价',
         "dm_buy_buff_sale_avg_rate": 'dm购买buff出售-平均价率',
 
+        "dm_buy_buff_sale_seven_rate": 'dm购买buff出售-7天净变化率',
+
     # dmarket最低价购买出售，buff直接出售
         "dm_buy_buff_sale_min": 'dm购买buff出售-当前价',
         "dm_buy_buff_sale_min_rate": 'dm购买buff出售-当前价率',
@@ -497,7 +501,7 @@ def export_json_to_excel():
         buff_format_columns={'buff_avg_price','buff_statistic','buff_sum_price'}
         
         
-        cul_format_columns={'dm_buy_buff_sale_avg','dm_buy_buff_sale_min'}
+        cul_format_columns={'dm_buy_buff_sale_avg','dm_buy_buff_sale_min','dm_buy_buff_sale_seven_rate'}
         
         
 
@@ -620,7 +624,7 @@ if __name__ == '__main__':
     start_time=int(time.time())
     buff_file=data_path+skin_86_path
     # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=500,page=1,page_size=100,price_start=0.5,price_end=200,selling_num_start=100)
+    Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=500,page=1,page_size=100,price_start=0.8,price_end=1000,selling_num_start=80)
 
 
     exchange_rate=find_us_exchange()

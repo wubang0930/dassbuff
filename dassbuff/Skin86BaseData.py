@@ -45,7 +45,8 @@ def get_skin_86_market(page=1,page_size=10,price_start=1,price_end=10000,selling
             "price_start": price_start,
             "price_end": price_end,
             "selling_num_start": selling_num_start,
-            "platform": 'BUFF',
+            # "platform": 'BUFF',
+            "platform": 'YP',
             "order_key": 'sell_max_num',
             "order_type": 2,
         }
@@ -101,8 +102,8 @@ def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_sta
                         print(e)    
                         continue
                     
-                # 过滤掉印花
-                if '印花' in item['market_name']:
+                # 过滤掉印花 涂鸦 纪念品 胶囊
+                if '印花' in item['market_name'] or '涂鸦' in item['market_name'] or '纪念品' in item['market_name'] or '胶囊' in item['market_name']:
                     continue
 
                 item_json=json.dumps(item, ensure_ascii=False)

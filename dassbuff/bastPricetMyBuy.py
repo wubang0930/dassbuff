@@ -280,7 +280,7 @@ def get_my_buy_List(exchange_rate=7.14,offset=0,limit=10):
             "offset": offset,
             "limit": limit,
             "statuses": 'success',
-            "activities": 'purchase,target_closed,cash_deposit',
+            # "activities": 'purchase,target_closed,cash_deposit',
         }
 
         # 发送POST请求
@@ -491,16 +491,16 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    # create_my_buy_List_all(1,100,7.14,2)
-    # find_buy_price()
-    # export_json_to_excel()
+    create_my_buy_List_all(1,100,7.14,3)
+    find_buy_price()
+    export_json_to_excel()
 
 
-    # # 查看所有的采购单
-    exchange_rate=bastPricetSellSkin86.find_us_exchange()
-    target_list=get_my_target_List(exchange_rate)
-    find_target_price(target_list)
-    export_target_to_excel()
+    # # # 查看所有的采购单
+    # exchange_rate=bastPricetSellSkin86.find_us_exchange()
+    # target_list=get_my_target_List(exchange_rate)
+    # find_target_price(target_list)
+    # export_target_to_excel()
 
 
     end_time=int(time.time())
