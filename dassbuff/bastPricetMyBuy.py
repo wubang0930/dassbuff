@@ -258,7 +258,7 @@ def get_my_buy_List(exchange_rate=7.14,offset=0,limit=10):
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNjk0NjQzNy0wN2ZlLTRhMWYtOTMxYi1jN2JiZmYzMzdlMWEiLCJleHAiOjE3MjYwNTU4MTQsImlhdCI6MTcyMzQ2MzgxNCwic2lkIjoiNDM1ZTEzMTMtNjEyOC00OGY4LWEyNmEtMTA3YmVlMTRiMWIzIiwidHlwIjoiYWNjZXNzIiwiaWQiOiI0MWU0Y2RlZC1hMDcxLTRiMDUtODRjYS1lYzM2OWEzZjYyZjUiLCJwdmQiOiJyZWd1bGFyIiwicHJ0IjoiMjQwOCIsImF0dHJpYnV0ZXMiOnsid2FsbGV0X2lkIjoiZjg1MTM4Yjc0NWFiNGIyY2FjNTY3ZTFmMDVmN2VmNGZlNDJjMTUzYzJkMTg0NDM1Yjg2OTk3ODNkMDljOTgxNSIsInNhZ2Ffd2FsbGV0X2FkZHJlc3MiOiIweEM3OWZlMzhjM0I4MzJkODU2ZDJGMUVmQTBGYzAwRUUzMThBOTM2NjQiLCJhY2NvdW50X2lkIjoiODZhZmQxZmYtMDVlOC00NzM5LTkzNmQtN2I2NWUwOWQ3ODVlIn19.Bnig8ltKoIqd8XHScE5RlDjBC3yRh5DYMdabUJibWD1In5MQTrnTngYBUbioXrRsHzxDZWThoEOpKqQhd5_-mQ',
+            'authorization': config.authorization,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '4e55ab9f',
@@ -432,7 +432,7 @@ def get_my_target_List(exchange_rate=7.14):
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNjk0NjQzNy0wN2ZlLTRhMWYtOTMxYi1jN2JiZmYzMzdlMWEiLCJleHAiOjE3MjYwNTU4MTQsImlhdCI6MTcyMzQ2MzgxNCwic2lkIjoiNDM1ZTEzMTMtNjEyOC00OGY4LWEyNmEtMTA3YmVlMTRiMWIzIiwidHlwIjoiYWNjZXNzIiwiaWQiOiI0MWU0Y2RlZC1hMDcxLTRiMDUtODRjYS1lYzM2OWEzZjYyZjUiLCJwdmQiOiJyZWd1bGFyIiwicHJ0IjoiMjQwOCIsImF0dHJpYnV0ZXMiOnsid2FsbGV0X2lkIjoiZjg1MTM4Yjc0NWFiNGIyY2FjNTY3ZTFmMDVmN2VmNGZlNDJjMTUzYzJkMTg0NDM1Yjg2OTk3ODNkMDljOTgxNSIsInNhZ2Ffd2FsbGV0X2FkZHJlc3MiOiIweEM3OWZlMzhjM0I4MzJkODU2ZDJGMUVmQTBGYzAwRUUzMThBOTM2NjQiLCJhY2NvdW50X2lkIjoiODZhZmQxZmYtMDVlOC00NzM5LTkzNmQtN2I2NWUwOWQ3ODVlIn19.Bnig8ltKoIqd8XHScE5RlDjBC3yRh5DYMdabUJibWD1In5MQTrnTngYBUbioXrRsHzxDZWThoEOpKqQhd5_-mQ',
+            'authorization': config.authorization,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '50788078',
@@ -491,7 +491,7 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,3)
+    create_my_buy_List_all(1,100,7.14,4)
     find_buy_price()
     export_json_to_excel()
 

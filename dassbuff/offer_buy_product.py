@@ -45,8 +45,12 @@ def get_offer_from_market(limit=5,title="",orderBy='price'):
 
 # 创建采购单
 def build_target_body_from_offer(price,amount,title):
-    return {"targets": [
-        {"amount": amount, "gameId": 'a8db', "price": {"amount": str(price), "currency": "USD"},
+    if int(price) > 1000:
+        print("价格超过10美元，不采购,当前价格为："+price)
+        return
+    
+    body= {"targets": [
+        {"amount": amount, "gameId": 'a8db', "price": {"amount": price, "currency": "USD"},
          "attributes": {"gameId": 'a8db',
                         # "categoryPath": offer["extra"]["categoryPath"],
                         "title": title,
@@ -54,6 +58,7 @@ def build_target_body_from_offer(price,amount,title):
                         # "image": offer["image"],
                         "ownerGets": {"amount": "1", "currency": "USD"}}}
     ]}
+    create_target_order(body)
 
 
 
@@ -91,7 +96,7 @@ def create_target_order(body):
 
 
 if __name__ == '__main__':
-    offer_from_market = get_offer_from_market(title="XM1014 | Zombie Offensive (Field-Tested)")
+    offer_from_market = get_offer_from_market(title="StatTrak™ Five-SeveN | Hybrid (Field-Tested)")
     offer=offer_from_market[0]
     body = build_target_body_from_offer(price=offer["price"]['USD'],amount=1,title=offer["title"])
-    create_target_order(body)
+    
