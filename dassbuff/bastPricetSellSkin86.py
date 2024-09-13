@@ -599,8 +599,8 @@ def down_buff_zip_file(dir_name,file_name):
 
 
 # 一行一行的读取json数组，并写入到excel中
-def create_avg_target_now(exchange_rate,limit):
-    print("开始创建采购单数据")
+def create_avg_target_avg(exchange_rate,limit):
+    print("开始创建采购单数据-平均价")
     
     all_data=[]
     filter_data=[]
@@ -622,7 +622,7 @@ def create_avg_target_now(exchange_rate,limit):
                         buy_it_num=1
                         us_price= int(round(create_target['dmarket_sale_Price']/exchange_rate*100,0))
 
-                        if create_target['dmarket_sale_Price']>1 and create_target['dmarket_sale_Price']<5 and create_target['dm_buy_buff_sale_avg_rate']>0.2 and create_target['price_alter_percentage_7d']<10:
+                        if create_target['dmarket_sale_Price']>1 and create_target['dmarket_sale_Price']<5 and create_target['dm_buy_buff_sale_avg_rate']>0.2 and create_target['price_alter_percentage_7d']<20:
                             buy_flag=True
                             us_price= us_price+1
                             buy_it_num=10
@@ -641,16 +641,15 @@ def create_avg_target_now(exchange_rate,limit):
                             create_target['us_price']=us_price
                             create_target['buy_it']=round(us_price/100*exchange_rate,2)
                             create_target_list.append(create_target)
-                            print(threading.current_thread().name+"开始购买---"+create_target['title']+"购买价格是："+str(create_target['buy_it'])+"，销售价是："+ str(create_target['buff_avg_price']) +",利率润是："+str(create_target['dm_buy_buff_sale_avg_rate']))
                             break
     filename=data_path+"/excel/"+"creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-    creat_now(create_target_list,filename,limit)
+    creat_now(create_target_list,filename,limit,"avg")
     
 
 
 # 一行一行的读取json数组，并写入到excel中
 def create_avg_target_min(exchange_rate,limit):
-    print("开始创建采购单数据")
+    print("开始创建采购单数据-最低价")
     
     all_data=[]
     filter_data=[]
@@ -672,11 +671,11 @@ def create_avg_target_min(exchange_rate,limit):
                         buy_it_num=1
                         us_price= int(round(create_target['offer_price']/exchange_rate*100,0))
 
-                        if create_target['offer_price']>1 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.1 and create_target['price_alter_percentage_7d']<10:
+                        if create_target['offer_price']>1 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.1 and create_target['price_alter_percentage_7d']<20:
                             buy_flag=True
                             us_price= us_price+1
-                            buy_it_num=2
-                        elif create_target['offer_price']>=5 and create_target['offer_price']<15 and create_target['dm_buy_buff_sale_min_rate']>0.1  and create_target['price_alter_percentage_7d']<1:
+                            buy_it_num=1
+                        elif create_target['offer_price']>=5 and create_target['offer_price']<15 and create_target['dm_buy_buff_sale_min_rate']>0.1  and create_target['price_alter_percentage_7d']<15:
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=1
@@ -691,14 +690,13 @@ def create_avg_target_min(exchange_rate,limit):
                             create_target['us_price']=us_price
                             create_target['buy_it']=round(us_price/100*exchange_rate,2)
                             create_target_list.append(create_target)
-                            print(threading.current_thread().name+"开始购买---"+create_target['title']+"购买价格是："+str(create_target['buy_it'])+"，销售价是："+ str(create_target['buff_avg_price']) +",利率润是："+str(create_target['dm_buy_buff_sale_min_rate']))
                             break
     filename=data_path+"/excel/"+"creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-    creat_now(create_target_list,filename,limit)
+    creat_now(create_target_list,filename,limit,"min")
 
 
 
-def creat_now(create_target_list,filename,limit):
+def creat_now(create_target_list,filename,limit,type):
     create_num=1
     for now_target in create_target_list:
         if '探员' in now_target['title']:
@@ -710,6 +708,12 @@ def creat_now(create_target_list,filename,limit):
             break
         time.sleep(1)
         create_num=create_num+1
+
+        if "avg" in type:
+            print(threading.current_thread().name+"开始购买---"+now_target['title']+"购买价格是："+str(now_target['buy_it'])+"，销售价是："+ str(now_target['buff_avg_price']) +",利率润是："+str(now_target['dm_buy_buff_sale_avg_rate']))
+        else:
+            print(threading.current_thread().name+"开始购买---"+now_target['title']+"购买价格是："+str(now_target['buy_it'])+"，销售价是："+ str(now_target['buff_avg_price']) +",利率润是："+str(now_target['dm_buy_buff_sale_min_rate']))
+
         offer_buy_product.build_target_body_from_offer(price=str(now_target['us_price']),amount=now_target['buy_it_num'],title=now_target["drtitle"])
         now_target['buy_it_now']=1
         now_target['buy_it_now']=now_target['buy_it_num']
@@ -759,7 +763,7 @@ if __name__ == '__main__':
     start_time=int(time.time())
     buff_file=data_path+skin_86_path
     # 初始化数据
-    # Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=500,page=1,page_size=100,price_start=0.5,price_end=500,selling_num_start=200)
+    # Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=500,page=1,page_size=100,price_start=1,price_end=500,selling_num_start=200)
 
 
     exchange_rate=find_us_exchange()
@@ -772,13 +776,25 @@ if __name__ == '__main__':
     # #导出市场数据
     # export_market_data()
 
+    # user_input = input("程序运行中 键入quit退出\n")
+    #     # 当用户输入"quit"后，等待线程完成
+    # if user_input == "quit":
+    #     print("程序执行完当前轮之后将退出")
+    #     exit()
 
-    
+    # while True:
+    #     print("等待执行中")
+    #     time.sleep(360)  # 暂停 1 小时（360 秒）
+    #     print("开始执行数据"+datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    #     create_avg_target_min(exchange_rate,100)
+        
+
     create_avg_target_min(exchange_rate,100)
-
+    create_avg_target_avg(exchange_rate,50)
+    end_time=int(time.time())
+    print("运行时间："+str(end_time-start_time))
     # create_avg_target_now(exchange_rate,20)
 
 
 
-    end_time=int(time.time())
-    print("运行时间："+str(end_time-start_time))
+

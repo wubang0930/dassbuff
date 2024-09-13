@@ -13,7 +13,7 @@ def get_my_offer_List(title="",limit=50):
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNjk0NjQzNy0wN2ZlLTRhMWYtOTMxYi1jN2JiZmYzMzdlMWEiLCJleHAiOjE3MjYwNTU4MTQsImlhdCI6MTcyMzQ2MzgxNCwic2lkIjoiNDM1ZTEzMTMtNjEyOC00OGY4LWEyNmEtMTA3YmVlMTRiMWIzIiwidHlwIjoiYWNjZXNzIiwiaWQiOiI0MWU0Y2RlZC1hMDcxLTRiMDUtODRjYS1lYzM2OWEzZjYyZjUiLCJwdmQiOiJyZWd1bGFyIiwicHJ0IjoiMjQwOCIsImF0dHJpYnV0ZXMiOnsid2FsbGV0X2lkIjoiZjg1MTM4Yjc0NWFiNGIyY2FjNTY3ZTFmMDVmN2VmNGZlNDJjMTUzYzJkMTg0NDM1Yjg2OTk3ODNkMDljOTgxNSIsInNhZ2Ffd2FsbGV0X2FkZHJlc3MiOiIweEM3OWZlMzhjM0I4MzJkODU2ZDJGMUVmQTBGYzAwRUUzMThBOTM2NjQiLCJhY2NvdW50X2lkIjoiODZhZmQxZmYtMDVlOC00NzM5LTkzNmQtN2I2NWUwOWQ3ODVlIn19.Bnig8ltKoIqd8XHScE5RlDjBC3yRh5DYMdabUJibWD1In5MQTrnTngYBUbioXrRsHzxDZWThoEOpKqQhd5_-mQ',
+            'authorization': config.authorization,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '2420eb2e',
@@ -32,8 +32,8 @@ def get_my_offer_List(title="",limit=50):
         # 设置请求的数据
         params = {
             "side":"user",
-            "orderBy":"updated",
-            "orderDir":"desc",
+            "orderBy":"price",
+            "orderDir":"asc",
             "title":title,
             "priceFrom":"0",
             "priceTo":"0",
@@ -52,6 +52,7 @@ def get_my_offer_List(title="",limit=50):
         offers=reponse_json['objects']
 
         for offer in offers:
+            print(offer['title'])
             result_list.append(offer['itemId'])
         
         return result_list
@@ -106,7 +107,7 @@ def get_my_invert_List(title="",limit=50,treeFilters=""):
 
         # 发送POST请求
         response = requests.get(url, params=params,headers=headers)
-        print(response.text)
+        # print(response.text)
         reponse_json = json.loads(response.text)
         offers=reponse_json['objects']
 
@@ -120,10 +121,52 @@ def get_my_invert_List(title="",limit=50,treeFilters=""):
         return None
 
 
+
 def add_my_invert_List(items=[]):
     try:
         # 设置请求的URL
         url = 'https://api.dmarket.com/exchange/v1/selection/item'
+        # 设置请求头
+        headers = {
+            'accept': 'application/json, text/plain, */*',
+            'authorization': config.authorization,
+            'accept-language': 'zh-CN,zh;q=0.9',
+            'content-type': 'application/json',
+            'jkkat': '2420eb2e',
+            'language': 'ZH',
+            'origin': 'https://dmarket.com',
+            'payment-session-id': '40507796-c78e-470e-9ded-1a90e49c239f',
+            'priority': 'u=1, i',
+            'sec-ch-ua': '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-site',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
+        }
+
+        # 设置请求的数据
+        params = {
+            "items":items,
+            "gameId":"a8db"
+        }
+
+        # 发送POST请求
+        response = requests.patch(url, headers=headers,json=params)
+        print(response.text)
+        
+    except Exception as e:
+        print(e)
+        return None
+    
+
+
+
+def add_my_sell_List(items=[]):
+    try:
+        # 设置请求的URL
+        url = 'https://api.dmarket.com/exchange/v1/selection/offer'
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -192,7 +235,7 @@ if __name__ == '__main__':
     # user_input = input("准备开始添加到出售清单数量"+str(len(my_invert_list))+"，请输入Y确认：\n")
     # # 开始添加到出售清单
     # if user_input == "Y":
-    #     print("开始添加")
-    #     add_my_invert_List(items=my_invert_list)
+    #     print("开始添加") 
+    #     add_my_sell_List(items=my_invert_list)
     #     print("开始添加结束")
     #     exit()
