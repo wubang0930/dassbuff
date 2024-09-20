@@ -79,7 +79,14 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10)
                     buy_data['id']=item['id']
                     buy_data['action']=item['action']
                     buy_data['subject']=item['subject']
-                    buy_data['price']=round(float(item['changes'][0]['money']['amount'])*recharge_rate*exchange_rate,2) 
+                    if item['changes'] is None or len(item['changes'])>0:
+                        if item['action'] == "Sell" or item['action'] == "Deposit":
+                            buy_data['price']=round(float(item['changes'][0]['money']['amount'])*recharge_rate*exchange_rate,2) 
+                        else:
+                            buy_data['price']=round(float(item['changes'][0]['money']['amount'])*recharge_rate*exchange_rate,2) 
+                    else:
+                        buy_data['price']= 0
+
                     buy_data['updatedAt']=datetime.fromtimestamp(int(item['updatedAt'])).strftime('%Y-%m-%d')
                     buy_data_list.append(buy_data)
                     # 匹配英文名称
@@ -140,10 +147,12 @@ def find_buy_price():
                 send_data['buff_price_divided_rate']=0.01
                 if buff_info['market_name'] == send_data['cn_name']:
                     print(send_data['cn_name'])
-                    send_data['buff_price']=buff_info['sell_min_price']
-                    send_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'],2)
-                    send_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'])/send_data['price'],2)
-                    break
+                    if send_data['price'] is not None and send_data['price']!=0:
+                        send_data['buff_price']=buff_info['sell_min_price']
+                        send_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'],2)
+                        send_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'])/send_data['price'],2)
+                        break
+                        
 
             my_buy_current_file_write.write(json.dumps(send_data,ensure_ascii=False)+"\n")
 
@@ -280,7 +289,8 @@ def get_my_buy_List(exchange_rate=7.14,offset=0,limit=10):
             "offset": offset,
             "limit": limit,
             "statuses": 'success',
-            # "activities": 'purchase,target_closed,cash_deposit',
+            # "activities": 'exchange,sell,purchase,instant_sell,charging_fee,target_closed,withdraw,deposit,cash_deposit,cashback',
+            "activities": 'exchange,sell,purchase,instant_sell,charging_fee,target_closed,deposit,cash_deposit,cashback',
         }
 
         # 发送POST请求
@@ -491,7 +501,7 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,6)
+    create_my_buy_List_all(1,100,7.14,100)
     find_buy_price()
     export_json_to_excel()
 

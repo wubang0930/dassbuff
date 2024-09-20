@@ -269,7 +269,7 @@ def get_target_market(title,exchange_rate):
         url = 'https://api.dmarket.com/exchange/v1/appraise/targets'
         # 设置请求头
         headers = {
-            'authorization': 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjZGEyZDg5OS1iNWZkLTRiMmEtODVhNC05MzI4MjY4ZWEyYjYiLCJleHAiOjE3MjYyMzM1NzUsImlhdCI6MTcyMzY0MTU3NSwic2lkIjoiODE0ZDhkZTktMzJiYy00NzFjLWI3OWMtNDkyMzc1MDAzZmI5IiwidHlwIjoiYWNjZXNzIiwiaWQiOiJiYjNmNTkyZS03ZWEwLTQ2ZDQtODYzMS1lNTk5ODE2YzI4ZjMiLCJwdmQiOiJyZWd1bGFyIiwicHJ0IjoiMjQwOCIsImF0dHJpYnV0ZXMiOnsiYWNjb3VudF9pZCI6IjUxYjU0MjYzLTFhZGYtNDJlZS04OWNlLThmZGE2M2YzNDFkYiIsIndhbGxldF9pZCI6IjdkZWY1ZGU1MTI0NTQ0ZjZiOTA3Y2ZiNWIyNDcwZTc4YThjY2RkYzRlMDk2NDNhNmFmYjVmMWNjZmZhMGE2ZGEiLCJzYWdhX3dhbGxldF9hZGRyZXNzIjoiMHg3ZmRmMmQwRWVhMDE3RTYxYTc4OTI4YmQyNDdDNzJjOTQ1NkE5ZUU1In19.W4yu4Dz1Bvzb5AKJCrwHpPkkBjR2b1LB9lYliiYrShsotsJ8KnBBO5TSQ9Jdmsp-QMp1ibX9euowVlEF9q97oA',
+            'authorization': config.authorization,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': 'cde0c75',
@@ -675,11 +675,15 @@ def create_avg_target_min(exchange_rate,limit):
                             buy_flag=True
                             us_price= us_price+1
                             buy_it_num=1
-                        elif create_target['offer_price']>=5 and create_target['offer_price']<15 and create_target['dm_buy_buff_sale_min_rate']>0.1  and create_target['price_alter_percentage_7d']<15:
+                        elif create_target['offer_price']>=5 and create_target['offer_price']<15 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<15:
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=1
-                        elif create_target['offer_price']>=15 and create_target['offer_price']<50 and create_target['dm_buy_buff_sale_min_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
+                        elif create_target['offer_price']>=15 and create_target['offer_price']<50 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<12 :
+                            buy_flag=True
+                            us_price= us_price+10
+                            buy_it_num=1
+                        elif create_target['offer_price']>=50 and create_target['offer_price']<200 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<12 :
                             buy_flag=True
                             us_price= us_price+10
                             buy_it_num=1
@@ -762,35 +766,25 @@ def export_json_to_excel(all_data,filename):
 if __name__ == '__main__':
     start_time=int(time.time())
     buff_file=data_path+skin_86_path
-    # 初始化数据
-    # Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=500,page=1,page_size=100,price_start=1,price_end=500,selling_num_start=200)
-
+    
 
     exchange_rate=find_us_exchange()
     
     print("当前的美元汇率是："+str(exchange_rate))
 
+
+    # # 初始化数据
+    # Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=500,page=0,page_size=100,price_start=10,price_end=200,selling_num_start=100)
     # thread_size=5
     # process_file_in_threads(thread_size,exchange_rate,None)
-
     # #导出市场数据
     # export_market_data()
 
-    # user_input = input("程序运行中 键入quit退出\n")
-    #     # 当用户输入"quit"后，等待线程完成
-    # if user_input == "quit":
-    #     print("程序执行完当前轮之后将退出")
-    #     exit()
-
-    # while True:
-    #     print("等待执行中")
-    #     time.sleep(360)  # 暂停 1 小时（360 秒）
-    #     print("开始执行数据"+datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    #     create_avg_target_min(exchange_rate,100)
-        
+ 
+   
 
     create_avg_target_min(exchange_rate,100)
-    create_avg_target_avg(exchange_rate,50)
+    # create_avg_target_avg(exchange_rate,50)
     end_time=int(time.time())
     print("运行时间："+str(end_time-start_time))
     # create_avg_target_now(exchange_rate,20)
