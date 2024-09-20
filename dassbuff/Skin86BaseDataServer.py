@@ -11,6 +11,7 @@ from zipfile import ZipFile
 import threading
 
 import config
+buff_file="data_local/skin_86_product_all.txt"
 
 
 
@@ -113,6 +114,18 @@ def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_sta
 
 
 
-buff_file="data_local/buff_market.json"
 
-get_skin_86_market_all(file_name=buff_file,limit_page=1,page=0,page_size=100,price_start=10,price_end=200,selling_num_start=100)
+
+def readBuffData():
+    result=[]
+    if os.path.exists(buff_file):
+        with open(buff_file, 'r', encoding='utf-8') as buff_file_reader:
+            for line in buff_file_reader:
+                json_data = json.loads(line)
+                result.append(json_data)
+    return result   
+            
+
+def sync_data():
+    print("开始同步数据")
+    get_skin_86_market_all(file_name=buff_file,limit_page=1,page=0,page_size=100,price_start=10,price_end=200,selling_num_start=100)
