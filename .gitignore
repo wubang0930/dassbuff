@@ -5,7 +5,6 @@ node_modules
 daassbuff/data/*
 .venv/*
 venv/*
-data_local/*
  
 # local env files
 .env.local
