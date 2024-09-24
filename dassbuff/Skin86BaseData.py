@@ -103,7 +103,7 @@ def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_sta
                         continue
                     
                 # 过滤掉印花 涂鸦 纪念品 胶囊
-                if '印花' in item['market_name'] or '涂鸦' in item['market_name'] or '纪念品' in item['market_name'] or '胶囊' in item['market_name']:
+                if '印花' in item['category_group_name'] or '涂鸦' in item['market_name'] or '纪念品' in item['market_name'] or '胶囊' in item['market_name'] or '探员' in item['category_group_name']:
                     continue
 
                 item_json=json.dumps(item, ensure_ascii=False)

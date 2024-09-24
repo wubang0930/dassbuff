@@ -595,7 +595,7 @@ def get_buff_data_file_name(dir_name):
 
 
 # 一行一行的读取json数组，并写入到excel中
-def create_avg_target_avg(exchange_rate,limit):
+def create_avg_target_avg(exchange_rate):
     print("开始创建采购单数据-平均价")
     
     all_data=[]
@@ -638,13 +638,12 @@ def create_avg_target_avg(exchange_rate,limit):
                             create_target['buy_it']=round(us_price/100*exchange_rate,2)
                             create_target_list.append(create_target)
                             break
-    filename=config.data_local_excel+"/creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-    creat_now(create_target_list,filename,limit,"avg")
+    return create_target_list
     
 
 
 # 一行一行的读取json数组，并写入到excel中
-def create_avg_target_min(exchange_rate,limit):
+def create_avg_target_min(exchange_rate):
     print("开始创建采购单数据-最低价")
     
     all_data=[]
@@ -691,18 +690,15 @@ def create_avg_target_min(exchange_rate,limit):
                             create_target['buy_it']=round(us_price/100*exchange_rate,2)
                             create_target_list.append(create_target)
                             break
-    filename=config.data_local_excel+"/creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-    creat_now(create_target_list,filename,limit,"min")
+    
+    return create_target_list
+
 
 
 
 def creat_now(create_target_list,filename,limit,type):
     create_num=1
     for now_target in create_target_list:
-        if '探员' in now_target['title']:
-            print("跳过探员不购买："+now_target['title'])
-            continue
-
         if create_num>=limit:
             print("已经创建采购单数量达到"+str(limit)+"个，退出循环")
             break
@@ -758,28 +754,46 @@ def export_json_to_excel(all_data,filename):
 
 
 
-
-if __name__ == '__main__':
-    start_time=int(time.time())
-    
-
+def sync_data(limit_page=10,page=1,page_size=10,price_start=1,price_end=200,selling_num_start=100):
     exchange_rate=find_us_exchange()
-    
     print("当前的美元汇率是："+str(exchange_rate))
-
-
     # # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=1,page=0,page_size=10,price_start=10,price_end=200,selling_num_start=100)
+    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=limit_page,page=page,page_size=page_size,price_start=price_start,price_end=price_end,selling_num_start=selling_num_start)
     thread_size=5
     process_file_in_threads(thread_size,exchange_rate)
     #导出市场数据
     export_market_data()
 
- 
-   
+    
 
-    create_avg_target_min(exchange_rate,100)
-    # create_avg_target_avg(exchange_rate,50)
+
+    
+
+
+
+
+
+if __name__ == '__main__':
+# def start():    
+    start_time=int(time.time())
+    
+
+    exchange_rate=find_us_exchange()
+    print("当前的美元汇率是："+str(exchange_rate))
+    # # 初始化数据
+    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=500,page=0,page_size=100,price_start=0.5,price_end=200,selling_num_start=100)
+    thread_size=5
+    process_file_in_threads(thread_size,exchange_rate)
+    #导出市场数据
+    export_market_data()
+
+    create_target_list=create_avg_target_min(exchange_rate)
+    filename=config.data_local_excel+"/creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    creat_now(create_target_list,filename,100,"min")
+    
+    create_avg_target_avg(exchange_rate)
+    filename=config.data_local_excel+"/creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    creat_now(create_target_list,filename,50,"avg")
     end_time=int(time.time())
     print("运行时间："+str(end_time-start_time))
     # create_avg_target_now(exchange_rate,20)

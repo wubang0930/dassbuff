@@ -203,38 +203,39 @@ def add_my_sell_List(items=[]):
 
 if __name__ == '__main__':
     # # dmarket能提现到steam的物品
-    # treeFilters="itemLocation[]=true,tradeLockTo[]=0"
+    title=""
+    treeFilters="itemLocation[]=true,tradeLockTo[]=0"
 
 
     # steam库存添加售卖
     # title=""
     # treeFilters="itemLocation[]=false"
 
-    # my_invert_list=get_my_invert_List(title="",limit=100,treeFilters=treeFilters)
-    # if my_invert_list is None or len(my_invert_list) == 0: 
-    #     print("获取当前的采购饰品情况失败")
-    #     exit()
+    my_invert_list=get_my_invert_List(title=title,limit=100,treeFilters=treeFilters)
+    if my_invert_list is None or len(my_invert_list) == 0: 
+        print("获取当前的采购饰品情况失败")
+        exit()
     
-    # user_input = input("准备开始添加到处理清单数量"+str(len(my_invert_list))+"，请输入Y确认：\n")
-    # # 开始添加到出售清单
-    # if user_input == "Y":
-    #     print("开始添加")
-    #     add_my_invert_List(items=my_invert_list)
-    #     print("开始添加结束")
-    #     exit()
+    user_input = input("准备开始添加到处理清单数量"+str(len(my_invert_list))+"，请输入Y确认：\n")
+    # 开始添加到出售清单
+    if user_input == "Y":
+        print("开始添加")
+        add_my_invert_List(items=my_invert_list)
+        print("开始添加结束")
+        exit()
 
 
     # 获取当前的出售单
-    my_invert_list=get_my_offer_List(title="USP-S | Ticket to Hell (Minimal Wear)",limit=100)
-    print(my_invert_list)
-    if my_invert_list is None or len(my_invert_list) == 0: 
-        print("获取当前的出售单情况失败")
-        exit()
+    # my_invert_list=get_my_offer_List(title="USP-S | Ticket to Hell (Minimal Wear)",limit=100)
+    # print(my_invert_list)
+    # if my_invert_list is None or len(my_invert_list) == 0: 
+    #     print("获取当前的出售单情况失败")
+    #     exit()
     
-    user_input = input("准备开始添加到出售清单数量"+str(len(my_invert_list))+"，请输入Y确认：\n")
-    # 开始添加到出售清单
-    if user_input == "Y":
-        print("开始添加") 
-        add_my_sell_List(items=my_invert_list)
-        print("开始添加结束")
-        exit()
+    # user_input = input("准备开始添加到出售清单数量"+str(len(my_invert_list))+"，请输入Y确认：\n")
+    # # 开始添加到出售清单
+    # if user_input == "Y":
+    #     print("开始添加") 
+    #     add_my_sell_List(items=my_invert_list)
+    #     print("开始添加结束")
+    #     exit()
