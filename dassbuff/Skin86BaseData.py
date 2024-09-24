@@ -67,7 +67,7 @@ def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_sta
         os.remove(file_name)
 
     all_list=[]
-    with open("data/cs_product_all_name.txt", 'r', encoding='utf-8') as all_name_file:
+    with open(config.cs_product_all_name, 'r', encoding='utf-8') as all_name_file:
         for line in all_name_file:
             all_list.append(line.strip())
 

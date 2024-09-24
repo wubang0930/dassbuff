@@ -3,24 +3,6 @@ from tkinter import ttk
 import json
 import Skin86BaseDataServer
 import time
-import os
-import config
-
-def initFile():
-    print("文件初始化")
-    if not os.path.exists(config.data_local):
-        os.makedirs(config.data_local)
-
-    if not os.path.exists(config.data_local_excel):
-        os.makedirs(config.data_local_excel)
-
-    if not os.path.exists(config.data_local_analysis):
-        os.makedirs(config.data_local_analysis)
-
-
-
-    
-
 
 class TabbedApp:
     def __init__(self, root):
@@ -86,7 +68,7 @@ class TabbedApp:
         self.tree1.configure(yscrollcommand=y_scroll.set)
 
         # 布局
-        self.tree1.grid(row=3,columnspan=3,rowspan =20, column=0,padx=30, pady=30,ipadx=10,ipady=10)
+        self.tree1.grid(row=3,columnspan=3,rowspan =20, column=0,padx=30, pady=30,ipadx=10,ipady=10,sticky=tk.NSEW)
 
 
 
@@ -138,7 +120,6 @@ def sync_data(sync_button):
 
     
 if __name__ == "__main__":
-    initFile()
     root = tk.Tk()
     root.geometry("1300x700")
     app = TabbedApp(root)

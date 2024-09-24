@@ -25,8 +25,9 @@ searchUnit="D"  #查询单位
 
 all_list=[]
 
-data_path="E:/pythonFile/python/python_data/dassbuff/data"
-skin_86_path="/analysis/skin_86_product_all.txt"
+buff_file=config.skin_86_product_all
+buff_filter_file=config.buff_filter_file
+
 
 filter_num=30   #过滤平均销量大于30的数量
 filter_list=[]   #过滤平均销量大于30的列表
@@ -57,7 +58,7 @@ def get_offer_from_market_average(day,title):
 
 
 # 查询指定天数的平均销量数据，并构建目标数据
-def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchange_rate,target_list):
+def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchange_rate):
     # print(market_price)
     if market_price is None or market_price["totalSales"] is None:
         print(threading.current_thread().name+"近期销售数据为空")
@@ -316,27 +317,22 @@ def get_target_market(title,exchange_rate):
 
 
 
-def process_file_in_threads(thread_size,exchange_rate,target_list):
-    origin_file_path=data_path+skin_86_path
-    target_file_path=data_path+"/analysis/skin_86_filter_file.txt"
+def process_file_in_threads(thread_size,exchange_rate):
 
-    if os.path.exists(target_file_path):
-        os.remove(target_file_path)
-        open(target_file_path,'w',encoding='utf-8')
+    if os.path.exists(buff_filter_file):
+        os.remove(buff_filter_file)
+        open(buff_filter_file,'w',encoding='utf-8')
     else:
-        open(target_file_path,'w',encoding='utf-8')
+        open(buff_filter_file,'w',encoding='utf-8')
     
     # 读取文件A的所有行
-    with open(origin_file_path, 'r',encoding='utf-8') as fileA:
+    with open(buff_file, 'r',encoding='utf-8') as fileA:
         lines = fileA.readlines()
 
     # 过滤印花
     filter_list=[]
     for line in lines:
-        if "印花" not in line and '涂鸦' not in line :
-            filter_list.append(line)
-
-
+        filter_list.append(line)
 
 
     chunk_size = len(filter_list) // thread_size  # 这里除以线程数10
@@ -355,7 +351,7 @@ def process_file_in_threads(thread_size,exchange_rate,target_list):
         chunks = filter_list[start:end]
         
         # 创建线程
-        thread = threading.Thread(target=process_line, args=(chunks,exchange_rate,target_list,target_file_path))
+        thread = threading.Thread(target=process_line, args=(chunks,exchange_rate))
         threads.append(thread)
         thread.start()  # 启动线程
 
@@ -367,7 +363,7 @@ def process_file_in_threads(thread_size,exchange_rate,target_list):
 # 锁，用于同步写入文件B
 write_lock = threading.Lock()
 
-def process_line(chunks,exchange_rate,target_list,target_file_path):
+def process_line(chunks,exchange_rate):
     # print(threading.current_thread().name+"开始处理数据")
 
     
@@ -383,7 +379,7 @@ def process_line(chunks,exchange_rate,target_list,target_file_path):
             # key_info=get_current_market(limit="10",title=base_filter_line_date['en_name'])
             target_info=get_target_market(title=skin_json['en_name'],exchange_rate=exchange_rate)
             # print(threading.current_thread().name+":"+str(target_info))
-            correlationd_data=build_target_body_from_offer_avarage(buff_price=skin_json,market_price=market_price,key_info=target_info,exchange_rate=exchange_rate,target_list=target_list)
+            correlationd_data=build_target_body_from_offer_avarage(buff_price=skin_json,market_price=market_price,key_info=target_info,exchange_rate=exchange_rate)
             
 
                 # #平均价购买，判断 0.5<当前价<5 且 当前价率>0.2 且小于1   当前价购买了，评价就不去购买了
@@ -397,7 +393,7 @@ def process_line(chunks,exchange_rate,target_list,target_file_path):
 
             # 写入结果到文件B
             with write_lock:
-                with open(target_file_path, 'a',encoding='utf-8') as fileB:
+                with open(buff_filter_file, 'a',encoding='utf-8') as fileB:
                     fileB.write(json.dumps(correlationd_data,ensure_ascii=False)+"\n")
 
         except json.JSONDecodeError as e:
@@ -488,12 +484,12 @@ chinese_columns = {
 # 一行一行的读取json数组，并写入到excel中
 def export_market_data():
     print("开始创建采购单数据")
-    filename=data_path+"/excel/"+"dmakert_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    filename=config.data_local_excel+"/dmakert_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
     all_data=[]
 
 
     # 打开文件准备读取
-    with open(data_path+'/analysis/skin_86_filter_file.txt', 'r', encoding='utf-8') as file:
+    with open(buff_filter_file, 'r', encoding='utf-8') as file:
        for line in file:
            json_data=json.loads(line.replace("\\b",""))
            for single in json_data:
@@ -542,58 +538,58 @@ def get_buff_data_file_name(dir_name):
         print(e)
     
 
-def down_buff_zip_file(dir_name,file_name):
-    print("开始下载buff数据,dir_name:"+dir_name+",file_name:"+file_name)
-    try:
-            # 设置API endpoint
-        key="M04VML9CQ683EA47X2E5"
-        url = "https://api.iflow.work/export/download"
-        params = {
-            'dir_name': dir_name,
-            'file_name': file_name,
-            'key': key
-        }
-                # 下载文件的临时路径
-        temp_file_path = data_path+"/zip/temp.zip"
+# def down_buff_zip_file(dir_name,file_name):
+#     print("开始下载buff数据,dir_name:"+dir_name+",file_name:"+file_name)
+#     try:
+#             # 设置API endpoint
+#         key="M04VML9CQ683EA47X2E5"
+#         url = "https://api.iflow.work/export/download"
+#         params = {
+#             'dir_name': dir_name,
+#             'file_name': file_name,
+#             'key': key
+#         }
+#                 # 下载文件的临时路径
+#         temp_file_path = data_path+"/zip/temp.zip"
 
-        # 最终保存的文件名
-        final_file_name=data_path+"/zip/"+"buff_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".zip"
+#         # 最终保存的文件名
+#         final_file_name=data_path+"/zip/"+"buff_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".zip"
         
-        # 解压缩到的目标文件夹
-        extract_dir = data_path+"/analysis/"
-        extract_file = "1_cs_buff_uu_c5_base.json"
-        file_path = os.path.join(extract_dir, extract_file)
+#         # 解压缩到的目标文件夹
+#         extract_dir = data_path+"/analysis/"
+#         extract_file = "1_cs_buff_uu_c5_base.json"
+#         file_path = os.path.join(extract_dir, extract_file)
 
-        zip_json_path = os.path.join(extract_dir, file_name.replace(".zip", ".json"))
+#         zip_json_path = os.path.join(extract_dir, file_name.replace(".zip", ".json"))
         
 
-        # 发送GET请求并下载文件
-        response = requests.get(url, params=params, stream=True)
-        if response.status_code == 200:
-            # 以二进制写模式打开文件，并写入内容
-            with open(temp_file_path, "wb") as file:
-                for chunk in response.iter_content(chunk_size=8192):
-                    file.write(chunk)
+#         # 发送GET请求并下载文件
+#         response = requests.get(url, params=params, stream=True)
+#         if response.status_code == 200:
+#             # 以二进制写模式打开文件，并写入内容
+#             with open(temp_file_path, "wb") as file:
+#                 for chunk in response.iter_content(chunk_size=8192):
+#                     file.write(chunk)
             
-            # 重命名文件
-            shutil.move(temp_file_path, final_file_name)
+#             # 重命名文件
+#             shutil.move(temp_file_path, final_file_name)
             
-            # 解压文件
-            with ZipFile(final_file_name, 'r') as zip_ref:
-                # 如果extract_dir已经存在，先清空该文件夹
-                # if os.path.exists(file_path):
-                #     shutil.rmtree(file_path)
-                #     print('该文件已存在，删除：'+extract_file)
+#             # 解压文件
+#             with ZipFile(final_file_name, 'r') as zip_ref:
+#                 # 如果extract_dir已经存在，先清空该文件夹
+#                 # if os.path.exists(file_path):
+#                 #     shutil.rmtree(file_path)
+#                 #     print('该文件已存在，删除：'+extract_file)
                 
-                # 解压文件到指定文件夹，并覆盖已有文件
-                zip_ref.extractall(extract_dir)
-                shutil.move(zip_json_path, file_path)
-        else:
-            print(f"Failed to download file, status code: {response.status_code}")
+#                 # 解压文件到指定文件夹，并覆盖已有文件
+#                 zip_ref.extractall(extract_dir)
+#                 shutil.move(zip_json_path, file_path)
+#         else:
+#             print(f"Failed to download file, status code: {response.status_code}")
 
-        print("Download and extraction complete.")
-    except Exception as e:
-        print(e)
+#         print("Download and extraction complete.")
+#     except Exception as e:
+#         print(e)
 
 
 
@@ -608,7 +604,7 @@ def create_avg_target_avg(exchange_rate,limit):
 
     create_num=0
     # 打开文件准备读取
-    with open(data_path+'/analysis/skin_86_filter_file.txt', 'r', encoding='utf-8') as file:
+    with open(buff_filter_file, 'r', encoding='utf-8') as file:
        for line in file:
            json_data=json.loads(line.replace("\\b",""))
            if len(json_data)>0:
@@ -642,7 +638,7 @@ def create_avg_target_avg(exchange_rate,limit):
                             create_target['buy_it']=round(us_price/100*exchange_rate,2)
                             create_target_list.append(create_target)
                             break
-    filename=data_path+"/excel/"+"creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    filename=config.data_local_excel+"/creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
     creat_now(create_target_list,filename,limit,"avg")
     
 
@@ -657,7 +653,7 @@ def create_avg_target_min(exchange_rate,limit):
 
     create_num=0
     # 打开文件准备读取
-    with open(data_path+'/analysis/skin_86_filter_file.txt', 'r', encoding='utf-8') as file:
+    with open(buff_filter_file, 'r', encoding='utf-8') as file:
        for line in file:
            json_data=json.loads(line.replace("\\b",""))
            if len(json_data)>0:
@@ -695,7 +691,7 @@ def create_avg_target_min(exchange_rate,limit):
                             create_target['buy_it']=round(us_price/100*exchange_rate,2)
                             create_target_list.append(create_target)
                             break
-    filename=data_path+"/excel/"+"creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    filename=config.data_local_excel+"/creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
     creat_now(create_target_list,filename,limit,"min")
 
 
@@ -765,7 +761,6 @@ def export_json_to_excel(all_data,filename):
 
 if __name__ == '__main__':
     start_time=int(time.time())
-    buff_file=data_path+skin_86_path
     
 
     exchange_rate=find_us_exchange()
@@ -774,11 +769,11 @@ if __name__ == '__main__':
 
 
     # # 初始化数据
-    # Skin86BaseData.get_skin_86_market_all(file_name=buff_file,limit_page=500,page=0,page_size=100,price_start=10,price_end=200,selling_num_start=100)
-    # thread_size=5
-    # process_file_in_threads(thread_size,exchange_rate,None)
-    # #导出市场数据
-    # export_market_data()
+    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=1,page=0,page_size=10,price_start=10,price_end=200,selling_num_start=100)
+    thread_size=5
+    process_file_in_threads(thread_size,exchange_rate)
+    #导出市场数据
+    export_market_data()
 
  
    

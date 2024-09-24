@@ -30,25 +30,27 @@ filter_num=30   #过滤平均销量大于30的数量
 filter_list=[]   #过滤平均销量大于30的列表
 
 
-data_path="E:/pythonFile/python/python_data/dassbuff/data"
-file_name="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_list.txt"
-# buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_my_buy_list.txt"
-buff_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/skin_86_product_all.txt"
-my_buy_current_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_buy_current_list.txt"
-my_target_current_file="E:/pythonFile/python/python_data/dassbuff/data/analysis/my_target_current_list.txt"
+data_path=config.data_local
+file_name=config.data_local_analysis+"/my_buy_list.txt"
+buff_file=config.skin_86_product_all
+my_buy_current_file=config.data_local_analysis+"/my_buy_current_list.txt"
+my_target_current_file=config.data_local_analysis+"/my_target_current_list.txt"
 
 def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10):
     history_list=[]
     product_name_list=[]
 
-    with open("data/cs_product_all_name.txt", 'r', encoding='utf-8') as all_name_file:
+    with open(config.cs_product_all_name, 'r', encoding='utf-8') as all_name_file:
         for line in all_name_file:
             product_name_list.append(line.strip())
 
-    with open(file_name, 'r', encoding='utf-8') as my_buy_list_file:
-        for cur_data in my_buy_list_file:
-            json_item=json.loads(cur_data)
-            history_list.append(json_item)
+    if not os.path.exists(file_name):
+        open(file_name,'w',encoding='utf-8')
+    else:
+        with open(file_name, 'r', encoding='utf-8') as my_buy_list_file:
+            for cur_data in my_buy_list_file:
+                json_item=json.loads(cur_data)
+                history_list.append(json_item)
 
     page=1
     with open(file_name, 'a+', encoding='utf-8') as my_buy_list_file:
@@ -202,6 +204,7 @@ def find_target_price(target_list):
                 target_data['buff_price']=0.01
                 target_data['buff_price_divided']=0.01
                 target_data['buff_price_divided_rate']=0.01
+                target_data['cn_name']=""
 
                 if buff_info['en_name'] == target_data['title']:
                     target_data['cn_name']=buff_info['market_name']
@@ -501,16 +504,16 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,100)
+    create_my_buy_List_all(1,100,7.14,1)
     find_buy_price()
     export_json_to_excel()
 
 
     # # # 查看所有的采购单
-    # exchange_rate=bastPricetSellSkin86.find_us_exchange()
-    # target_list=get_my_target_List(exchange_rate)
-    # find_target_price(target_list)
-    # export_target_to_excel()
+    exchange_rate=bastPricetSellSkin86.find_us_exchange()
+    target_list=get_my_target_List(exchange_rate)
+    find_target_price(target_list)
+    export_target_to_excel()
 
 
     end_time=int(time.time())
