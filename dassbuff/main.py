@@ -7,7 +7,7 @@ import os
 import config
 from datetime import datetime
 import threading
-
+import offer_sell_product
 
 exchange_rate=7.10
 
@@ -27,7 +27,38 @@ def initFile():
 
 
 
-    
+class ScheduledTask:
+    def __init__(self, interval):
+        self.interval = interval  # 任务执行间隔（小时）
+        self.stop_event = threading.Event()  # 用于停止任务的事件
+        self.thread = None
+
+    def start(self,search_content,sync_button):
+        now = datetime.now()
+        if self.thread is None or not self.thread.is_alive():
+            self.stop_event.clear()  # 清除停止事件
+            self.thread = threading.Thread(target=self.run, args=(search_content,sync_button))
+            self.thread.daemon = True
+            self.thread.start()
+            print(str(now)+f"任务已开始，每 {self.interval} 小时执行一次。")
+
+    def run(self,search_content,sync_button):
+        while not self.stop_event.is_set():
+            self.execute_task(search_content,sync_button)  # 执行任务
+            time.sleep(self.interval)  # 等待指定时间
+
+    def execute_task(self,search_content,sync_button):
+        now = datetime.now()
+        print(str(now)+"：执行定时任务..."+search_content)  # 这里可以替换为实际的任务逻辑
+        timer_task_buy_min_data( search_content,sync_button)
+
+
+    def stop(self,sync_button):
+        sync_button.config(state=tk.NORMAL)
+        self.stop_event.set()  # 设置停止事件
+        print("任务已停止。")
+
+ 
 
 
 class TabbedApp:
@@ -37,8 +68,6 @@ class TabbedApp:
 
         # 创建一个标签框架
         self.tabControl = ttk.Notebook(self.root)
-        self.task = ScheduledTask(interval=5)
-
         # 创建多个标签页
         self.create_tab1()
         self.create_tab2()
@@ -47,9 +76,12 @@ class TabbedApp:
         self.tabControl.pack(expand=1, fill="both")
         root.grid_rowconfigure(0, weight=1)  # 设置行权重为1，使得 Treeview 可以伸缩
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.task_min = ScheduledTask(interval=100)
+    
+        
 
     def on_closing(self):
-        self.task.stop()
+        self.task_min.stop(self.sync_button_one)
         self.root.destroy()
         
     
@@ -60,37 +92,56 @@ class TabbedApp:
 
         # 查询部分
         query_label = tk.Label(tab1, text="查询内容平台:")
-        query_label.grid(row=0,columnspan=2, column=0)
+        query_label.grid(row=0,columnspan=3, column=0)
 
+        defualt_query = "1,1,10,0.5,200,100"
+        sync_query_one = tk.Entry(tab1,width=30,state=tk.DISABLED)
+        sync_query_one.grid(row=1, column=0,sticky=tk.E,padx=30)
         sync_query = tk.Entry(tab1,width=30)
-        sync_query.insert(0, "1,1,10,0.5,200,100")
-        sync_query.grid(row=1, column=0,sticky=tk.E,padx=30)
+        sync_query.insert(0, defualt_query)
+        sync_query.grid(row=1, column=1,sticky=tk.W,padx=30)
         sync_button = tk.Button(tab1, text="同步数据",width=15, command=lambda: sync_data(sync_query.get(), sync_button))
-        sync_button.grid(row=1,  column=1,sticky=tk.W)
+        sync_button.grid(row=1,  column=2,sticky=tk.W)
+        self.sync_button_one=sync_button
 
-        sync_query_time = tk.Entry(tab1,width=30)
-        sync_query_time.insert(0, "1")
+        
+
+
+        sync_query_time = tk.Entry(tab1,width=30,state=tk.DISABLED)
+        sync_query_time.insert(0, defualt_query)
         sync_query_time.grid(row=2, column=0,sticky=tk.E,padx=30)
-        start_button_time = tk.Button(tab1, text="定时同步",width=15, command=lambda: start_data_timer(sync_query.get(),sync_query_time.get(), stop_button_time,start_button_time,self.task))
-        start_button_time.grid(row=2,  column=1,sticky=tk.W)
-
-        stop_query_time = tk.Entry(tab1,width=30)
-        stop_query_time.insert(0, "1")
-        stop_query_time.grid(row=3, column=0,sticky=tk.E,padx=30)
-        stop_button_time = tk.Button(tab1, text="暂停同步",width=15, command=lambda: stop_data_timer(sync_query.get(),sync_query_time.get(), stop_button_time,start_button_time,self.task))
-        stop_button_time.grid(row=3,  column=1,sticky=tk.W)
+        start_button_time = tk.Button(tab1, text="定时采购最低价",width=15, command=lambda: start_data_timer(sync_query.get(),stop_button_time,start_button_time,self.task_min,sync_button))
+        start_button_time.grid(row=2,  column=1,sticky=tk.W,padx=30)
+        stop_button_time = tk.Button(tab1, text="暂停采购最低价",width=15, command=lambda: stop_data_timer(sync_query.get(), stop_button_time,start_button_time,self.task_min,sync_button))
+        stop_button_time.grid(row=2,  column=2,sticky=tk.W)
+        stop_button_time.config(state=tk.DISABLED)
 
 
-        search_min_button = tk.Button(tab1, text="查询采购最低价",width=15, command=lambda: search_min_data(None,self.tree1))
-        search_min_button.grid(row=4,  column=0,sticky=tk.E,padx=30)
-        buy_min_button = tk.Button(tab1, text="采购最低价",width=15, command=lambda: buy_min_data(None,self.tree1))
-        buy_min_button.grid(row=4,  column=1,sticky=tk.W)
+        # start_avg_query_time = tk.Entry(tab1,width=30)
+        # start_avg_query_time.insert(0, defualt_query)
+        # start_avg_query_time.grid(row=3, column=0,sticky=tk.E,padx=30)
+        # start_avg_button_time = tk.Button(tab1, text="定时采购平均价",width=15, command=lambda: start_avg_data_timer(sync_query.get(),start_avg_query_time.get(), stop_avg_button_time,start_avg_button_time,self.task_avg))
+        # start_avg_button_time.grid(row=3,  column=1,sticky=tk.W,padx=30)
+        # stop_avg_button_time = tk.Button(tab1, text="暂停采购平均价",width=15, command=lambda: stop_avg_data_timer(sync_query.get(),start_avg_query_time.get(), stop_avg_button_time,start_avg_button_time,self.task_avg))
+        # stop_avg_button_time.grid(row=3,  column=2,sticky=tk.W)
+        # stop_avg_button_time.config(state=tk.DISABLED)
+
+        search_min_button_query = tk.Entry(tab1,width=30)
+        search_min_button_query.insert(0, "")
+        search_min_button_query.grid(row=3, column=0,sticky=tk.E,padx=30)
+        search_min_button = tk.Button(tab1, text="查询采购最低价",width=15, command=lambda: search_min_data(search_min_button_query.get(),self.tree1))
+        search_min_button.grid(row=3,  column=1,sticky=tk.W,padx=30)
+        buy_min_button = tk.Button(tab1, text="采购最低价",width=15, command=lambda: buy_min_data(search_min_button_query.get()))
+        buy_min_button.grid(row=3,  column=2,sticky=tk.W)
 
 
-        search_avg_button = tk.Button(tab1, text="查询采购平均价",width=15, command=lambda: search_avg_data(None,self.tree1))
-        search_avg_button.grid(row=5, column=0,sticky=tk.E,padx=30)
-        buy_avg_button = tk.Button(tab1, text="采购平均价",width=15, command=lambda: buy_avg_data(None,self.tree1))
-        buy_avg_button.grid(row=5, column=1,sticky=tk.W)
+        search_avg_query = tk.Entry(tab1,width=30)
+        search_avg_query.insert(0, "")
+        search_avg_query.grid(row=4, column=0,sticky=tk.E,padx=30)
+        search_avg_button = tk.Button(tab1, text="查询采购平均价",width=15, command=lambda: search_avg_data(search_avg_query.get(),self.tree1))
+        search_avg_button.grid(row=4, column=1,sticky=tk.W,padx=30)
+        buy_avg_button = tk.Button(tab1, text="采购平均价",width=15, command=lambda: buy_avg_data(search_avg_query.get(),self.tree1))
+        buy_avg_button.grid(row=4, column=2,sticky=tk.W)
 
         
 
@@ -140,13 +191,63 @@ class TabbedApp:
         self.tree1.configure(yscrollcommand=y_scroll.set)
 
         # 布局
-        self.tree1.grid(row=6,columnspan=2,sticky=tk.NS,padx=30,pady=30)
+        self.tree1.grid(row=5,columnspan=3,sticky=tk.NS,padx=30,pady=30)
 
 
 
     def create_tab2(self):
         tab2 = ttk.Frame(self.tabControl)
-        self.tabControl.add(tab2, text='查询页面 2')
+        self.tabControl.add(tab2, text='库存')
+
+        # 查询部分
+        query_label_inve = tk.Label(tab2, text="库存平台:")
+        query_label_inve.grid(row=0,columnspan=4, column=0)
+
+
+
+        sync_query_time_add = tk.Entry(tab2,width=30)
+        sync_query_time_add.grid(row=1, column=0,sticky=tk.E,padx=30)
+        sync_query_time_add_limit = tk.Entry(tab2,width=30)
+        sync_query_time_add_limit.insert(0, "100")
+        sync_query_time_add_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
+        start_button_time_add = tk.Button(tab2, text="提现steam购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree1,"itemLocation[]=true,tradeLockTo[]=0"))
+        start_button_time_add.grid(row=1,  column=2,sticky=tk.W,padx=30)
+        stop_button_time_add = tk.Button(tab2, text="取消steam购物车",width=15, command=lambda: cancel_task_to_steam_cart(sync_query_time_add.get()))
+        stop_button_time_add.grid(row=1,  column=3,sticky=tk.W)
+
+
+        sync_query_time_sale = tk.Entry(tab2,width=30)
+        sync_query_time_sale.grid(row=2, column=0,sticky=tk.E,padx=30)
+        sync_query_time_sale_limit = tk.Entry(tab2,width=30)
+        sync_query_time_sale_limit.insert(0, "10")
+        sync_query_time_sale_limit.grid(row=2, column=1,sticky=tk.E,padx=30)
+        start_button_time_sale = tk.Button(tab2, text="出售DR购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),self.tree1,"itemLocation[]=false"))
+        start_button_time_sale.grid(row=2,  column=2,sticky=tk.W,padx=30)
+        stop_button_time_sale = tk.Button(tab2, text="取消出售DR购物车",width=15, command=lambda: cancel_task_to_sale_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),))
+        stop_button_time_sale.grid(row=2,  column=3,sticky=tk.W)
+        
+
+
+
+        # 列表展示部分
+        self.tree1 = ttk.Treeview(tab2, height=25, selectmode="browse",columns=("id", "title", "gameType", "price", "instantPrice"), show='headings')
+        # 创建滚动条
+        self.tree1.column("id", width=300, anchor='center')
+        self.tree1.column("title", width=300, anchor='center')
+        self.tree1.column("gameType", width=150, anchor='center')
+        self.tree1.column("price", width=150, anchor='center')
+        self.tree1.column("instantPrice", width=150, anchor='center')
+
+        self.tree1.heading("id", text="英文名称")
+        self.tree1.heading("title", text="名称")
+        self.tree1.heading("gameType", text="饰品类型")
+        self.tree1.heading("price", text="价格")
+        self.tree1.heading("instantPrice", text="即时销售价格")
+        self.display_data1(None, self.tree1)
+
+        # 布局
+        self.tree1.grid(row=3,columnspan=4,sticky=tk.NS,padx=30,pady=30)
+
 
        
 
@@ -155,7 +256,50 @@ class TabbedApp:
         print("显示数据")
       
 
+def add_task_to_steam_cart(content,limit,tree,treeFilters):
+    print("添加任务到steam购物车"+content+limit)
+    if content is None:
+        title=""
+    else:
+        title=content
+
+    my_invert_list=offer_sell_product.get_my_invert_List(title=title,limit=limit,treeFilters=treeFilters)
+    if my_invert_list is None or len(my_invert_list) == 0: 
+        print("获取当前的采购饰品情况失败")
+        return
+
+    for item in tree.get_children():
+        tree.delete(item)
+            # 将新的数据插入到表格中
+
+    for entry in my_invert_list:
+        print(entry)
+        if entry["price"]['USD'] is not None or entry["price"]['USD']!="":
+            price=int(entry["price"]['USD'])/100
+        
+        if entry["instantPrice"]['USD'] is not None or entry["instantPrice"]['USD']!="":
+            instantPrice=int(entry["instantPrice"]['USD'])/100
+
+        tree.insert("", "end", values=(entry["itemId"],entry["title"],entry["gameType"],price,instantPrice))
     
+    add_list=[]
+    for item in my_invert_list:
+        print(item['itemId'])
+        add_list.append(item['itemId'])
+    
+    print(add_list)
+    # offer_sell_product.add_my_invert_List(items=add_list)
+
+
+    print("添加任务到steam购物车")
+
+def cancel_task_to_steam_cart(content,limit):
+    print("添加任务到steam购物车")
+
+
+def cancel_task_to_sale_cart(content,limit):
+    print("添加任务到steam购物车")
+
 
 def search_min_data(query, tree):
     print("采购最低价")
@@ -163,7 +307,6 @@ def search_min_data(query, tree):
     if create_target_list is None or len(create_target_list)==0 :
         print("没有数据")
         return
-    
     # 清空之前的数据
     for item in tree.get_children():
         tree.delete(item)
@@ -175,13 +318,25 @@ def search_min_data(query, tree):
         elif query in entry["drtitle"] or query in entry["title"] or query in entry["category_group_name"]:  # 基于查询内容过滤数据
             tree.insert("", "end", values=(entry["drtitle"],entry["title"], entry["totalSales"], entry["date"], entry["offer_price"], entry["target_price"], entry["buff_avg_price"], entry["dm_buy_buff_sale_avg"], entry["dm_buy_buff_sale_avg_rate"], entry["dm_buy_buff_sale_min"], entry["dm_buy_buff_sale_min_rate"], entry["price_alter_percentage_7d"], entry["price_alter_value_7d"], entry["category_group_name"]))
     
-    
 
-def buy_min_data( query,tree):
+def timer_task_buy_min_data( query,sync_button):
+    sync_data(query, sync_button)
+    buy_min_data( None)
+
+
+def buy_min_data( query):
     print("开始采购")
     create_target_list=bastPricetSellSkin86.create_avg_target_min(exchange_rate)
+
+    filter_list=[]
+    for entry in create_target_list:
+        if query is None:
+            filter_list=create_target_list
+        elif query in entry["drtitle"] or query in entry["title"] or query in entry["category_group_name"]:  # 基于查询内容过滤数据
+            filter_list.append(entry)
+
     filename=config.data_local_excel+"/creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-    bastPricetSellSkin86.creat_now(create_target_list,filename,100,"min")
+    bastPricetSellSkin86.creat_now(filter_list,filename,100,"min")
 
 
 def search_avg_data( query,tree):
@@ -207,57 +362,46 @@ def buy_avg_data( query,tree):
     print("购买平均价")
     create_avg_target_list=bastPricetSellSkin86.create_avg_target_avg(exchange_rate)
     filename=config.data_local_excel+"/creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-    bastPricetSellSkin86.creat_now(create_avg_target_list,filename,50,"avg")
+
+    filter_list=[]
+    for entry in create_avg_target_list:
+        if query is None:
+            filter_list=create_avg_target_list
+        elif query in entry["drtitle"] or query in entry["title"] or query in entry["category_group_name"]:  # 基于查询内容过滤数据
+            filter_list.append(entry)
+
+
+    bastPricetSellSkin86.creat_now(filter_list,filename,50,"avg")
 
 
 
-def start_data_timer(search_content, timer,stop_button_time,start_button_time,task):
+def start_data_timer(search_content, stop_button_time,start_button_time,task,sync_button):
       # 每 5 秒执行一次任务
     start_button_time.config(state=tk.DISABLED)
-    task.start()
+    task.start(search_content,sync_button)
     stop_button_time.config(state=tk.NORMAL)
 
 
-def stop_data_timer(search_content, timer,stop_button_time,start_button_time,task):
+def stop_data_timer(search_content, stop_button_time,start_button_time,task,sync_button):
     stop_button_time.config(state=tk.DISABLED)
-    task.stop()
+    task.stop(sync_button)
     start_button_time.config(state=tk.NORMAL)
     
 
 
-def testTimer(search_content):
-    print("开始同步")
-    while True:
-        time.sleep(1)
-        print("定时同步中："+search_content)
+# def start_avg_data_timer(search_content, timer,stop_button_time,start_button_time,task):
+#       # 每 5 秒执行一次任务
+#     start_button_time.config(state=tk.DISABLED)
+#     task.start()
+#     stop_button_time.config(state=tk.NORMAL)
 
 
-class ScheduledTask:
-    def __init__(self, interval):
-        self.interval = interval  # 任务执行间隔（秒）
-        self.stop_event = threading.Event()  # 用于停止任务的事件
-        self.thread = None
+# def stop_avg_data_timer(search_content, timer,stop_button_time,start_button_time,task):
+#     stop_button_time.config(state=tk.DISABLED)
+#     task.stop()
+#     start_button_time.config(state=tk.NORMAL)
+    
 
-    def start(self):
-        if self.thread is None or not self.thread.is_alive():
-            self.stop_event.clear()  # 清除停止事件
-            self.thread = threading.Thread(target=self.run)
-            self.thread.start()
-            print(f"任务已开始，每 {self.interval} 秒执行一次。")
-
-    def run(self):
-        while not self.stop_event.is_set():
-            self.execute_task()  # 执行任务
-            time.sleep(self.interval)  # 等待指定时间
-
-    def execute_task(self):
-        print("执行任务...")  # 这里可以替换为实际的任务逻辑
-
-    def stop(self):
-        self.stop_event.set()  # 设置停止事件
-        if self.thread is not None:
-            self.thread.join()  # 等待线程结束
-        print("任务已停止。")
 
 
 def sync_data(search_content, sync_button):    

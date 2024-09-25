@@ -64,7 +64,6 @@ def get_my_offer_List(title="",limit=50):
 
 # 获取当前的库存
 def get_my_invert_List(title="",limit=50,treeFilters=""):
-    result_list=[]
     try:
         # 设置请求的URL
         url = 'https://api.dmarket.com/exchange/v1/user/items'
@@ -110,12 +109,8 @@ def get_my_invert_List(title="",limit=50,treeFilters=""):
         # print(response.text)
         reponse_json = json.loads(response.text)
         offers=reponse_json['objects']
-
-        for offer in offers:
-            print(offer['title'])
-            result_list.append(offer['itemId'])
         
-        return result_list
+        return offers
     except Exception as e:
         print(e)
         return None
@@ -215,12 +210,17 @@ if __name__ == '__main__':
     if my_invert_list is None or len(my_invert_list) == 0: 
         print("获取当前的采购饰品情况失败")
         exit()
+    add_list=[]
+    for item in my_invert_list:
+        print(item['item'])
+        add_list.append(item['itemId'])
+
     
-    user_input = input("准备开始添加到处理清单数量"+str(len(my_invert_list))+"，请输入Y确认：\n")
+    user_input = input("准备开始添加到处理清单数量"+str(len(add_list))+"，请输入Y确认：\n")
     # 开始添加到出售清单
     if user_input == "Y":
         print("开始添加")
-        add_my_invert_List(items=my_invert_list)
+        add_my_invert_List(items=add_list)
         print("开始添加结束")
         exit()
 
