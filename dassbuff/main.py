@@ -29,7 +29,7 @@ def initFile():
 
 class ScheduledTask:
     def __init__(self, interval):
-        self.interval = interval  # 任务执行间隔（小时）
+        self.interval = int(interval)*60*60  # 任务执行间隔（小时）
         self.stop_event = threading.Event()  # 用于停止任务的事件
         self.thread = None
 
@@ -40,7 +40,7 @@ class ScheduledTask:
             self.thread = threading.Thread(target=self.run, args=(search_content,sync_button))
             self.thread.daemon = True
             self.thread.start()
-            print(str(now)+f"任务已开始，每 {self.interval} 小时执行一次。")
+            print(str(now)+f"任务已开始，每 {self.interval/3600} 小时执行一次。")
 
     def run(self,search_content,sync_button):
         while not self.stop_event.is_set():
@@ -76,7 +76,6 @@ class TabbedApp:
         self.tabControl.pack(expand=1, fill="both")
         root.grid_rowconfigure(0, weight=1)  # 设置行权重为1，使得 Treeview 可以伸缩
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
-        self.task_min = ScheduledTask(interval=100)
     
         
 
@@ -94,8 +93,9 @@ class TabbedApp:
         query_label = tk.Label(tab1, text="查询内容平台:")
         query_label.grid(row=0,columnspan=3, column=0)
 
-        defualt_query = "1,1,10,0.5,200,100"
-        sync_query_one = tk.Entry(tab1,width=30,state=tk.DISABLED)
+        defualt_query = "200,1,100,0.5,200,100"
+        sync_query_one = tk.Entry(tab1,width=30)
+        sync_query_one.insert(0, "8")
         sync_query_one.grid(row=1, column=0,sticky=tk.E,padx=30)
         sync_query = tk.Entry(tab1,width=30)
         sync_query.insert(0, defualt_query)
@@ -104,6 +104,7 @@ class TabbedApp:
         sync_button.grid(row=1,  column=2,sticky=tk.W)
         self.sync_button_one=sync_button
 
+        self.task_min = ScheduledTask(interval=sync_query_one.get())
         
 
 
@@ -210,43 +211,43 @@ class TabbedApp:
         sync_query_time_add_limit = tk.Entry(tab2,width=30)
         sync_query_time_add_limit.insert(0, "100")
         sync_query_time_add_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
-        start_button_time_add = tk.Button(tab2, text="提现steam购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree1,"itemLocation[]=true,tradeLockTo[]=0"))
+        start_button_time_add = tk.Button(tab2, text="查询提现购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree2,"itemLocation[]=true,tradeLockTo[]=0"))
         start_button_time_add.grid(row=1,  column=2,sticky=tk.W,padx=30)
-        stop_button_time_add = tk.Button(tab2, text="取消steam购物车",width=15, command=lambda: cancel_task_to_steam_cart(sync_query_time_add.get()))
+        stop_button_time_add = tk.Button(tab2, text="确认提现",width=15, command=lambda: confirm_task_to_steam_cart())
         stop_button_time_add.grid(row=1,  column=3,sticky=tk.W)
 
 
         sync_query_time_sale = tk.Entry(tab2,width=30)
         sync_query_time_sale.grid(row=2, column=0,sticky=tk.E,padx=30)
         sync_query_time_sale_limit = tk.Entry(tab2,width=30)
-        sync_query_time_sale_limit.insert(0, "10")
+        sync_query_time_sale_limit.insert(0, "100")
         sync_query_time_sale_limit.grid(row=2, column=1,sticky=tk.E,padx=30)
-        start_button_time_sale = tk.Button(tab2, text="出售DR购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),self.tree1,"itemLocation[]=false"))
+        start_button_time_sale = tk.Button(tab2, text="查询出售购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),self.tree2,"itemLocation[]=false,tradeLockTo[]=0"))
         start_button_time_sale.grid(row=2,  column=2,sticky=tk.W,padx=30)
-        stop_button_time_sale = tk.Button(tab2, text="取消出售DR购物车",width=15, command=lambda: cancel_task_to_sale_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),))
+        stop_button_time_sale = tk.Button(tab2, text="确认出售购物车",width=15, command=lambda: confirm_task_to_sale_cart())
         stop_button_time_sale.grid(row=2,  column=3,sticky=tk.W)
         
 
 
 
         # 列表展示部分
-        self.tree1 = ttk.Treeview(tab2, height=25, selectmode="browse",columns=("id", "title", "gameType", "price", "instantPrice"), show='headings')
+        self.tree2 = ttk.Treeview(tab2, height=25, selectmode="browse",columns=("id", "title", "gameType", "price", "instantPrice"), show='headings')
         # 创建滚动条
-        self.tree1.column("id", width=300, anchor='center')
-        self.tree1.column("title", width=300, anchor='center')
-        self.tree1.column("gameType", width=150, anchor='center')
-        self.tree1.column("price", width=150, anchor='center')
-        self.tree1.column("instantPrice", width=150, anchor='center')
+        self.tree2.column("id", width=300, anchor='center')
+        self.tree2.column("title", width=300, anchor='center')
+        self.tree2.column("gameType", width=150, anchor='center')
+        self.tree2.column("price", width=150, anchor='center')
+        self.tree2.column("instantPrice", width=150, anchor='center')
 
-        self.tree1.heading("id", text="英文名称")
-        self.tree1.heading("title", text="名称")
-        self.tree1.heading("gameType", text="饰品类型")
-        self.tree1.heading("price", text="价格")
-        self.tree1.heading("instantPrice", text="即时销售价格")
-        self.display_data1(None, self.tree1)
+        self.tree2.heading("id", text="英文名称")
+        self.tree2.heading("title", text="名称")
+        self.tree2.heading("gameType", text="饰品类型")
+        self.tree2.heading("price", text="价格")
+        self.tree2.heading("instantPrice", text="即时销售价格")
+        self.display_data1(None, self.tree2)
 
         # 布局
-        self.tree1.grid(row=3,columnspan=4,sticky=tk.NS,padx=30,pady=30)
+        self.tree2.grid(row=3,columnspan=4,sticky=tk.NS,padx=30,pady=30)
 
 
        
@@ -255,8 +256,11 @@ class TabbedApp:
     def display_data1(self, query, tree):
         print("显示数据")
       
+add_list=[]
 
 def add_task_to_steam_cart(content,limit,tree,treeFilters):
+    add_list.clear()
+
     print("添加任务到steam购物车"+content+limit)
     if content is None:
         title=""
@@ -275,14 +279,14 @@ def add_task_to_steam_cart(content,limit,tree,treeFilters):
     for entry in my_invert_list:
         print(entry)
         if entry["price"]['USD'] is not None or entry["price"]['USD']!="":
-            price=int(entry["price"]['USD'])/100
+            price=round(int(entry["price"]['USD'])/100*exchange_rate,2)
         
-        if entry["instantPrice"]['USD'] is not None or entry["instantPrice"]['USD']!="":
-            instantPrice=int(entry["instantPrice"]['USD'])/100
+        if entry["recommendedPrice"]['offerPrice']['USD'] is not None or entry["recommendedPrice"]['offerPrice']['USD']!="":
+            instantPrice=round(int(entry["recommendedPrice"]['offerPrice']['USD'])/100*exchange_rate,2)
 
         tree.insert("", "end", values=(entry["itemId"],entry["title"],entry["gameType"],price,instantPrice))
     
-    add_list=[]
+    
     for item in my_invert_list:
         print(item['itemId'])
         add_list.append(item['itemId'])
@@ -291,26 +295,33 @@ def add_task_to_steam_cart(content,limit,tree,treeFilters):
     # offer_sell_product.add_my_invert_List(items=add_list)
 
 
+    print("查询列表成功")
+
+def confirm_task_to_steam_cart():
+    offer_sell_product.add_my_invert_List(items=add_list)
+    add_list.clear()
     print("添加任务到steam购物车")
 
-def cancel_task_to_steam_cart(content,limit):
-    print("添加任务到steam购物车")
 
-
-def cancel_task_to_sale_cart(content,limit):
-    print("添加任务到steam购物车")
+def confirm_task_to_sale_cart():
+    offer_sell_product.add_my_invert_List(items=add_list)
+    add_list.clear()
+    print("添加任务到出售购物车")
 
 
 def search_min_data(query, tree):
-    print("采购最低价")
+    print("查询采购最低价")
+        # 清空之前的数据
+    for item in tree.get_children():
+        tree.delete(item)
+            # 将新的数据插入到表格中
+
     create_target_list=bastPricetSellSkin86.create_avg_target_min(exchange_rate)
     if create_target_list is None or len(create_target_list)==0 :
         print("没有数据")
         return
-    # 清空之前的数据
-    for item in tree.get_children():
-        tree.delete(item)
-            # 将新的数据插入到表格中
+
+    create_target_list.sort(key=lambda x:x['dm_buy_buff_sale_min_rate'],reverse=True)
 
     for entry in create_target_list:
         if query is None:
@@ -341,15 +352,18 @@ def buy_min_data( query):
 
 def search_avg_data( query,tree):
     print("查询平均价")
+        # 清空之前的数据
+    for item in tree.get_children():
+        tree.delete(item)
+            # 将新的数据插入到表格中
+            
     create_avg_target_list=bastPricetSellSkin86.create_avg_target_avg(exchange_rate)
     if create_avg_target_list is None or len(create_avg_target_list)==0 :
         print("没有数据")
         return
-    # 清空之前的数据
-    for item in tree.get_children():
-        tree.delete(item)
-            # 将新的数据插入到表格中
 
+
+    create_avg_target_list.sort(key=lambda x:x['dm_buy_buff_sale_avg_rate'],reverse=True)
     for entry in create_avg_target_list:
         if query is None:
             tree.insert("", "end", values=(entry["drtitle"],entry["title"], entry["totalSales"], entry["date"], entry["offer_price"], entry["target_price"], entry["buff_avg_price"], entry["dm_buy_buff_sale_avg"], entry["dm_buy_buff_sale_avg_rate"], entry["dm_buy_buff_sale_min"], entry["dm_buy_buff_sale_min_rate"], entry["price_alter_percentage_7d"], entry["price_alter_value_7d"], entry["category_group_name"]))
