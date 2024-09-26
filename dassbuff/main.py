@@ -361,7 +361,7 @@ def add_task_to_change_cart(content,limit,tree):
     
 
 def confirm_task_to_change_cart():
-    offer_sell_product.add_my_sell_List(items=add_list)
+    offer_sell_product.add_my_sell_List(items=change_list)
     add_list.clear()
     change_list.clear()
     print("添加出售中")
