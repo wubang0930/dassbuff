@@ -89,7 +89,7 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10)
                     else:
                         buy_data['price']= 0
 
-                    buy_data['updatedAt']=datetime.fromtimestamp(int(item['updatedAt'])).strftime('%Y-%m-%d')
+                    buy_data['updatedAt']=datetime.fromtimestamp(int(item['updatedAt'])).strftime('%Y-%m-%d %H:%M:%S')
                     buy_data_list.append(buy_data)
                     # 匹配英文名称
                     buy_data['cn_name']="0"
@@ -162,7 +162,7 @@ def find_buy_price():
 def tranStrToDatetime(str_time):
 
     # 指定日期格式
-    date_format = "%Y-%m-%d"
+    date_format = "%Y-%m-%d %H:%M:%S"
 
     # 使用strptime方法将日期字符串转换为datetime对象
     date_obj = datetime.strptime(str_time, date_format)
@@ -483,7 +483,7 @@ def get_my_target_List(exchange_rate=7.14):
             target['title']=offer['title']
             target['amount']=offer['amount']
             target['price']=round(float(offer['price']['USD'])/100*exchange_rate*recharge_rate,2)
-            target['createdAt']=datetime.fromtimestamp(int(offer['createdAt'])).strftime('%Y-%m-%d')
+            target['createdAt']=datetime.fromtimestamp(int(offer['createdAt'])).strftime('%Y-%m-%d %H:%M:%S')
             target_list.append(target)
             
     except Exception as e:
@@ -504,16 +504,16 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,1)
+    create_my_buy_List_all(1,100,7.14,100)
     find_buy_price()
     export_json_to_excel()
 
 
     # # # 查看所有的采购单
-    exchange_rate=bastPricetSellSkin86.find_us_exchange()
-    target_list=get_my_target_List(exchange_rate)
-    find_target_price(target_list)
-    export_target_to_excel()
+    # exchange_rate=bastPricetSellSkin86.find_us_exchange()
+    # target_list=get_my_target_List(exchange_rate)
+    # find_target_price(target_list)
+    # export_target_to_excel()
 
 
     end_time=int(time.time())

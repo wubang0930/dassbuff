@@ -6,7 +6,6 @@ import config
 
 # 获取当前的出售单
 def get_my_offer_List(title="",limit=50):
-    result_list=[]
     try:
         # 设置请求的URL
         url = 'https://api.dmarket.com/exchange/v1/user/offers'
@@ -51,11 +50,7 @@ def get_my_offer_List(title="",limit=50):
         reponse_json = json.loads(response.text)
         offers=reponse_json['objects']
 
-        for offer in offers:
-            print(offer['title'])
-            result_list.append(offer['itemId'])
-        
-        return result_list
+        return offers
     except Exception as e:
         print(e)
         return None
@@ -206,36 +201,40 @@ if __name__ == '__main__':
     # title=""
     # treeFilters="itemLocation[]=false"
 
-    my_invert_list=get_my_invert_List(title=title,limit=100,treeFilters=treeFilters)
+    # my_invert_list=get_my_invert_List(title=title,limit=100,treeFilters=treeFilters)
+    # if my_invert_list is None or len(my_invert_list) == 0: 
+    #     print("获取当前的采购饰品情况失败")
+    #     exit()
+    # add_list=[]
+    # for item in my_invert_list:
+    #     print(item['item'])
+    #     add_list.append(item['itemId'])
+
+    
+    # user_input = input("准备开始添加到处理清单数量"+str(len(add_list))+"，请输入Y确认：\n")
+    # # 开始添加到出售清单
+    # if user_input == "Y":
+    #     print("开始添加")
+    #     add_my_invert_List(items=add_list)
+    #     print("开始添加结束")
+    #     exit()
+
+
+    # 获取当前的出售单
+    my_invert_list=get_my_offer_List(title="USP-S | Ticket to Hell (Minimal Wear)",limit=100)
+    print(my_invert_list)
     if my_invert_list is None or len(my_invert_list) == 0: 
-        print("获取当前的采购饰品情况失败")
-        exit()
+        print("获取当前的出售单情况失败")
+        
     add_list=[]
     for item in my_invert_list:
         print(item['item'])
         add_list.append(item['itemId'])
-
     
-    user_input = input("准备开始添加到处理清单数量"+str(len(add_list))+"，请输入Y确认：\n")
+    user_input = input("准备开始添加到出售清单数量"+str(len(add_list))+"，请输入Y确认：\n")
     # 开始添加到出售清单
     if user_input == "Y":
-        print("开始添加")
-        add_my_invert_List(items=add_list)
+        print("开始添加") 
+        add_my_sell_List(items=add_list)
         print("开始添加结束")
         exit()
-
-
-    # 获取当前的出售单
-    # my_invert_list=get_my_offer_List(title="USP-S | Ticket to Hell (Minimal Wear)",limit=100)
-    # print(my_invert_list)
-    # if my_invert_list is None or len(my_invert_list) == 0: 
-    #     print("获取当前的出售单情况失败")
-    #     exit()
-    
-    # user_input = input("准备开始添加到出售清单数量"+str(len(my_invert_list))+"，请输入Y确认：\n")
-    # # 开始添加到出售清单
-    # if user_input == "Y":
-    #     print("开始添加") 
-    #     add_my_sell_List(items=my_invert_list)
-    #     print("开始添加结束")
-    #     exit()

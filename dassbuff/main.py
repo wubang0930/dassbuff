@@ -228,6 +228,17 @@ class TabbedApp:
         stop_button_time_sale.grid(row=2,  column=3,sticky=tk.W)
         
 
+        sync_query_time_change = tk.Entry(tab2,width=30)
+        sync_query_time_change.grid(row=3, column=0,sticky=tk.E,padx=30)
+        sync_query_time_change_limit = tk.Entry(tab2,width=30)
+        sync_query_time_change_limit.insert(0, "100")
+        sync_query_time_change_limit.grid(row=3, column=1,sticky=tk.E,padx=30)
+        start_button_time_change = tk.Button(tab2, text="查询出售中数据",width=15, command=lambda: add_task_to_change_cart(sync_query_time_change.get(),sync_query_time_change_limit.get(),self.tree2))
+        start_button_time_change.grid(row=3,  column=2,sticky=tk.W,padx=30)
+        stop_button_time_change = tk.Button(tab2, text="确认出售中数据",width=15, command=lambda: confirm_task_to_change_cart())
+        stop_button_time_change.grid(row=3,  column=3,sticky=tk.W)
+        
+
 
 
         # 列表展示部分
@@ -247,7 +258,7 @@ class TabbedApp:
         self.display_data1(None, self.tree2)
 
         # 布局
-        self.tree2.grid(row=3,columnspan=4,sticky=tk.NS,padx=30,pady=30)
+        self.tree2.grid(row=4,columnspan=4,sticky=tk.NS,padx=30,pady=30)
 
 
        
@@ -257,9 +268,11 @@ class TabbedApp:
         print("显示数据")
       
 add_list=[]
+change_list=[]
 
 def add_task_to_steam_cart(content,limit,tree,treeFilters):
     add_list.clear()
+    change_list.clear()
 
     print("添加任务到steam购物车"+content+limit)
     if content is None:
@@ -297,16 +310,64 @@ def add_task_to_steam_cart(content,limit,tree,treeFilters):
 
     print("查询列表成功")
 
+
 def confirm_task_to_steam_cart():
     offer_sell_product.add_my_invert_List(items=add_list)
     add_list.clear()
+    change_list.clear()
     print("添加任务到steam购物车")
 
 
 def confirm_task_to_sale_cart():
     offer_sell_product.add_my_invert_List(items=add_list)
     add_list.clear()
+    change_list.clear()
     print("添加任务到出售购物车")
+
+
+
+def add_task_to_change_cart(content,limit,tree):
+    add_list.clear()
+    change_list.clear()
+
+    print("添加任务到出售单购物车"+content+limit)
+    if content is None:
+        title=""
+    else:
+        title=content
+
+    for item in tree.get_children():
+        tree.delete(item)
+            # 将新的数据插入到表格中
+
+    my_invert_list=offer_sell_product.get_my_offer_List(title=title,limit=limit)
+    if my_invert_list is None or len(my_invert_list) == 0: 
+        print("获取当前的出售饰品情况失败")
+        return
+
+    for entry in my_invert_list:
+        print(entry)
+        if entry["price"]['USD'] is not None or entry["price"]['USD']!="":
+            price=round(int(entry["price"]['USD'])/100*exchange_rate,2)
+        
+        if entry["recommendedPrice"]['offerPrice']['USD'] is not None or entry["recommendedPrice"]['offerPrice']['USD']!="":
+            instantPrice=round(int(entry["recommendedPrice"]['offerPrice']['USD'])/100*exchange_rate,2)
+        tree.insert("", "end", values=(entry["itemId"],entry["title"],entry["gameType"],price,instantPrice))
+    
+    
+    for item in my_invert_list:
+        print(item['itemId'])
+        change_list.append(item['itemId'])
+    
+
+def confirm_task_to_change_cart():
+    offer_sell_product.add_my_sell_List(items=add_list)
+    add_list.clear()
+    change_list.clear()
+    print("添加出售中")
+
+
+
 
 
 def search_min_data(query, tree):
