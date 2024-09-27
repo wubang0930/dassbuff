@@ -84,10 +84,13 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10)
                     if item['changes'] is None or len(item['changes'])>0:
                         if item['action'] == "Sell" or item['action'] == "Deposit":
                             buy_data['price']=round(float(item['changes'][0]['money']['amount'])*recharge_rate*exchange_rate,2) 
+                            buy_data['price_us']=float(item['changes'][0]['money']['amount'])
                         else:
                             buy_data['price']=round(float(item['changes'][0]['money']['amount'])*recharge_rate*exchange_rate,2) 
+                            buy_data['price_us']=float(item['changes'][0]['money']['amount'])
                     else:
                         buy_data['price']= 0
+                        buy_data['price_us']= 0
 
                     buy_data['updatedAt']=datetime.fromtimestamp(int(item['updatedAt'])).strftime('%Y-%m-%d %H:%M:%S')
                     buy_data_list.append(buy_data)
@@ -319,6 +322,7 @@ def export_json_to_excel():
         "action":'类型',
         "cn_name":'饰品名称',
         "subject":'饰品名称-英文',
+        "price_us":'购买-美元价格',
         "price":'购买',
         "updatedAt":'日期',
         "buff_price":'当前buff售价',
@@ -326,7 +330,7 @@ def export_json_to_excel():
         "buff_price_divided_rate":'盈利价率',
     
     }
-    column_order = ['id', 'action', 'cn_name', 'subject','price','updatedAt','buff_price','buff_price_divided','buff_price_divided_rate']
+    column_order = ['id', 'action', 'cn_name', 'subject','price_us','price','updatedAt','buff_price','buff_price_divided','buff_price_divided_rate']
 
     # 打开文件准备读取
     with open(my_buy_current_file, 'r', encoding='utf-8') as file:
@@ -504,7 +508,7 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,10)
+    create_my_buy_List_all(1,100,7.14,100)
     find_buy_price()
     export_json_to_excel()
 
