@@ -48,9 +48,7 @@ def get_my_offer_List(title="",limit=50):
         # 发送POST请求
         response = requests.get(url, params=params,headers=headers)
         reponse_json = json.loads(response.text)
-        offers=reponse_json['objects']
-
-        return offers
+        return reponse_json
     except Exception as e:
         print(e)
         return None
@@ -103,9 +101,9 @@ def get_my_invert_List(title="",limit=50,treeFilters=""):
         response = requests.get(url, params=params,headers=headers)
         # print(response.text)
         reponse_json = json.loads(response.text)
-        offers=reponse_json['objects']
         
-        return offers
+        
+        return reponse_json
     except Exception as e:
         print(e)
         return None

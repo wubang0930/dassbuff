@@ -15,6 +15,7 @@ cs_product_all_name="data/cs_product_all_name.txt"
 
 #文件路径-查询数据
 skin_86_product_all=data_local_analysis+"/skin_86_product_all.txt" # buff的源数据
+skin_86_product_all_buy=data_local_analysis+"/skin_86_product_all_buy.txt" # buff的源数据
 buff_filter_file=data_local_analysis+"/skin_86_filter_file.txt" # buff的源数据
 
 

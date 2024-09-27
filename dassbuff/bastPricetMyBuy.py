@@ -32,7 +32,7 @@ filter_list=[]   #过滤平均销量大于30的列表
 
 data_path=config.data_local
 file_name=config.data_local_analysis+"/my_buy_list.txt"
-buff_file=config.skin_86_product_all
+buff_file=config.skin_86_product_all_buy
 my_buy_current_file=config.data_local_analysis+"/my_buy_current_list.txt"
 my_target_current_file=config.data_local_analysis+"/my_target_current_list.txt"
 
@@ -504,7 +504,7 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,100)
+    create_my_buy_List_all(1,100,7.14,10)
     find_buy_price()
     export_json_to_excel()
 

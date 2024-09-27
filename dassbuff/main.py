@@ -211,7 +211,7 @@ class TabbedApp:
         sync_query_time_add_limit = tk.Entry(tab2,width=30)
         sync_query_time_add_limit.insert(0, "100")
         sync_query_time_add_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
-        start_button_time_add = tk.Button(tab2, text="查询提现购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree2,"itemLocation[]=true,tradeLockTo[]=0"))
+        start_button_time_add = tk.Button(tab2, text="查询提现购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree2,"itemLocation[]=true,tradeLockTo[]=0",count_label_value,count_label_value_all))
         start_button_time_add.grid(row=1,  column=2,sticky=tk.W,padx=30)
         stop_button_time_add = tk.Button(tab2, text="确认提现",width=15, command=lambda: confirm_task_to_steam_cart())
         stop_button_time_add.grid(row=1,  column=3,sticky=tk.W)
@@ -222,7 +222,7 @@ class TabbedApp:
         sync_query_time_sale_limit = tk.Entry(tab2,width=30)
         sync_query_time_sale_limit.insert(0, "100")
         sync_query_time_sale_limit.grid(row=2, column=1,sticky=tk.E,padx=30)
-        start_button_time_sale = tk.Button(tab2, text="查询出售购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),self.tree2,"itemLocation[]=false,tradeLockTo[]=0"))
+        start_button_time_sale = tk.Button(tab2, text="查询出售购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),self.tree2,"itemLocation[]=false,tradeLockTo[]=0",count_label_value,count_label_value_all))
         start_button_time_sale.grid(row=2,  column=2,sticky=tk.W,padx=30)
         stop_button_time_sale = tk.Button(tab2, text="确认出售购物车",width=15, command=lambda: confirm_task_to_sale_cart())
         stop_button_time_sale.grid(row=2,  column=3,sticky=tk.W)
@@ -233,13 +233,21 @@ class TabbedApp:
         sync_query_time_change_limit = tk.Entry(tab2,width=30)
         sync_query_time_change_limit.insert(0, "100")
         sync_query_time_change_limit.grid(row=3, column=1,sticky=tk.E,padx=30)
-        start_button_time_change = tk.Button(tab2, text="查询出售中数据",width=15, command=lambda: add_task_to_change_cart(sync_query_time_change.get(),sync_query_time_change_limit.get(),self.tree2))
+        start_button_time_change = tk.Button(tab2, text="查询出售中数据",width=15, command=lambda: add_task_to_change_cart(sync_query_time_change.get(),sync_query_time_change_limit.get(),self.tree2,count_label_value,count_label_value_all))
         start_button_time_change.grid(row=3,  column=2,sticky=tk.W,padx=30)
         stop_button_time_change = tk.Button(tab2, text="确认出售中数据",width=15, command=lambda: confirm_task_to_change_cart())
         stop_button_time_change.grid(row=3,  column=3,sticky=tk.W)
         
 
-
+        count_label = tk.Label(tab2, text="当前条数:")
+        count_label.grid(row=4,column=0,sticky=tk.E,padx=30,pady=30)
+        count_label_value = tk.Entry(tab2,width=30)
+        count_label_value.grid(row=4, column=1,sticky=tk.E,padx=30,pady=30)
+        count_label_all = tk.Label(tab2, text="总条数:")
+        count_label_all.grid(row=4,column=2,sticky=tk.W,padx=30,pady=30)
+        count_label_value_all = tk.Entry(tab2,width=30)
+        count_label_value_all.grid(row=4, column=3,sticky=tk.W,pady=30)
+        
 
         # 列表展示部分
         self.tree2 = ttk.Treeview(tab2, height=25, selectmode="browse",columns=("id", "title", "gameType", "price", "instantPrice"), show='headings')
@@ -258,7 +266,7 @@ class TabbedApp:
         self.display_data1(None, self.tree2)
 
         # 布局
-        self.tree2.grid(row=4,columnspan=4,sticky=tk.NS,padx=30,pady=30)
+        self.tree2.grid(row=5,columnspan=4,sticky=tk.NS,padx=30,pady=10)
 
 
        
@@ -270,9 +278,11 @@ class TabbedApp:
 add_list=[]
 change_list=[]
 
-def add_task_to_steam_cart(content,limit,tree,treeFilters):
+def add_task_to_steam_cart(content,limit,tree,treeFilters,count_label_value,count_label_value_all):
     add_list.clear()
     change_list.clear()
+    count_label_value.delete(0,tk.END)
+    count_label_value_all.delete(0,tk.END)
 
     print("添加任务到steam购物车"+content+limit)
     if content is None:
@@ -280,10 +290,16 @@ def add_task_to_steam_cart(content,limit,tree,treeFilters):
     else:
         title=content
 
-    my_invert_list=offer_sell_product.get_my_invert_List(title=title,limit=limit,treeFilters=treeFilters)
+    reponse_json=offer_sell_product.get_my_invert_List(title=title,limit=limit,treeFilters=treeFilters)
+    my_invert_list=reponse_json['objects']
+
     if my_invert_list is None or len(my_invert_list) == 0: 
         print("获取当前的采购饰品情况失败")
         return
+    
+
+    count_label_value.insert(0,str(len(my_invert_list)))
+    count_label_value_all.insert(0,reponse_json['total']['items'])
 
     for item in tree.get_children():
         tree.delete(item)
@@ -326,9 +342,11 @@ def confirm_task_to_sale_cart():
 
 
 
-def add_task_to_change_cart(content,limit,tree):
+def add_task_to_change_cart(content,limit,tree,count_label_value,count_label_value_all):
     add_list.clear()
     change_list.clear()
+    count_label_value.delete(0,tk.END)
+    count_label_value_all.delete(0,tk.END)
 
     print("添加任务到出售单购物车"+content+limit)
     if content is None:
@@ -340,10 +358,15 @@ def add_task_to_change_cart(content,limit,tree):
         tree.delete(item)
             # 将新的数据插入到表格中
 
-    my_invert_list=offer_sell_product.get_my_offer_List(title=title,limit=limit)
+    reponse_json=offer_sell_product.get_my_offer_List(title=title,limit=limit)
+    my_invert_list=reponse_json['objects']
+
     if my_invert_list is None or len(my_invert_list) == 0: 
         print("获取当前的出售饰品情况失败")
         return
+
+    count_label_value.insert(0,str(len(my_invert_list)))
+    count_label_value_all.insert(0,reponse_json['total']['items'])
 
     for entry in my_invert_list:
         print(entry)
@@ -364,7 +387,7 @@ def confirm_task_to_change_cart():
     offer_sell_product.add_my_sell_List(items=change_list)
     add_list.clear()
     change_list.clear()
-    print("添加出售中")
+    print("添加出售中成功")
 
 
 
