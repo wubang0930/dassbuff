@@ -387,7 +387,7 @@ def process_line(chunks,exchange_rate,not_buy_data):
                     print(threading.current_thread().name+"---"+skin_json['market_name']+"---"+not_buy_line+"---已过滤")
                     filter_flag=True
                     break
-                
+
             if filter_flag:
                 continue
 
@@ -703,10 +703,7 @@ def create_avg_target_min(exchange_rate):
                             buy_flag=True
                             us_price= us_price+10
                             buy_it_num=1
-                        elif create_target['offer_price']>=50 and create_target['offer_price']<200 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<12 :
-                            buy_flag=True
-                            us_price= us_price+10
-                            buy_it_num=1
+
 
                         # 比平均价高0.01美金
                         if buy_flag:   
