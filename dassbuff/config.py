@@ -17,6 +17,7 @@ cs_product_all_name="data/cs_product_all_name.txt"
 skin_86_product_all=data_local_analysis+"/skin_86_product_all.txt" # buff的源数据
 skin_86_product_all_buy=data_local_analysis+"/skin_86_product_all_buy.txt" # buff的源数据
 buff_filter_file=data_local_analysis+"/skin_86_filter_file.txt" # buff的源数据
+filter_data_not_buy="data/filter_data_not_buy.txt" # 过滤购买的数据
 
 
 

@@ -508,7 +508,7 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,100)
+    create_my_buy_List_all(1,100,7.14,20)
     find_buy_price()
     export_json_to_excel()
 
@@ -522,3 +522,4 @@ if __name__ == '__main__':
 
     end_time=int(time.time())
     print("运行时间："+str(end_time-start_time))
+    

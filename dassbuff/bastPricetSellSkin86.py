@@ -12,6 +12,7 @@ import threading
 import Skin86BaseData
 
 import config
+import math
 import offer_buy_product
 
 # change url to prod
@@ -27,6 +28,7 @@ all_list=[]
 
 buff_file=config.skin_86_product_all
 buff_filter_file=config.buff_filter_file
+filter_data_not_buy=config.filter_data_not_buy
 
 
 filter_num=30   #过滤平均销量大于30的数量
@@ -329,13 +331,19 @@ def process_file_in_threads(thread_size,exchange_rate):
     with open(buff_file, 'r',encoding='utf-8') as fileA:
         lines = fileA.readlines()
 
+    not_buy_data=[]
+    with open(filter_data_not_buy, 'r',encoding='utf-8') as fileA:
+        for fileA_line in fileA:
+            not_buy_data.append(fileA_line.strip())
+
+
     # 过滤印花
     filter_list=[]
     for line in lines:
         filter_list.append(line)
 
 
-    chunk_size = len(filter_list) // thread_size  # 这里除以线程数10
+    chunk_size = math.ceil(len(filter_list) / thread_size)  # 这里除以线程数10
 
 
     # 创建线程列表
@@ -351,7 +359,7 @@ def process_file_in_threads(thread_size,exchange_rate):
         chunks = filter_list[start:end]
         
         # 创建线程
-        thread = threading.Thread(target=process_line, args=(chunks,exchange_rate))
+        thread = threading.Thread(target=process_line, args=(chunks,exchange_rate,not_buy_data))
         threads.append(thread)
         thread.start()  # 启动线程
 
@@ -363,14 +371,27 @@ def process_file_in_threads(thread_size,exchange_rate):
 # 锁，用于同步写入文件B
 write_lock = threading.Lock()
 
-def process_line(chunks,exchange_rate):
+def process_line(chunks,exchange_rate,not_buy_data):
     # print(threading.current_thread().name+"开始处理数据")
 
+    
     
     for line in chunks:
         try:
             # 解析每一行中的JSON对象
             skin_json=json.loads(line.replace("\\b",""))
+
+            filter_flag=False
+            for not_buy_line in not_buy_data:
+                if not_buy_line == skin_json['market_name'] or not_buy_line in skin_json['category_group_name']:
+                    print(threading.current_thread().name+"---"+skin_json['market_name']+"---"+not_buy_line+"---已过滤")
+                    filter_flag=True
+                    break
+                
+            if filter_flag:
+                continue
+
+
             # 只获取cs的饰品数据名称
             all_names=skin_json['market_name']+':'+skin_json['en_name']
             print(threading.current_thread().name+"开始查询---"+all_names)
@@ -785,7 +806,7 @@ if __name__ == '__main__':
     exchange_rate=find_us_exchange()
     print("当前的美元汇率是："+str(exchange_rate))
     # # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=500,page=0,page_size=100,price_start=0.5,price_end=200,selling_num_start=100)
+    # Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=500,page=0,page_size=100,price_start=0.5,price_end=200,selling_num_start=100)
     thread_size=5
     process_file_in_threads(thread_size,exchange_rate)
     #导出市场数据
@@ -795,9 +816,9 @@ if __name__ == '__main__':
     filename=config.data_local_excel+"/creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
     creat_now(create_target_list,filename,100,"min")
     
-    create_avg_target_list=create_avg_target_avg(exchange_rate)
-    filename=config.data_local_excel+"/creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-    creat_now(create_avg_target_list,filename,50,"avg")
+    # create_avg_target_list=create_avg_target_avg(exchange_rate)
+    # filename=config.data_local_excel+"/creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    # creat_now(create_avg_target_list,filename,50,"avg")
     end_time=int(time.time())
     print("运行时间："+str(end_time-start_time))
     # create_avg_target_now(exchange_rate,20)

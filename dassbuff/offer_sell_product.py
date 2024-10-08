@@ -199,7 +199,8 @@ if __name__ == '__main__':
     # title=""
     # treeFilters="itemLocation[]=false"
 
-    # my_invert_list=get_my_invert_List(title=title,limit=100,treeFilters=treeFilters)
+    # reponse_json=get_my_invert_List(title=title,limit=100,treeFilters=treeFilters)
+    # my_invert_list=reponse_json['objects']
     # if my_invert_list is None or len(my_invert_list) == 0: 
     #     print("获取当前的采购饰品情况失败")
     #     exit()
@@ -219,7 +220,8 @@ if __name__ == '__main__':
 
 
     # 获取当前的出售单
-    my_invert_list=get_my_offer_List(title="USP-S | Ticket to Hell (Minimal Wear)",limit=100)
+    reponse_json=get_my_offer_List(title="USP-S | Ticket to Hell (Minimal Wear)",limit=100)
+    my_invert_list=reponse_json['objects']
     print(my_invert_list)
     if my_invert_list is None or len(my_invert_list) == 0: 
         print("获取当前的出售单情况失败")
