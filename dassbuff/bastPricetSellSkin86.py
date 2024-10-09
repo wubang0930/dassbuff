@@ -383,7 +383,7 @@ def process_line(chunks,exchange_rate,not_buy_data):
 
             filter_flag=False
             for not_buy_line in not_buy_data:
-                if not_buy_line == skin_json['market_name'] or not_buy_line in skin_json['category_group_name']:
+                if not_buy_line in skin_json['market_name'] or not_buy_line in skin_json['category_group_name']:
                     print(threading.current_thread().name+"---"+skin_json['market_name']+"---"+not_buy_line+"---已过滤")
                     filter_flag=True
                     break
@@ -651,10 +651,10 @@ def create_avg_target_avg(exchange_rate):
                             buy_flag=True
                             us_price= us_price+10
                             buy_it_num=1
-                        elif create_target['dmarket_sale_Price']>=50 and create_target['dmarket_sale_Price']<300 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
-                            buy_flag=True
-                            us_price= us_price+30
-                            buy_it_num=1
+                        # elif create_target['dmarket_sale_Price']>=50 and create_target['dmarket_sale_Price']<300 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
+                        #     buy_flag=True
+                        #     us_price= us_price+30
+                        #     buy_it_num=1
 
                         # 比平均价高0.01美金
                         if buy_flag:   
@@ -695,14 +695,14 @@ def create_avg_target_min(exchange_rate):
                             buy_flag=True
                             us_price= us_price+1
                             buy_it_num=1
-                        elif create_target['offer_price']>=5 and create_target['offer_price']<15 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<15:
+                        elif create_target['offer_price']>=5 and create_target['offer_price']<15 and create_target['dm_buy_buff_sale_min_rate']>0.08  and create_target['price_alter_percentage_7d']<15:
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=1
-                        elif create_target['offer_price']>=15 and create_target['offer_price']<50 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<12 :
-                            buy_flag=True
-                            us_price= us_price+10
-                            buy_it_num=1
+                        # elif create_target['offer_price']>=15 and create_target['offer_price']<50 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<12 :
+                        #     buy_flag=True
+                        #     us_price= us_price+10
+                        #     buy_it_num=1
 
 
                         # 比平均价高0.01美金
