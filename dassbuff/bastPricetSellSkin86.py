@@ -691,11 +691,11 @@ def create_avg_target_min(exchange_rate):
                         buy_it_num=1
                         us_price= int(round(create_target['offer_price']/exchange_rate*100,0))
 
-                        if create_target['offer_price']>1 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.1 and create_target['price_alter_percentage_7d']<20:
+                        if create_target['offer_price']>1 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.06 and create_target['price_alter_percentage_7d']<20:
                             buy_flag=True
                             us_price= us_price+1
-                            buy_it_num=1
-                        elif create_target['offer_price']>=5 and create_target['offer_price']<15 and create_target['dm_buy_buff_sale_min_rate']>0.08  and create_target['price_alter_percentage_7d']<15:
+                            buy_it_num=2
+                        elif create_target['offer_price']>=5 and create_target['offer_price']<10 and create_target['dm_buy_buff_sale_min_rate']>0.08  and create_target['price_alter_percentage_7d']<15:
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=1
