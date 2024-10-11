@@ -93,7 +93,7 @@ class TabbedApp:
         query_label = tk.Label(tab1, text="查询内容平台:")
         query_label.grid(row=0,columnspan=3, column=0)
 
-        defualt_query = "200,1,100,0.5,15,200"
+        defualt_query = "200,1,100,0.5,100,200"
         sync_query_one = tk.Entry(tab1,width=30)
         sync_query_one.insert(0, "8")
         sync_query_one.grid(row=1, column=0,sticky=tk.E,padx=30)
