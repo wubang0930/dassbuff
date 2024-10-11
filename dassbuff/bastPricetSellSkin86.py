@@ -647,10 +647,10 @@ def create_avg_target_avg(exchange_rate):
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=2
-                        # elif create_target['dmarket_sale_Price']>=15 and create_target['dmarket_sale_Price']<50 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
-                        #     buy_flag=True
-                        #     us_price= us_price+10
-                        #     buy_it_num=1
+                        elif '武器箱' not in create_target['offer_price'] and create_target['dmarket_sale_Price']>=15 and create_target['dmarket_sale_Price']<70 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
+                            buy_flag=True
+                            us_price= us_price+10
+                            buy_it_num=1
                         # elif create_target['dmarket_sale_Price']>=50 and create_target['dmarket_sale_Price']<300 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
                         #     buy_flag=True
                         #     us_price= us_price+30
@@ -699,10 +699,10 @@ def create_avg_target_min(exchange_rate):
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=1
-                        # elif create_target['offer_price']>=15 and create_target['offer_price']<50 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<12 :
-                        #     buy_flag=True
-                        #     us_price= us_price+10
-                        #     buy_it_num=1
+                        elif '武器箱' not in create_target['offer_price'] and create_target['offer_price']>=15 and create_target['offer_price']<70 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<10 :
+                            buy_flag=True
+                            us_price= us_price+10
+                            buy_it_num=1
 
 
                         # 比平均价高0.01美金

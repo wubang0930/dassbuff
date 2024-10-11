@@ -508,7 +508,7 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,20)
+    create_my_buy_List_all(1,100,7.14,10)
     find_buy_price()
     export_json_to_excel()
 
