@@ -150,6 +150,7 @@ def find_buy_price():
                 send_data['buff_price']=0.01
                 send_data['buff_price_divided']=0.01
                 send_data['buff_price_divided_rate']=0.01
+                send_data['category_group_name']=buff_info['category_group_name']
                 if buff_info['market_name'] == send_data['cn_name']:
                     print(send_data['cn_name'])
                     if send_data['price'] is not None and send_data['price']!=0:
@@ -328,9 +329,10 @@ def export_json_to_excel():
         "buff_price":'当前buff售价',
         "buff_price_divided":'盈利价',
         "buff_price_divided_rate":'盈利价率',
+        "category_group_name":'类型',
     
     }
-    column_order = ['id', 'action', 'cn_name', 'subject','price_us','price','updatedAt','buff_price','buff_price_divided','buff_price_divided_rate']
+    column_order = ['id', 'action', 'cn_name', 'subject','price_us','price','updatedAt','buff_price','buff_price_divided','buff_price_divided_rate','category_group_name']
 
     # 打开文件准备读取
     with open(my_buy_current_file, 'r', encoding='utf-8') as file:
@@ -508,7 +510,7 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,10)
+    # create_my_buy_List_all(1,100,7.14,10)
     find_buy_price()
     export_json_to_excel()
 
