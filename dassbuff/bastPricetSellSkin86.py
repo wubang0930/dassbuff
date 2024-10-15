@@ -123,8 +123,8 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
         #  "buff_buy_dm_sale_avg_rate": round((float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=float(avg_price)*exchange_rate)- buff_avg_price)/buff_avg_price,3),
 
         # # buff直接购买的，dmarket直接的当前价格出售
-        #  "buff_buy_dm_sale_min": round(float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- offer_price, 2),
-        #  "buff_buy_dm_sale_min_rate": round((float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- offer_price)/offer_price,3),
+         "buff_buy_dm_sale_min": round(float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- buff_avg_price*trans_buff_service_change(), 2),
+         "buff_buy_dm_sale_min_rate": round((float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- buff_avg_price*trans_buff_service_change())/offer_price,3),
 
      
         # dmarket平均价购买出售，buff直接出售
@@ -466,13 +466,13 @@ chinese_columns = {
     "price_alter_value_7d":'buff-7天价格变化价格',
     "category_group_name":'饰品类型',
 
-# # buff直接购买出售的，dmarket平均价格直接出售
-#     "buff_buy_dm_sale_avg": 'buff购买dm出售-平均价',
-#     "buff_buy_dm_sale_avg_rate": 'buff购买dm出售-平均价率',
+# buff直接购买出售的，dmarket平均价格直接出售
+    # "buff_buy_dm_sale_avg": 'buff购买dm出售-平均价',
+    # "buff_buy_dm_sale_avg_rate": 'buff购买dm出售-平均价率',
 
-# # buff直接购买的，dmarket直接的当前价格出售
-#     "buff_buy_dm_sale_min": 'buff购买dm出售-当前价',
-#     "buff_buy_dm_sale_min_rate": 'buff购买dm出售-当前价',
+# buff直接购买的，dmarket直接的当前价格出售
+    "buff_buy_dm_sale_min": 'buff购买dm出售-当前价',
+    "buff_buy_dm_sale_min_rate": 'buff购买dm出售-当前价',
 
 
 # dmarket平均价购买出售，buff直接出售
@@ -639,17 +639,17 @@ def create_avg_target_avg(exchange_rate):
                         buy_it_num=1
                         us_price= int(round(create_target['dmarket_sale_Price']/exchange_rate*100,0))
 
-                        if create_target['dmarket_sale_Price']>0.5 and create_target['dmarket_sale_Price']<5 and create_target['dm_buy_buff_sale_avg_rate']>0.15 and create_target['price_alter_percentage_7d']<20:
+                        if create_target['dmarket_sale_Price']>1 and create_target['dmarket_sale_Price']<5 and create_target['dm_buy_buff_sale_avg_rate']>0.15 and create_target['price_alter_percentage_7d']<20:
                             buy_flag=True
                             us_price= us_price+1
                             buy_it_num=5
-                        elif create_target['dmarket_sale_Price']>=5 and create_target['dmarket_sale_Price']<15 and create_target['dm_buy_buff_sale_avg_rate']>0.15  and create_target['price_alter_percentage_7d']<20:
+                        elif '武器箱' not in create_target['category_group_name'] and create_target['dmarket_sale_Price']>=5 and create_target['dmarket_sale_Price']<15 and create_target['dm_buy_buff_sale_avg_rate']>0.15  and create_target['price_alter_percentage_7d']<20:
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=2
                         elif '武器箱' not in create_target['category_group_name'] and create_target['dmarket_sale_Price']>=15 and create_target['dmarket_sale_Price']<70 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
                             buy_flag=True
-                            us_price= us_price+10
+                            us_price= us_price+15
                             buy_it_num=1
                         # elif create_target['dmarket_sale_Price']>=50 and create_target['dmarket_sale_Price']<300 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
                         #     buy_flag=True
@@ -691,17 +691,17 @@ def create_avg_target_min(exchange_rate):
                         buy_it_num=1
                         us_price= int(round(create_target['offer_price']/exchange_rate*100,0))
 
-                        if create_target['offer_price']>0.5 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.06 and create_target['price_alter_percentage_7d']<20:
+                        if create_target['offer_price']>1 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.06 and create_target['price_alter_percentage_7d']<20:
                             buy_flag=True
                             us_price= us_price+1
                             buy_it_num=2
-                        elif create_target['offer_price']>=5 and create_target['offer_price']<10 and create_target['dm_buy_buff_sale_min_rate']>0.06  and create_target['price_alter_percentage_7d']<15:
+                        elif '武器箱' not in create_target['category_group_name'] and create_target['offer_price']>=5 and create_target['offer_price']<10 and create_target['dm_buy_buff_sale_min_rate']>0.06  and create_target['price_alter_percentage_7d']<15:
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=1
                         elif '武器箱' not in create_target['category_group_name'] and create_target['offer_price']>=15 and create_target['offer_price']<70 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<10 :
                             buy_flag=True
-                            us_price= us_price+10
+                            us_price= us_price+15
                             buy_it_num=1
 
 
@@ -803,15 +803,15 @@ if __name__ == '__main__':
     exchange_rate=find_us_exchange()
     print("当前的美元汇率是："+str(exchange_rate))
     # # 初始化数据
-    # Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=500,page=0,page_size=100,price_start=0.5,price_end=200,selling_num_start=100)
+    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=300,page=0,page_size=100,price_start=1,price_end=500,selling_num_start=200)
     thread_size=5
     process_file_in_threads(thread_size,exchange_rate)
     #导出市场数据
     export_market_data()
 
-    create_target_list=create_avg_target_min(exchange_rate)
-    filename=config.data_local_excel+"/creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-    creat_now(create_target_list,filename,100,"min")
+    # create_target_list=create_avg_target_min(exchange_rate)
+    # filename=config.data_local_excel+"/creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
+    # creat_now(create_target_list,filename,100,"min")
     
     # create_avg_target_list=create_avg_target_avg(exchange_rate)
     # filename=config.data_local_excel+"/creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
