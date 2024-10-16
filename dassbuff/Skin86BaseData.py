@@ -63,7 +63,7 @@ def get_csgo_db_all(file_name):
     page=1
     while True:
         print("获取第"+str(page)+"页数据")
-        time.sleep(1)
+        time.sleep(0.2)
         page_data=get_csgo_db_deal(page)
 
         if page_data is None :
@@ -142,7 +142,7 @@ def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_sta
     page=1
     while True:
         print("获取第"+str(page)+"页数据")
-        time.sleep(1)
+        time.sleep(0.5)
         if limit_page<page  :
             print("获取数据结束了，退出")
             break

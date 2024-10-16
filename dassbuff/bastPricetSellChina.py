@@ -10,6 +10,7 @@ from zipfile import ZipFile
 import config
 import Skin86BaseData
 import bastPricetSellSkin86
+import math
 
 skin_86_product_all_buff=config.skin_86_product_all_buff
 skin_86_product_all_yp=config.skin_86_product_all_yp
@@ -22,6 +23,16 @@ data_local_excel=config.data_local_excel
 
 
 taobao_price=545
+
+
+def get_zero_filled_string(number):
+    # 将数字转为字符串，并计算长度
+    length = len(str(abs(number)))  # 使用 abs() 处理负数
+    # 生成对应的零填充字符串
+    return '0' * length
+
+
+
 
 def ananlyse_data(exchange_rate):
     all_data_list=[]
@@ -49,10 +60,13 @@ def ananlyse_data(exchange_rate):
         for line in csgo_db:
             csgo_db_deal_list.append(json.loads(line))
 
-    
+    all_price_list={}
+    min_price_list={}
+    max_price_list={}
+
     keys_to_delete=['rarity_color','is_follow','exterior','rarity','en_name']
     for i in buff_list:
-        i['platform_id']='BUFF'
+        i['platform_id']='BUFF'        
         all_data_list.append(i)
     for i in yp_list:
         i['platform_id']='YP'
@@ -70,15 +84,14 @@ def ananlyse_data(exchange_rate):
             i.pop(key,None)
 
 
-    min_price_list={}
-    # 获取最小值
-    for i in all_data_list:
-        if i['market_name'] not in min_price_list or i['sell_min_price']<min_price_list[i['market_name']]:
-            min_price_list[i['market_name']]=i['sell_min_price']
+    # 获取最小值 和最大值 和所有的价格列表
 
 
 
-    for i in all_data_list:
+    count_one_data_list=[]
+    for i in buff_list:
+        i['sell_min_price']=math.ceil(i['sell_min_price'])
+
         # 磨损类型
         i['min_type']=''
         if '(' in i['market_name']  and ')' in i['market_name'] :
@@ -94,14 +107,118 @@ def ananlyse_data(exchange_rate):
                     i['today_price']=round(j['price']/j['count']/100,1)
                 break
         
+        # buff的价格拼接
+        all_price_list[i['market_name']]=[]
+        all_price_list[i['market_name']].append(i['sell_min_price'])
+        min_price_list[i['market_name']]=i['sell_min_price']
+        max_price_list[i['market_name']]=i['sell_min_price']
+
+
+        yp_name_flag=False
+        for j in yp_list:
+            if i['market_name']==j['market_name'] :
+                yp_name_flag=True
+                all_price_list[i['market_name']].append(j['sell_min_price'])
+
+                if j['sell_min_price']<min_price_list[i['market_name']]:
+                    min_price_list[j['market_name']]=j['sell_min_price']
+                
+                if j['sell_min_price']>max_price_list[i['market_name']]:
+                    max_price_list[j['market_name']]=j['sell_min_price']
+
+                
+                break
+
+        if yp_name_flag==False:
+            all_price_list[i['market_name']].append(get_zero_filled_string(i['sell_min_price']))
+
+        igxe_name_flag=False
+        for j in igxe_list:
+            if i['market_name']==j['market_name'] :
+                igxe_name_flag=True
+                all_price_list[i['market_name']].append(j['sell_min_price'])
+
+                if j['sell_min_price']<min_price_list[i['market_name']]:
+                    min_price_list[j['market_name']]=j['sell_min_price']
+                
+                if j['sell_min_price']>max_price_list[i['market_name']]:
+                    max_price_list[j['market_name']]=j['sell_min_price']
+                
+                break
+        if igxe_name_flag==False:
+            all_price_list[i['market_name']].append(get_zero_filled_string(i['sell_min_price']))
+
+
+        steam_name_flag=False
+        for j in steam_list:
+            if i['market_name']==j['market_name'] :
+                steam_name_flag=True
+                all_price_list[i['market_name']].append(j['sell_min_price'])
+
+                # if j['sell_min_price']<min_price_list[i['market_name']]:
+                #     min_price_list[j['market_name']]=j['sell_min_price']
+                
+                # if j['sell_min_price']>max_price_list[i['market_name']]:
+                #     max_price_list[j['market_name']]=j['sell_min_price']
+                
+                break
+        if steam_name_flag==False:
+            all_price_list[i['market_name']].append(get_zero_filled_string(i['sell_min_price']))
+
+
+
+
+    for i in buff_list:
+        i['all_max_price']=0
+        if i['market_name'] in max_price_list:
+            i['all_max_price']=max_price_list[i['market_name']]
+
         i['all_min_price']=0
-        if min_price_list[i['market_name']]==i['sell_min_price']:
+        if i['market_name'] in min_price_list:
             i['all_min_price']=min_price_list[i['market_name']]
 
+        i['all_price_list']=""
+        if i['market_name'] in all_price_list:
+            for x in all_price_list[i['market_name']]:
+                i['all_price_list']=i['all_price_list']+"----"+str(x)
+
+        i['devilide_price']=i['all_max_price']-i['all_min_price']
+        i['devilide_price_rate']=round(i['devilide_price']/i['all_max_price'],3)*100
+        
 
 
-    all_data_list.sort(key=lambda x:(x['goods_id'],x['platform_id']),reverse=True)
-    export_json_to_excel(all_data_list)
+    # for i in all_data_list:
+    #     # 磨损类型
+    #     i['min_type']=''
+    #     if '(' in i['market_name']  and ')' in i['market_name'] :
+    #         i['min_type']=i['market_name'] [i['market_name'].index('(')+1:i['market_name'].index(')')]
+
+    #     #当日成交
+    #     i['today_count']=0
+    #     i['today_price']=0
+    #     for j in csgo_db_deal_list:
+    #         if i['market_name']==j['goodsName'] :
+    #             i['today_count']=j['count']
+    #             if j['count']!=0:
+    #                 i['today_price']=round(j['price']/j['count']/100,1)
+    #             break
+        
+    #     i['all_min_price']=0
+    #     if min_price_list[i['market_name']]==i['sell_min_price']:
+    #         i['all_min_price']=min_price_list[i['market_name']]
+
+
+
+    # buff_list.sort(key=lambda x:(x['goods_id'],x['platform_id']),reverse=True)
+    buff_list.sort(key=lambda x:(x['goods_id']),reverse=True)
+    export_json_to_excel(buff_list)
+
+    # 汇总导出
+
+
+
+    
+
 
 
 def export_json_to_excel(all_data):
@@ -116,7 +233,12 @@ def export_json_to_excel(all_data):
     "min_type": "磨损类型",
     "market_name": "名称",
     "sell_min_price": '售卖价',
+    "all_price_list": '所有售价(buff\yp\igxe\steam)',
     "all_min_price": '最低售卖价',
+    "all_max_price": '最高售卖价',
+    "devilide_price": '相差价',
+    "devilide_price_rate": '相差价率',
+    
     "today_count": '今日成交数量',
     "today_price": '今日成交均价',
     "sell_max_num": '出售数量',
@@ -131,7 +253,7 @@ def export_json_to_excel(all_data):
     
     
     }
-    column_order = ['goods_id', 'platform_id', 'category_group_name','min_type', 'market_name','sell_min_price','all_min_price','today_count','today_price','sell_max_num','sell_valuation','buy_max_num','buy_max_price','price_alter_percentage_7d','price_alter_value_7d','market_hash_name','icon_url','redirect_url']
+    column_order = ['goods_id', 'platform_id', 'category_group_name','min_type', 'market_name','sell_min_price','all_price_list','all_min_price','all_max_price','devilide_price','devilide_price_rate','today_count','today_price','sell_max_num','sell_valuation','buy_max_num','buy_max_price','price_alter_percentage_7d','price_alter_value_7d','market_hash_name','icon_url','redirect_url']
 
    
 
@@ -161,8 +283,8 @@ def export_json_to_excel(all_data):
         for col_num, value in enumerate(df.columns.values):
             # 设置列宽
             column_width = 9  # 你可以根据需要调整这个值
-            if col_num == 4:
-                worksheet.set_column(col_num, col_num, 47)
+            if col_num == 4 or col_num == 6 :
+                worksheet.set_column(col_num, col_num, 40)
             else:
                 worksheet.set_column(col_num, col_num, column_width)
             worksheet.write(0, col_num, chinese_columns[value], yellow_format)
@@ -181,14 +303,14 @@ if __name__ == '__main__':
 
     
     # # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_buff,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='BUFF')
-    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_yp,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='YP')
-    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_igxe,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='IGXE')
-    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_steam,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='STEAM')
+    # Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_buff,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='BUFF')
+    # Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_yp,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='YP')
+    # Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_igxe,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='IGXE')
+    # Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_steam,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='STEAM')
    
    
-    # 查询C5的当日成交 每天晚上查询一次就行
-    Skin86BaseData.get_csgo_db_all(file_name=csgo_db_deal)
+    # # 查询C5的当日成交 每天晚上查询一次就行
+    # Skin86BaseData.get_csgo_db_all(file_name=csgo_db_deal)
     
     ananlyse_data(exchange_rate)
     #所有的数据，都遍历当道一个excel中
