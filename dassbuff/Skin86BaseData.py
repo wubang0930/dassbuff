@@ -6,17 +6,85 @@ import requests
 from datetime import datetime
 import time
 import os
-import shutil
 from zipfile import ZipFile
-import threading
 
 import config
 
 
 
+# 获取csgodb的实时成交数据
+def get_csgo_db_deal(page):
+    try:
+        # 设置请求的URL
+        url = 'https://api-csob.ok-skins.com/api/v2/goods/vol/list'
+        # 设置请求头
+        headers = {
+            'Accept':'*/*',
+            'Accept-Language':'zh-CN,zh;q=0.9',
+            'Auth':'fbf272d3dc6f6840f14782454d66f8b6',
+            'Connection':'keep-alive',
+            'Content-Type':'application/json',
+            'Origin':'https://csgoob.com',
+            'Referer':'https://csgoob.com/',
+            'Sec-Fetch-Dest':'empty',
+            'Sec-Fetch-Mode':'cors',
+            'Sec-Fetch-Site':'cross-site',
+            'Timestamp':'1729065175829',
+            'sec-ch-ua-mobile':'?0',
+            'sec-ch-ua-platform':'Windows',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+            'sec-ch-ua': 'Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+        }
+        # 设置请求的数据
+        data = {
+            "type": 'vol',
+            "categories": [],
+            "keywords": '',
+            "page": page
+        }
+        # 发送POST请求
+        response = requests.post(url, headers=headers, json=data)
+        if response.status_code == 200:
+            reponse_json = json.loads(response.text)
+            offers=reponse_json['data']
+            # 过滤平均销量大于30的列表
+            return offers
+        return None
+    except Exception as e:
+        print(e)
+        return None
+    
+
+def get_csgo_db_all(file_name):
+    if os.path.exists(file_name):
+        os.remove(file_name)
+
+
+    page=1
+    while True:
+        print("获取第"+str(page)+"页数据")
+        time.sleep(1)
+        page_data=get_csgo_db_deal(page)
+
+        if page_data is None :
+            print("获取数据为空，退出")
+            break
+
+        with open(file_name, 'a+', encoding='utf-8') as skin_file:
+            list=page_data['list']
+            if len(list)<1:
+                print("获取数据完成,返回数据为空")
+                break
+            for item in list:
+                item_json=json.dumps(item, ensure_ascii=False)
+                skin_file.write(item_json+'\n')
+        page=page+1
+
+
+
 
 # 获取三羊数据
-def get_skin_86_market(page=1,page_size=10,price_start=1,price_end=10000,selling_num_start=100):
+def get_skin_86_market(page=1,page_size=10,price_start=1,price_end=10000,selling_num_start=100,platform='YP'):
     try:
         # 设置请求的URL
         url = 'https://www.skin86.com/api/v1/skin/goods/list'
@@ -46,7 +114,7 @@ def get_skin_86_market(page=1,page_size=10,price_start=1,price_end=10000,selling
             "price_end": price_end,
             "selling_num_start": selling_num_start,
             # "platform": 'BUFF',
-            "platform": 'YP',
+            "platform": platform,
             "order_key": 'sell_max_num',
             "order_type": 2,
         }
@@ -62,7 +130,7 @@ def get_skin_86_market(page=1,page_size=10,price_start=1,price_end=10000,selling
         print(e)
         return None
 
-def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_start=1,price_end=10000,selling_num_start=100):
+def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_start=1,price_end=10000,selling_num_start=100,platform='YP'):
     if os.path.exists(file_name):
         os.remove(file_name)
 
@@ -79,7 +147,7 @@ def get_skin_86_market_all(file_name,limit_page=10,page=1,page_size=10,price_sta
             print("获取数据结束了，退出")
             break
 
-        page_data=get_skin_86_market(page,page_size,price_start,price_end,selling_num_start)
+        page_data=get_skin_86_market(page,page_size,price_start,price_end,selling_num_start,platform)
 
         if page_data is None :
             print("获取数据为空，退出")

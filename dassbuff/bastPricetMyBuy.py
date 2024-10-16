@@ -510,11 +510,11 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,10)
+    create_my_buy_List_all(1,100,7.14,5)
     find_buy_price()
     export_json_to_excel()
 
-
+    
     # # # 查看所有的采购单
     # exchange_rate=bastPricetSellSkin86.find_us_exchange()
     # target_list=get_my_target_List(exchange_rate)
