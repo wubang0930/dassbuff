@@ -12,14 +12,14 @@ import Skin86BaseData
 import bastPricetSellSkin86
 import math
 
+
 skin_86_product_all_buff=config.skin_86_product_all_buff
 skin_86_product_all_yp=config.skin_86_product_all_yp
 skin_86_product_all_igxe=config.skin_86_product_all_igxe
 skin_86_product_all_steam=config.skin_86_product_all_steam
-
 csgo_db_deal=config.csgo_db_deal
-
 data_local_excel=config.data_local_excel
+
 
 
 taobao_price=545
@@ -197,6 +197,7 @@ def ananlyse_data(exchange_rate):
             if i['market_name']==j['market_name'] :
                 steam_name_flag=True
                 all_price_list[i['market_name']].append(j['sell_min_price'])
+                all_target_list[i['market_name']].append(j['buy_max_price'])
 
                 # if j['sell_min_price']<min_price_list[i['market_name']]:
                 #     min_price_list[j['market_name']]=j['sell_min_price']
@@ -389,7 +390,7 @@ if __name__ == '__main__':
     # Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_steam,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='STEAM')
    
    
-    # # 查询C5的当日成交 每天晚上查询一次就行
+    # 查询C5的当日成交 每天晚上查询一次就行
     # Skin86BaseData.get_csgo_db_all(file_name=csgo_db_deal)
     
     ananlyse_data(exchange_rate)
