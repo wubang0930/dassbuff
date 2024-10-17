@@ -643,14 +643,14 @@ def create_avg_target_avg(exchange_rate):
                             buy_flag=True
                             us_price= us_price+1
                             buy_it_num=5
-                        elif '武器箱' not in create_target['category_group_name'] and create_target['dmarket_sale_Price']>=5 and create_target['dmarket_sale_Price']<15 and create_target['dm_buy_buff_sale_avg_rate']>0.15  and create_target['price_alter_percentage_7d']<20:
+                        elif '武器箱' not in create_target['category_group_name'] and create_target['dmarket_sale_Price']>=5 and create_target['dmarket_sale_Price']<15 and create_target['dm_buy_buff_sale_avg_rate']>0.15  and create_target['price_alter_percentage_7d']<15:
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=2
-                        elif '武器箱' not in create_target['category_group_name'] and create_target['dmarket_sale_Price']>=15 and create_target['dmarket_sale_Price']<70 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
-                            buy_flag=True
-                            us_price= us_price+15
-                            buy_it_num=1
+                        # elif '武器箱' not in create_target['category_group_name'] and create_target['dmarket_sale_Price']>=15 and create_target['dmarket_sale_Price']<70 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
+                        #     buy_flag=True
+                        #     us_price= us_price+15
+                        #     buy_it_num=1
                         # elif create_target['dmarket_sale_Price']>=50 and create_target['dmarket_sale_Price']<300 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<10 :
                         #     buy_flag=True
                         #     us_price= us_price+30
@@ -691,18 +691,18 @@ def create_avg_target_min(exchange_rate):
                         buy_it_num=1
                         us_price= int(round(create_target['offer_price']/exchange_rate*100,0))
 
-                        if create_target['offer_price']>1 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.06 and create_target['price_alter_percentage_7d']<20:
+                        if create_target['offer_price']>1 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.08 and create_target['price_alter_percentage_7d']<20:
                             buy_flag=True
                             us_price= us_price+1
                             buy_it_num=2
-                        elif '武器箱' not in create_target['category_group_name'] and create_target['offer_price']>=5 and create_target['offer_price']<10 and create_target['dm_buy_buff_sale_min_rate']>0.06  and create_target['price_alter_percentage_7d']<15:
+                        elif '武器箱' not in create_target['category_group_name'] and create_target['offer_price']>=5 and create_target['offer_price']<10 and create_target['dm_buy_buff_sale_min_rate']>0.08  and create_target['price_alter_percentage_7d']<15:
                             buy_flag=True
                             us_price= us_price+3
                             buy_it_num=1
-                        elif '武器箱' not in create_target['category_group_name'] and create_target['offer_price']>=15 and create_target['offer_price']<70 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<10 :
-                            buy_flag=True
-                            us_price= us_price+15
-                            buy_it_num=1
+                        # elif '武器箱' not in create_target['category_group_name'] and create_target['offer_price']>=15 and create_target['offer_price']<70 and create_target['dm_buy_buff_sale_min_rate']>0.05  and create_target['price_alter_percentage_7d']<10 :
+                        #     buy_flag=True
+                        #     us_price= us_price+15
+                        #     buy_it_num=1
 
 
                         # 比平均价高0.01美金

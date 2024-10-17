@@ -63,6 +63,14 @@ def ananlyse_data(exchange_rate):
     all_price_list={}
     min_price_list={}
     max_price_list={}
+    min_price_platform_list={}
+    max_price_platform_list={}
+
+    all_target_list={}
+    min_target_list={}
+    max_target_list={}
+    min_target_platform_list={}
+    max_target_platform_list={}
 
     keys_to_delete=['rarity_color','is_follow','exterior','rarity','en_name']
     for i in buff_list:
@@ -112,6 +120,17 @@ def ananlyse_data(exchange_rate):
         all_price_list[i['market_name']].append(i['sell_min_price'])
         min_price_list[i['market_name']]=i['sell_min_price']
         max_price_list[i['market_name']]=i['sell_min_price']
+        min_price_platform_list[i['market_name']]=i['platform_id']
+        max_price_platform_list[i['market_name']]=i['platform_id']
+
+
+        # buff的采购价格拼接
+        all_target_list[i['market_name']]=[]
+        all_target_list[i['market_name']].append(i['buy_max_price'])
+        min_target_list[i['market_name']]=i['buy_max_price']
+        max_target_list[i['market_name']]=i['buy_max_price']
+        min_target_platform_list[i['market_name']]=i['platform_id']
+        max_target_platform_list[i['market_name']]=i['platform_id']
 
 
         yp_name_flag=False
@@ -119,34 +138,58 @@ def ananlyse_data(exchange_rate):
             if i['market_name']==j['market_name'] :
                 yp_name_flag=True
                 all_price_list[i['market_name']].append(j['sell_min_price'])
+                all_target_list[i['market_name']].append(j['buy_max_price'])
 
                 if j['sell_min_price']<min_price_list[i['market_name']]:
                     min_price_list[j['market_name']]=j['sell_min_price']
+                    min_price_platform_list[i['market_name']]=j['platform_id']
                 
                 if j['sell_min_price']>max_price_list[i['market_name']]:
                     max_price_list[j['market_name']]=j['sell_min_price']
+                    max_price_platform_list[i['market_name']]=j['platform_id']
+
+                if j['buy_max_price']<min_target_list[i['market_name']]:
+                    min_target_list[j['market_name']]=j['buy_max_price']
+                    min_target_platform_list[i['market_name']]=j['platform_id']
+                
+                if j['buy_max_price']>max_target_list[i['market_name']]:
+                    max_target_list[j['market_name']]=j['buy_max_price']
+                    min_target_platform_list[i['market_name']]=j['platform_id']
 
                 
                 break
 
         if yp_name_flag==False:
             all_price_list[i['market_name']].append(get_zero_filled_string(i['sell_min_price']))
+            all_target_list[i['market_name']].append(get_zero_filled_string(i['buy_max_price']))
 
         igxe_name_flag=False
         for j in igxe_list:
             if i['market_name']==j['market_name'] :
                 igxe_name_flag=True
                 all_price_list[i['market_name']].append(j['sell_min_price'])
+                all_target_list[i['market_name']].append(j['buy_max_price'])
 
                 if j['sell_min_price']<min_price_list[i['market_name']]:
                     min_price_list[j['market_name']]=j['sell_min_price']
+                    min_price_platform_list[i['market_name']]=j['platform_id']
                 
                 if j['sell_min_price']>max_price_list[i['market_name']]:
                     max_price_list[j['market_name']]=j['sell_min_price']
+                    max_price_platform_list[i['market_name']]=j['platform_id']
+
+                if j['buy_max_price']<min_target_list[i['market_name']]:
+                    min_target_list[j['market_name']]=j['buy_max_price']
+                    min_target_platform_list[i['market_name']]=j['platform_id']
+
+                if j['buy_max_price']>max_target_list[i['market_name']]:
+                    max_target_list[j['market_name']]=j['buy_max_price']
+                    min_target_platform_list[i['market_name']]=j['platform_id']
                 
                 break
         if igxe_name_flag==False:
             all_price_list[i['market_name']].append(get_zero_filled_string(i['sell_min_price']))
+            all_target_list[i['market_name']].append(get_zero_filled_string(i['buy_max_price']))
 
 
         steam_name_flag=False
@@ -164,26 +207,58 @@ def ananlyse_data(exchange_rate):
                 break
         if steam_name_flag==False:
             all_price_list[i['market_name']].append(get_zero_filled_string(i['sell_min_price']))
+            all_target_list[i['market_name']].append(get_zero_filled_string(i['buy_max_price']))
 
 
 
 
     for i in buff_list:
+
         i['all_max_price']=0
+        i['all_max_price_platform']=""
         if i['market_name'] in max_price_list:
             i['all_max_price']=max_price_list[i['market_name']]
+            i['all_max_price_platform']=max_price_platform_list[i['market_name']]
 
         i['all_min_price']=0
+        i['all_min_price_platform']=""
         if i['market_name'] in min_price_list:
             i['all_min_price']=min_price_list[i['market_name']]
+            i['all_min_price_platform']=min_price_platform_list[i['market_name']]
 
         i['all_price_list']=""
         if i['market_name'] in all_price_list:
             for x in all_price_list[i['market_name']]:
-                i['all_price_list']=i['all_price_list']+"----"+str(x)
+                i['all_price_list']=i['all_price_list']+"——"+str(x)
+            i['all_price_list']=i['all_price_list'][2:]
 
         i['devilide_price']=i['all_max_price']-i['all_min_price']
-        i['devilide_price_rate']=round(i['devilide_price']/i['all_max_price'],3)*100
+        if i['all_max_price']>0:
+            i['devilide_price_rate']=round(i['devilide_price']/i['all_max_price'],3)*100
+
+        
+        i['all_max_target']=0
+        i['all_max_target_platform']=""
+        if i['market_name'] in max_target_list:
+            i['all_max_target']=max_target_list[i['market_name']]
+            i['all_max_target_platform']=max_target_platform_list[i['market_name']]
+
+        i['all_min_target']=0
+        i['all_min_target_platform']=""
+        if i['market_name'] in min_target_list:
+            i['all_min_target']=min_target_list[i['market_name']]
+            i['all_min_target_platform']=min_target_platform_list[i['market_name']]
+
+        i['all_target_list']=""
+        if i['market_name'] in all_target_list:
+            for x in all_target_list[i['market_name']]:
+                i['all_target_list']=i['all_target_list']+"——"+str(x)
+            
+            i['all_target_list']=i['all_target_list'][2:]
+
+        i['price_target_devilide']=i['all_max_price']-i['all_min_target']
+        i['price_target_devilide_rate']=round(i['price_target_devilide']/i['all_max_price'],3)*100
+        
         
 
 
@@ -228,22 +303,27 @@ def export_json_to_excel(all_data):
         # 定义中文名和字段样式
     chinese_columns = {
     "goods_id": '商品id',
-    "platform_id": "平台",
     "category_group_name": "类型",
     "min_type": "磨损类型",
     "market_name": "名称",
-    "sell_min_price": '售卖价',
     "all_price_list": '所有售价(buff\yp\igxe\steam)',
     "all_min_price": '最低售卖价',
     "all_max_price": '最高售卖价',
     "devilide_price": '相差价',
     "devilide_price_rate": '相差价率',
+    "all_min_price_platform": '最低售卖平台',
+    "all_max_price_platform": "最高售卖平台",
+    "sell_max_num": '出售数量',
     
     "today_count": '今日成交数量',
     "today_price": '今日成交均价',
-    "sell_max_num": '出售数量',
-    "sell_valuation": '总销售额',
-    "buy_max_price": '采购价',
+    "price_target_devilide": '最高差价',
+    "price_target_devilide_rate": '最高差价率',
+    "all_min_target": '最低采购价',
+    "all_max_target": '最高采购价',
+    "all_target_list": '所有采购价',
+    "all_min_target_platform": '最低采购价平台',
+    "all_max_target_platform": '最高采购价平台',
     "buy_max_num": '采购数量',
     "price_alter_percentage_7d": '7天变化率',
     "price_alter_value_7d": '7天变化价格',
@@ -253,7 +333,7 @@ def export_json_to_excel(all_data):
     
     
     }
-    column_order = ['goods_id', 'platform_id', 'category_group_name','min_type', 'market_name','sell_min_price','all_price_list','all_min_price','all_max_price','devilide_price','devilide_price_rate','today_count','today_price','sell_max_num','sell_valuation','buy_max_num','buy_max_price','price_alter_percentage_7d','price_alter_value_7d','market_hash_name','icon_url','redirect_url']
+    column_order = ['category_group_name','min_type', 'market_name','all_price_list','all_min_price','all_max_price','devilide_price','devilide_price_rate','sell_max_num','all_min_price_platform','all_max_price_platform','today_count','today_price','price_target_devilide','price_target_devilide_rate','buy_max_num','all_min_target','all_max_target','all_target_list','all_min_target_platform','all_min_target_platform','price_alter_percentage_7d','price_alter_value_7d','market_hash_name','icon_url','redirect_url']
 
    
 
@@ -282,9 +362,9 @@ def export_json_to_excel(all_data):
         # 设置列标题的中文名和样式
         for col_num, value in enumerate(df.columns.values):
             # 设置列宽
-            column_width = 9  # 你可以根据需要调整这个值
-            if col_num == 4 or col_num == 6 :
-                worksheet.set_column(col_num, col_num, 40)
+            column_width = 7  # 你可以根据需要调整这个值
+            if 'market_name' in value or 'all_price_list' in value or 'all_target_list' in value :
+                worksheet.set_column(col_num, col_num, 30)
             else:
                 worksheet.set_column(col_num, col_num, column_width)
             worksheet.write(0, col_num, chinese_columns[value], yellow_format)
