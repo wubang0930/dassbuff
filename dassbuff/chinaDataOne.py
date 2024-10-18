@@ -35,6 +35,7 @@ def get_zero_filled_string(number):
 
 
 def ananlyse_data(exchange_rate):
+    print('开始分析数据')
     all_data_list=[]
 
 
@@ -287,6 +288,7 @@ def ananlyse_data(exchange_rate):
 
     # buff_list.sort(key=lambda x:(x['goods_id'],x['platform_id']),reverse=True)
     buff_list.sort(key=lambda x:(x['goods_id']),reverse=True)
+    print('分析成功，开始导出')
     export_json_to_excel(buff_list)
 
     # 汇总导出
@@ -384,14 +386,14 @@ if __name__ == '__main__':
 
     
     # # 初始化数据
-    # Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_buff,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='BUFF')
-    # Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_yp,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='YP')
-    # Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_igxe,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='IGXE')
-    # Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_steam,limit_page=100,page=0,page_size=100,price_start=500,price_end=1500,selling_num_start=10,platform='STEAM')
+    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_buff,limit_page=100,page=0,page_size=100,price_start=100,price_end=1500,selling_num_start=10,platform='BUFF')
+    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_yp,limit_page=100,page=0,page_size=100,price_start=100,price_end=1500,selling_num_start=10,platform='YP')
+    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_igxe,limit_page=100,page=0,page_size=100,price_start=100,price_end=1500,selling_num_start=10,platform='IGXE')
+    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_steam,limit_page=100,page=0,page_size=100,price_start=100,price_end=1500,selling_num_start=10,platform='STEAM')
    
    
     # 查询C5的当日成交 每天晚上查询一次就行
-    # Skin86BaseData.get_csgo_db_all(file_name=csgo_db_deal)
+    Skin86BaseData.get_csgo_db_all(file_name=csgo_db_deal)
     
     ananlyse_data(exchange_rate)
     #所有的数据，都遍历当道一个excel中
