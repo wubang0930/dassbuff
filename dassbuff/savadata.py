@@ -34,29 +34,37 @@ taobao_price=545
 
 def save_data_mysql():
     log_num=0
-    print(str(datetime.now())+"开始查询数据")
-    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_buff_mysql,limit_page=100,page=0,page_size=100,price_start=500,price_end=10000,selling_num_start=2,platform='BUFF')
-    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_yp_mysql,limit_page=100,page=0,page_size=100,price_start=500,price_end=10000,selling_num_start=2,platform='YP')
-    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_igxe_mysql,limit_page=100,page=0,page_size=100,price_start=500,price_end=10000,selling_num_start=2,platform='IGXE')
-    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_steam_mysql,limit_page=100,page=0,page_size=100,price_start=500,price_end=10000,selling_num_start=2,platform='STEAM')
+    print(getNowTime()+"开始查询数据")
+    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_buff_mysql,limit_page=200,page=0,page_size=100,price_start=40,price_end=10000,selling_num_start=2,platform='BUFF')
+    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_yp_mysql,limit_page=200,page=0,page_size=100,price_start=40,price_end=10000,selling_num_start=2,platform='YP')
+    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_igxe_mysql,limit_page=200,page=0,page_size=100,price_start=40,price_end=10000,selling_num_start=2,platform='IGXE')
+    Skin86BaseData.get_skin_86_market_all(file_name= skin_86_product_all_steam_mysql,limit_page=200,page=0,page_size=100,price_start=40,price_end=10000,selling_num_start=2,platform='STEAM')
     Skin86BaseData.get_csgo_db_all(file_name=csgo_db_deal_mysql)
-    print(str(datetime.now())+"查询数据成功")
+    print(getNowTime()+"查询数据成功")
 
 
     all_data_list=[]
 
     with open(skin_86_product_all_buff_mysql, 'r', encoding='utf-8') as buff:
         for line in buff:
-            all_data_list.append(json.loads(line))
+            line_json=json.loads(line)
+            line_json['platform_id']='BUFF' 
+            all_data_list.append(line_json)
     with open(skin_86_product_all_yp_mysql, 'r', encoding='utf-8') as yp:
         for line in yp:
-            all_data_list.append(json.loads(line))
+            line_json=json.loads(line)
+            line_json['platform_id']='YP' 
+            all_data_list.append(line_json)
     with open(skin_86_product_all_igxe_mysql, 'r', encoding='utf-8') as igxe:
         for line in igxe:
-            all_data_list.append(json.loads(line))
+            line_json=json.loads(line)
+            line_json['platform_id']='IGXE' 
+            all_data_list.append(line_json)
     with open(skin_86_product_all_steam_mysql, 'r', encoding='utf-8') as steam:   
-        for line in steam:   
-            all_data_list.append(json.loads(line))
+        for line in steam:
+            line_json=json.loads(line)
+            line_json['platform_id']='STEAM'    
+            all_data_list.append(line_json)
 
     
     sale_data_list=[]
@@ -73,8 +81,10 @@ def save_data_mysql():
                 all_data['today_sale_count']=sale_data['count']
                 
                 if sale_data['count'] != 0 and sale_data['count'] is not None:
-                    all_data['today_sale_price']=round(float(sale_data['price'])/sale_data['count'],2)
+                    all_data['today_sale_price']=round(float(sale_data['price'])/sale_data['count']/100,2)
                 break
+    
+
 
 
 
@@ -83,15 +93,59 @@ def save_data_mysql():
     database = 'csgo'
     user = 'root'
     password = 'bangye'
+
+    # 先删除今天的数据 在插入今天的数据
+    version_date=str(datetime.now().strftime('%Y-%m-%d'))
+    print("version_date："+version_date)
+    delete_today_data(host, database, user, password,version_date)
+
+
     # 插入数据的 SQL 查询
-    insert_query = "INSERT INTO `csgo`.`goods`(`goods_id`, `platform_id`, `market_name`, `sell_min_price`, `sell_max_num`, `sell_valuation`, `buy_max_price`, `buy_max_num`, `price_alter_percentage_7d`, `price_alter_value_7d`, `category_group_name`, `rarity_color`, `icon_url`, `is_follow`, `redirect_url`, `exterior`, `rarity`, `market_hash_name`, `en_name`, `today_sale_count`, `today_sale_price`, `create_date`) VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s)"
     # 调用插入数据的方法
-    insert_data(host, database, user, password, insert_query, all_data_list)
+    insert_today_buff_data(host, database, user, password, all_data_list,version_date)
+    insert_today_sale_data(host, database, user, password, sale_data_list,version_date)
+
+def delete_today_data(host, database, user, password,version_date):
+    print(getNowTime()+"开始删除数据")
+    try:
+        # 连接到 MySQL 数据库
+        connection = mysql.connector.connect(
+            host=host,
+            database=database,
+            user=user,
+            password=password
+        )
+        sql_cs_db_deal = "delete from csgo_db_deal where version_date = %s"
+        sql_goods = "delete from goods where version_date = %s"
+        
+        values = [version_date]
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+            # 执行插入查询
+            cursor.execute(sql_cs_db_deal, values)
+            cursor.execute(sql_goods, values)
+            connection.commit()  # 提交事务
+            print(getNowTime()+"数据删除成功")
+    
+    except Error as e:
+        print(f"数据库连接错误: {e}")
+    
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("数据库连接已关闭")
 
 
+def getNowTime():
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-def insert_data(host, database, user, password, insert_query, data_tuple_list):
-    print(str(datetime.now())+"开始插入数据")
+
+def insert_today_buff_data(host, database, user, password, data_tuple_list,version_date):
+    insert_query = "INSERT INTO `csgo`.`goods`(`goods_id`, `platform_id`, `market_name`, `sell_min_price`, `sell_max_num`, `sell_valuation`, `buy_max_price`, `buy_max_num`, `price_alter_percentage_7d`, `price_alter_value_7d`, `category_group_name`, `rarity_color`, `icon_url`, `is_follow`, `redirect_url`, `exterior`, `rarity`, `market_hash_name`, `en_name`, `today_sale_count`, `today_sale_price`, `create_date`,`version_date`) VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s,%s)"
+
+    print(getNowTime()+"开始插入goods数据")
     try:
         # 连接到 MySQL 数据库
         connection = mysql.connector.connect(
@@ -128,13 +182,14 @@ def insert_data(host, database, user, password, insert_query, data_tuple_list):
                     data['en_name'],
                     data['today_sale_count'],
                     data['today_sale_price'],
-                    data['create_date']
+                    data['create_date'],
+                    version_date
                 )
 
                 cursor.execute(insert_query, values)
                 # cursor.execute("INSERT INTO `csgo`.`goods`( `goods_id`, `platform_id`, `market_name`, `sell_min_price`, `sell_max_num`, `sell_valuation`, `buy_max_price`, `buy_max_num`, `price_alter_percentage_7d`, `price_alter_value_7d`, `category_group_name`, `rarity_color`, `icon_url`, `is_follow`, `redirect_url`, `exterior`, `rarity`, `market_hash_name`, `en_name`) VALUES ('1', '1', '1', 1.00, 1, 1.00, 1.00, 1, 1.00, 1.00, '1', '1', '1', 1, '1', '1', '1', '1', '1')")
                 connection.commit()  # 提交事务
-            print(str(datetime.now())+"数据插入成功")
+            print(getNowTime()+"数据插入goods成功")
     
     except Error as e:
         print(f"数据库连接错误: {e}")
@@ -145,7 +200,59 @@ def insert_data(host, database, user, password, insert_query, data_tuple_list):
             connection.close()
             print("数据库连接已关闭")
 
+def insert_today_sale_data(host, database, user, password, data_tuple_list,version_date):
+    insert_query = "INSERT INTO `csgo`.`csgo_db_deal`( `goods_name`, `icon_url`, `today_count`, `today_price`, `all_price`, `create_date`,`version_date`) VALUES (%s, %s,%s, %s,%s, %s, %s)"
 
+    print(getNowTime()+"开始插入cs_db数据")
+    try:
+        # 连接到 MySQL 数据库
+        connection = mysql.connector.connect(
+            host=host,
+            database=database,
+            user=user,
+            password=password
+        )
+        
+        if connection.is_connected():
+            cursor = connection.cursor()
+            # 执行插入查询
+            for data in data_tuple_list:
+                data['create_date']=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                
+                today_price=0
+                if data['count']==0 or data['count'] is None:
+                    today_price=0
+                else:
+                    today_price=round(data['price']/data['count']/100,2)
+                
+                price=0
+                if data['price']==0 or data['price'] is None:
+                    price=0
+                else:
+                    price=round(data['price']/100,2)
+                    
+                values = (
+                    data['goodsName'],
+                    data['iconUrl'],
+                    data['count'],
+                    today_price,
+                    price,
+                    data['create_date'],
+                    version_date
+                )
+
+                cursor.execute(insert_query, values)
+                connection.commit()  # 提交事务
+            print(getNowTime()+"数据插入cs_db成功")
+    
+    except Error as e:
+        print(f"数据库连接错误: {e}")
+    
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("数据库连接已关闭")
 
 if __name__ == '__main__':
 # def start():    
@@ -161,12 +268,12 @@ if __name__ == '__main__':
         time.sleep(1)
         log_num+=1
 
-        if log_num%10==0:
+        if log_num%600==0:
             print(str(datetime.now())+"  正在运行中")
 
 
 
-
+    # save_data_mysql()
 
     end_time=int(time.time())
     print("运行时间："+str(end_time-start_time))
