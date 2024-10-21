@@ -23,9 +23,27 @@ filter_list=[]   #过滤平均销量大于30的列表
 priority_archive=config.priority_archive
 priority_archive_json=config.data_local_analysis+"/"+config.priority_archive
 
+csgo_db_deal=config.csgo_db_deal
+skin_86_product_all_buff=config.skin_86_product_all_buff
+
+
+
 
 # 过滤出要查询的饰品的buff数据
 def filter_buff_data():
+    csgo_db_deal_list=[]
+    with open(csgo_db_deal, "r", encoding='utf-8') as db_deal:
+        for line in db_deal:
+            csgo_db_deal_list.append(json.loads(line))
+
+    buff_list=[]
+    with open(skin_86_product_all_buff, "r", encoding='utf-8') as buff_file:
+        for line in buff_file:
+            buff_list.append(json.loads(line))
+
+
+
+
     all_base_info=[]
     with open(priority_archive_json, "r", encoding='utf-8') as cs_buff_uu_c5_base:
         for base_info_line in cs_buff_uu_c5_base:
@@ -130,6 +148,18 @@ def filter_buff_data():
                 filter_data['max_sell_price'] = base_info_json['uuyp_sell']['price']
                 filter_data['max_sell_price_platform']="uupy"
 
+            for j in buff_list:
+                if base_info_json['cn_name']==j['market_name'] :
+                    filter_data['7d_rate']=j['price_alter_percentage_7d']
+                    filter_data['7d_price']=j['price_alter_value_7d']
+                    break
+
+            for j in csgo_db_deal_list:
+                if base_info_json['cn_name']==j['goodsName'] :
+                    filter_data['today_count']=j['count']
+                    if j['count']!=0:
+                        filter_data['today_price']=round(j['price']/j['count']/100,1)
+                    break
 
             filter_data['all_buy_price_counts'] = []
             filter_data['all_buy_price_counts'].append(base_info_json['buff_buy']['count'] is not None and base_info_json['buff_buy']['count'] or 0)

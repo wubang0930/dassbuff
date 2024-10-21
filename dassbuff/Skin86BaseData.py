@@ -63,7 +63,7 @@ def get_csgo_db_all(file_name):
     page=1
     while True:
         print("获取第"+str(page)+"页数据")
-        time.sleep(0.2)
+        time.sleep(1.5)
         page_data=get_csgo_db_deal(page)
 
         if page_data is None :
