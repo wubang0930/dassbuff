@@ -32,7 +32,7 @@ filter_list=[]   #过滤平均销量大于30的列表
 
 data_path=config.data_local
 my_buy_current_file=config.my_buy_current_file
-buff_file=config.skin_86_product_all_buy
+buff_file=config.skin_86_product_all
 
 def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10,authorization=config.authorization,file_path=config.my_buy_current_file):
     print("存储数据文件为："+str(file_path))
