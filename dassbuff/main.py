@@ -383,7 +383,7 @@ def query_my_sale_buy_record(query,tree,file_path):
     for item in tree.get_children():
         tree.delete(item)
             # 将新的数据插入到表格中
-    file_all_data=bastPricetMyBuy.find_buy_price()
+    file_all_data=bastPricetMyBuy.find_buy_price(file_path)
 
     # 打开文件准备读取
     for entry in file_all_data:

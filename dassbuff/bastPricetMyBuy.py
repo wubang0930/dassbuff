@@ -31,7 +31,6 @@ filter_list=[]   #过滤平均销量大于30的列表
 
 
 data_path=config.data_local
-my_buy_current_file=config.my_buy_current_file
 buff_file=config.skin_86_product_all
 
 def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10,authorization=config.authorization,file_path=config.my_buy_current_file):
@@ -124,7 +123,7 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10,
             page=page+1
 
 
-def find_buy_price():
+def find_buy_price(file_path):
     buff_file_list=[]
     with open(buff_file, 'r', encoding='utf-8') as buff_file_read:
         for buff_data in buff_file_read:
@@ -133,7 +132,7 @@ def find_buy_price():
 
     # 过滤平均销量大于30的产品
     second_list=[]
-    with open(my_buy_current_file, 'r', encoding='utf-8') as second_read_file:
+    with open(file_path, 'r', encoding='utf-8') as second_read_file:
         for second in second_read_file:
             second_item=json.loads(second)
             second_list.append(second_item) 
