@@ -8,6 +8,9 @@ import config
 from datetime import datetime
 import threading
 import offer_sell_product
+import pyperclip  # 用于复制到剪贴板
+import bastPricetMyBuy
+
 
 exchange_rate=7.10
 
@@ -71,6 +74,7 @@ class TabbedApp:
         # 创建多个标签页
         self.create_tab1()
         self.create_tab2()
+        self.create_tab3()
 
         # 将标签框架添加到窗口
         self.tabControl.pack(expand=1, fill="both")
@@ -87,7 +91,7 @@ class TabbedApp:
 
     def create_tab1(self):
         tab1 = ttk.Frame(self.tabControl,width=1200,height=800)
-        self.tabControl.add(tab1, text='国内数据')
+        self.tabControl.add(tab1, text='DM购买后BUFF出售-账号1')
 
         # 查询部分
         query_label = tk.Label(tab1, text="查询内容平台:")
@@ -198,7 +202,7 @@ class TabbedApp:
 
     def create_tab2(self):
         tab2 = ttk.Frame(self.tabControl)
-        self.tabControl.add(tab2, text='库存')
+        self.tabControl.add(tab2, text='悠悠购买DM出售-账号2')
 
         # 查询部分
         query_label_inve = tk.Label(tab2, text="库存平台:")
@@ -248,7 +252,6 @@ class TabbedApp:
         count_label_value_all = tk.Entry(tab2,width=30)
         count_label_value_all.grid(row=4, column=3,sticky=tk.W,pady=30)
         
-
         # 列表展示部分
         self.tree2 = ttk.Treeview(tab2, height=25, selectmode="browse",columns=("id", "title", "gameType", "price", "instantPrice"), show='headings')
         # 创建滚动条
@@ -266,10 +269,101 @@ class TabbedApp:
         self.display_data1(None, self.tree2)
 
         # 布局
-        self.tree2.grid(row=5,columnspan=4,sticky=tk.NS,padx=30,pady=10)
+        self.tree2.grid(row=6,columnspan=4,sticky=tk.NS,padx=30,pady=10)
+        # 绑定行选择事件
+        self.tree2.bind("<<TreeviewSelect>>", self.on_row_select)
+
+        # 绑定键盘事件（Ctrl+C 复制选中行）
+        self.root.bind("<Control-c>", self.copy_selection)
+
+    def create_tab3(self):
+        tab2 = ttk.Frame(self.tabControl)
+        self.tabControl.add(tab2, text='查询出售购买记录')
+
+        # 查询部分
+        query_label_inve = tk.Label(tab2, text="出售购买记录")
+        query_label_inve.grid(row=0,columnspan=4, column=0)
 
 
-       
+
+        sync_query_time_sale_buy = tk.Entry(tab2,width=30)
+        sync_query_time_sale_buy.grid(row=1, column=0,sticky=tk.E,padx=30)
+        sync_query_time_sale_buy_limit = tk.Entry(tab2,width=30)
+        sync_query_time_sale_buy_limit.insert(0, "1,100,7.14,5")
+        sync_query_time_sale_buy_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
+        start_button_time_sale_buy = tk.Button(tab2, text="查询-账号1",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy.get(),self.tree3,config.my_buy_current_file))
+        start_button_time_sale_buy.grid(row=1,  column=2,sticky=tk.W,padx=30)
+        stop_button_time_sale_buy = tk.Button(tab2, text="同步历史-账号1",width=15, command=lambda: update_my_sale_buy_record(sync_query_time_sale_buy_limit.get(),config.authorization,config.my_buy_current_file))
+        stop_button_time_sale_buy.grid(row=1,  column=3,sticky=tk.W)
+
+
+
+        sync_query_time_sale_buy_two = tk.Entry(tab2,width=30)
+        sync_query_time_sale_buy_two.grid(row=2, column=0,sticky=tk.E,padx=30)
+        sync_query_time_sale_buy_two_limit = tk.Entry(tab2,width=30)
+        sync_query_time_sale_buy_two_limit.insert(0, "1,100,7.14,5")
+        sync_query_time_sale_buy_two_limit.grid(row=2, column=1,sticky=tk.E,padx=30)
+        start_button_time_sale_buy_two = tk.Button(tab2, text="查询-账号2",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy_two.get(),self.tree3,config.my_buy_current_file_two))
+        start_button_time_sale_buy_two.grid(row=2,  column=2,sticky=tk.W,padx=30)
+        stop_button_time_sale_buy_two = tk.Button(tab2, text="同步历史-账号2",width=15, command=lambda: update_my_sale_buy_record(sync_query_time_sale_buy_two_limit.get(),config.authorization_two,config.my_buy_current_file_two))
+        stop_button_time_sale_buy_two.grid(row=2,  column=3,sticky=tk.W)
+   
+        
+        
+        # 列表展示部分
+        self.tree3 = ttk.Treeview(tab2, height=25, selectmode="browse",columns=("action", "subject", "cn_name", "price_us", "price", "buff_price", "buff_price_divided", "buff_price_divided_rate", "category_group_name", "updatedAt"), show='headings')
+        # 创建滚动条
+        width_avg = 80
+        self.tree3.column("action", width=width_avg, anchor='center')
+        self.tree3.column("subject", width=200, anchor='center')
+        self.tree3.column("cn_name", width=200, anchor='center')
+        self.tree3.column("price_us", width=width_avg, anchor='center')
+        self.tree3.column("price", width=width_avg, anchor='center')
+        self.tree3.column("buff_price", width=width_avg, anchor='center')
+        self.tree3.column("buff_price_divided", width=width_avg, anchor='center')
+        self.tree3.column("buff_price_divided_rate", width=width_avg, anchor='center')
+        self.tree3.column("category_group_name", width=width_avg, anchor='center')
+        self.tree3.column("updatedAt", width=width_avg, anchor='center')
+
+        self.tree3.heading("action", text="销售类型")
+        self.tree3.heading("subject", text="名称")
+        self.tree3.heading("cn_name", text="英文名")
+        self.tree3.heading("price_us", text="美元价")
+        self.tree3.heading("price", text="当前价")
+        self.tree3.heading("buff_price", text="buff价格")
+        self.tree3.heading("buff_price_divided", text="盈利价")
+        self.tree3.heading("buff_price_divided_rate", text="盈利率")
+        self.tree3.heading("category_group_name", text="类型")
+        self.tree3.heading("updatedAt", text="时间")
+        self.display_data1(None, self.tree3)
+
+        # 布局
+        self.tree3.grid(row=6,columnspan=4,sticky=tk.NS,padx=30,pady=10)
+        # 绑定行选择事件
+        self.tree3.bind("<<TreeviewSelect>>", self.on_row_select)
+
+        # 绑定键盘事件（Ctrl+C 复制选中行）
+        self.root.bind("<Control-c>", self.copy_selection)
+
+
+
+    def on_row_select(self, event):
+        # 获取选中行的内容（可选）
+        print("")
+        selected_item = self.tree2.selection()
+        if selected_item:
+            item_values = self.tree2.item(selected_item)['values']
+            print("选中的行内容:", item_values)
+
+    def copy_selection(self, event):
+        selected_item = self.tree2.selection()
+        if selected_item:
+            item_values = self.tree2.item(selected_item)['values']
+            # 将选中行的数据拼接成字符串
+            content = "\t".join(item_values)  # 使用制表符分隔
+            pyperclip.copy(content)  # 复制到剪贴板
+            print("已复制到剪贴板:", content)
+
 
 
     def display_data1(self, query, tree):
@@ -277,6 +371,43 @@ class TabbedApp:
       
 add_list=[]
 change_list=[]
+
+
+
+
+def query_my_sale_buy_record(query,tree,file_path):
+    print("查询列表"+query+",路径："+file_path)
+    add_list.clear()
+    change_list.clear()
+
+    for item in tree.get_children():
+        tree.delete(item)
+            # 将新的数据插入到表格中
+    file_all_data=bastPricetMyBuy.find_buy_price()
+
+    # 打开文件准备读取
+    for entry in file_all_data:
+        if query is None:
+            tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
+        elif query in entry["action"] or query in entry["subject"] or query in entry["cn_name"] or query in entry["category_group_name"]:  # 基于查询内容过滤数据
+            tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
+            
+
+def update_my_sale_buy_record(limit,authorization,file_path):
+    print("同步列表"+limit+",路径："+file_path)
+    limit_list=limit.split(",")
+    offset=int(limit_list[0])
+    limit=int(limit_list[1])
+    exchange_rate=float(limit_list[2])
+    seartch_page=int(limit_list[3])
+
+    ## 同步最新数据
+    bastPricetMyBuy.create_my_buy_List_all(offset,limit,exchange_rate,seartch_page,authorization,file_path)
+    
+
+
+    print("查询列表成功")
+
 
 def add_task_to_steam_cart(content,limit,tree,treeFilters,count_label_value,count_label_value_all):
     add_list.clear()

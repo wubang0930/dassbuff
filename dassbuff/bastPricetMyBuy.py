@@ -31,12 +31,11 @@ filter_list=[]   #过滤平均销量大于30的列表
 
 
 data_path=config.data_local
-file_name=config.data_local_analysis+"/my_buy_list.txt"
+my_buy_current_file=config.my_buy_current_file
 buff_file=config.skin_86_product_all_buy
-my_buy_current_file=config.data_local_analysis+"/my_buy_current_list.txt"
-my_target_current_file=config.data_local_analysis+"/my_target_current_list.txt"
 
-def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10):
+def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10,authorization=config.authorization,file_path=config.my_buy_current_file):
+    print("存储数据文件为："+str(file_path))
     history_list=[]
     product_name_list=[]
 
@@ -44,16 +43,16 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10)
         for line in all_name_file:
             product_name_list.append(line.strip())
 
-    if not os.path.exists(file_name):
-        open(file_name,'w',encoding='utf-8')
+    if not os.path.exists(file_path):
+        open(file_path,'w',encoding='utf-8')
     else:
-        with open(file_name, 'r', encoding='utf-8') as my_buy_list_file:
+        with open(file_path, 'r', encoding='utf-8') as my_buy_list_file:
             for cur_data in my_buy_list_file:
                 json_item=json.loads(cur_data)
                 history_list.append(json_item)
 
     page=1
-    with open(file_name, 'a+', encoding='utf-8') as my_buy_list_file:
+    with open(file_path, 'a+', encoding='utf-8') as my_buy_list_file:
         while True:
             print("获取第"+str(page)+"页数据"+"offset="+str(offset)+" limit="+str(limit))
             if page>seartch_page:
@@ -61,7 +60,7 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10)
                 break
 
             time.sleep(1)
-            reponse_json=get_my_buy_List(page,offset,limit)
+            reponse_json=get_my_buy_List(page,offset,limit,authorization)
 
             if reponse_json is None:
                 print("获取数据有误")
@@ -76,7 +75,7 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10)
             print("总数据量："+str(total))
             for item in offers:
                 try:
-                    print(item['subject'])
+                    # print(item['subject'])
                     buy_data={}
                     buy_data['id']=item['id']
                     buy_data['action']=item['action']
@@ -113,6 +112,7 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10)
 
                     # 追加到最后一行
                     if old_flag:
+                        print("追加数据："+str(buy_data))
                         my_buy_list_file.write(json.dumps(buy_data,ensure_ascii=False)+"\n")
                 except Exception as e:
                     print(e)
@@ -131,36 +131,35 @@ def find_buy_price():
             buff_data_item=json.loads(buff_data)
             buff_file_list.append(buff_data_item)
 
-
+    # 过滤平均销量大于30的产品
     second_list=[]
-    with open(file_name, 'r', encoding='utf-8') as second_read_file:
+    with open(my_buy_current_file, 'r', encoding='utf-8') as second_read_file:
         for second in second_read_file:
-            if '印花' not in second:
-                second_item=json.loads(second)
-                second_list.append(second_item) 
+            second_item=json.loads(second)
+            second_list.append(second_item) 
     
     # 按照时间排序second_list
     
     second_list.sort(key=lambda x:x['updatedAt'],reverse=True)
 
-    with open(my_buy_current_file, 'w', encoding='utf-8') as my_buy_current_file_write:
-        for send_data in second_list:
+    all_data=[]
+    for send_data in second_list:
+        for buff_info in buff_file_list:
+            send_data['buff_price']=0.01
+            send_data['buff_price_divided']=0.01
+            send_data['buff_price_divided_rate']=0.01
+            send_data['category_group_name']=buff_info['category_group_name']
+            if buff_info['market_name'] == send_data['cn_name']:
+                if send_data['price'] is not None and send_data['price']!=0:
+                    send_data['buff_price']=buff_info['sell_min_price']
+                    send_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'],2)
+                    send_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'])/send_data['price'],2)
+                    break
+                    
+        all_data.append(send_data)
+    return all_data
 
-            for buff_info in buff_file_list:
-                send_data['buff_price']=0.01
-                send_data['buff_price_divided']=0.01
-                send_data['buff_price_divided_rate']=0.01
-                send_data['category_group_name']=buff_info['category_group_name']
-                if buff_info['market_name'] == send_data['cn_name']:
-                    print(send_data['cn_name'])
-                    if send_data['price'] is not None and send_data['price']!=0:
-                        send_data['buff_price']=buff_info['sell_min_price']
-                        send_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'],2)
-                        send_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'])/send_data['price'],2)
-                        break
-                        
-
-            my_buy_current_file_write.write(json.dumps(send_data,ensure_ascii=False)+"\n")
+    
 
 
 def tranStrToDatetime(str_time):
@@ -177,62 +176,62 @@ def tranStrToDatetime(str_time):
 
                 
             
-def find_target_price(target_list):
-    buff_file_list=[]
-    with open(buff_file, 'r', encoding='utf-8') as buff_file_read:
-        for buff_data in buff_file_read:
-            buff_data_item=json.loads(buff_data)
-            buff_file_list.append(buff_data_item)
+# def find_target_price(target_list):
+#     buff_file_list=[]
+#     with open(buff_file, 'r', encoding='utf-8') as buff_file_read:
+#         for buff_data in buff_file_read:
+#             buff_data_item=json.loads(buff_data)
+#             buff_file_list.append(buff_data_item)
 
 
-    # 获取所有的已购买的数据 安装名称
-    second_list=[]
-    with open(file_name, 'r', encoding='utf-8') as second_read_file:
-        for second in second_read_file:
-            second_item=json.loads(second)
-            second_list.append(second_item) 
+#     # 获取所有的已购买的数据 安装名称
+#     second_list=[]
+#     with open(file_name, 'r', encoding='utf-8') as second_read_file:
+#         for second in second_read_file:
+#             second_item=json.loads(second)
+#             second_list.append(second_item) 
 
 
-    # 使用字典来存储每个产品名称的最大购买时间
-    max_purchase_times = {}
-    for second_line in second_list:
-        if second_line['subject'] not in max_purchase_times or tranStrToDatetime(second_line['updatedAt']) > tranStrToDatetime(max_purchase_times[second_line['subject']]['updatedAt']):
-            max_purchase_times[second_line['subject']] = second_line
+#     # 使用字典来存储每个产品名称的最大购买时间
+#     max_purchase_times = {}
+#     for second_line in second_list:
+#         if second_line['subject'] not in max_purchase_times or tranStrToDatetime(second_line['updatedAt']) > tranStrToDatetime(max_purchase_times[second_line['subject']]['updatedAt']):
+#             max_purchase_times[second_line['subject']] = second_line
 
 
 
-    with open(my_target_current_file, 'w', encoding='utf-8') as my_target_current_write:
-        for target_data in target_list:
-            print(target_data['title'])
-            for buff_info in buff_file_list:
-                target_data['buff_price']=0.01
-                target_data['buff_price_divided']=0.01
-                target_data['buff_price_divided_rate']=0.01
-                target_data['cn_name']=""
+#     with open(my_target_current_file, 'w', encoding='utf-8') as my_target_current_write:
+#         for target_data in target_list:
+#             print(target_data['title'])
+#             for buff_info in buff_file_list:
+#                 target_data['buff_price']=0.01
+#                 target_data['buff_price_divided']=0.01
+#                 target_data['buff_price_divided_rate']=0.01
+#                 target_data['cn_name']=""
 
-                if buff_info['en_name'] == target_data['title']:
-                    target_data['cn_name']=buff_info['market_name']
-                    target_data['buff_price']=buff_info['sell_min_price']
-                    target_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-target_data['price'],2)
-                    target_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-target_data['price'])/target_data['price'],2)
-                    break
+#                 if buff_info['en_name'] == target_data['title']:
+#                     target_data['cn_name']=buff_info['market_name']
+#                     target_data['buff_price']=buff_info['sell_min_price']
+#                     target_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-target_data['price'],2)
+#                     target_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-target_data['price'])/target_data['price'],2)
+#                     break
 
             
 
-            if target_data['title'] in max_purchase_times:
-                max_purchase=max_purchase_times[target_data['title']]
-                target_data['recent_purchase_time']=max_purchase['updatedAt']
-                target_data['recent_purchase_price']=max_purchase['price']
-                target_data['recent_purchase_price_divided']=round(target_data['recent_purchase_price']-target_data['price'],2)
+#             if target_data['title'] in max_purchase_times:
+#                 max_purchase=max_purchase_times[target_data['title']]
+#                 target_data['recent_purchase_time']=max_purchase['updatedAt']
+#                 target_data['recent_purchase_price']=max_purchase['price']
+#                 target_data['recent_purchase_price_divided']=round(target_data['recent_purchase_price']-target_data['price'],2)
                   
-            else:
-                target_data['recent_purchase_time']="" 
-                target_data['recent_purchase_price']=0
-                target_data['recent_purchase_price_divided']=0
+#             else:
+#                 target_data['recent_purchase_time']="" 
+#                 target_data['recent_purchase_price']=0
+#                 target_data['recent_purchase_price_divided']=0
                 
 
             
-            my_target_current_write.write(json.dumps(target_data,ensure_ascii=False)+"\n")
+#             my_target_current_write.write(json.dumps(target_data,ensure_ascii=False)+"\n")
 
                         
             
@@ -266,7 +265,7 @@ def trans_buff_bank_change():
 
 # 获取最采购高价和出售最低价
 # 获取当前的采购饰品情况
-def get_my_buy_List(exchange_rate=7.14,offset=0,limit=10):
+def get_my_buy_List(exchange_rate=7.14,offset=0,limit=10,authorization=config.authorization):
     
     try:
         # 设置请求的URL
@@ -274,7 +273,7 @@ def get_my_buy_List(exchange_rate=7.14,offset=0,limit=10):
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': config.authorization,
+            'authorization': authorization,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '4e55ab9f',
@@ -311,11 +310,9 @@ def get_my_buy_List(exchange_rate=7.14,offset=0,limit=10):
 
 
 # 一行一行的读取json数组，并写入到excel中
-def export_json_to_excel():
+def export_json_to_excel(all_data):
     print("开始导出数据")
     filename=data_path+"/excel/"+"my_buy_list_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-
-    all_data=[]
 
         # 定义中文名和字段样式
     chinese_columns = {
@@ -333,13 +330,6 @@ def export_json_to_excel():
     
     }
     column_order = ['id', 'action', 'cn_name', 'subject','price_us','price','updatedAt','buff_price','buff_price_divided','buff_price_divided_rate','category_group_name']
-
-    # 打开文件准备读取
-    with open(my_buy_current_file, 'r', encoding='utf-8') as file:
-       for line in file:
-           json_data=json.loads(line.replace("\\b",""))
-           all_data.append(json_data)
-
 
     # 将JSON数据转换为pandas DataFrame
     df = pd.DataFrame(all_data)
@@ -378,7 +368,7 @@ def export_json_to_excel():
 
 
 # 一行一行的读取json数组，并写入到excel中
-def export_target_to_excel():
+def export_target_to_excel(all_data):
     print("开始导出数据")
     filename=data_path+"/excel/"+"my_target_list_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
 
@@ -400,12 +390,6 @@ def export_target_to_excel():
     
     }
     column_order = ['cn_name', 'title', 'amount','price','createdAt','buff_price','buff_price_divided','buff_price_divided_rate','recent_purchase_time','recent_purchase_price','recent_purchase_price_divided']
-
-    # 打开文件准备读取
-    with open(my_target_current_file, 'r', encoding='utf-8') as file:
-       for line in file:
-           json_data=json.loads(line.replace("\\b",""))
-           all_data.append(json_data)
 
 
     # 将JSON数据转换为pandas DataFrame
@@ -510,11 +494,12 @@ if __name__ == '__main__':
 
 
     # 追加所有的已购买  
-    create_my_buy_List_all(1,100,7.14,5)
-    find_buy_price()
-    export_json_to_excel()
-
+    create_my_buy_List_all(1,100,7.14,1,config.authorization)
+    all_data=find_buy_price()
+    export_json_to_excel(all_data)
     
+
+
     # # # 查看所有的采购单
     # exchange_rate=bastPricetSellSkin86.find_us_exchange()
     # target_list=get_my_target_List(exchange_rate)

@@ -12,7 +12,7 @@ def get_my_offer_List(title="",limit=50):
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': config.authorization,
+            'authorization': config.authorization_two,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '2420eb2e',
@@ -63,7 +63,7 @@ def get_my_invert_List(title="",limit=50,treeFilters=""):
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': config.authorization,
+            'authorization': config.authorization_two,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '2420eb2e',
@@ -117,7 +117,7 @@ def add_my_invert_List(items=[]):
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': config.authorization,
+            'authorization': config.authorization_two,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '2420eb2e',
@@ -158,7 +158,7 @@ def add_my_sell_List(items=[]):
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': config.authorization,
+            'authorization': config.authorization_two,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '2420eb2e',

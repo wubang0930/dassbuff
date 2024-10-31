@@ -18,7 +18,7 @@ import offer_buy_product
 # change url to prod
 rootApiUrl = "https://api.dmarket.com"
 # exchange_rate=7.19   #实际汇率
-recharge_rate=1.027   #充值手续费
+recharge_rate=1.032   #充值手续费
 bank_rate=0.985   #实际汇率*实际提现到手
 steam_exchange_rate=0.79   #实际汇率*实际提现到手
 searchNum="7"  #查询天数
@@ -803,7 +803,7 @@ if __name__ == '__main__':
     exchange_rate=find_us_exchange()
     print("当前的美元汇率是："+str(exchange_rate))
     # # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=100,page=0,page_size=100,price_start=200,price_end=5000,selling_num_start=30,platform='YP')
+    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=100,page=0,page_size=100,price_start=15,price_end=500,selling_num_start=100,platform='YP')
     thread_size=5
     process_file_in_threads(thread_size,exchange_rate)
     #导出市场数据
