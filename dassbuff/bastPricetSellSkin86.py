@@ -123,8 +123,8 @@ def build_target_body_from_offer_avarage(buff_price,market_price,key_info,exchan
         #  "buff_buy_dm_sale_avg_rate": round((float(avg_price)*exchange_rate*bank_rate*trans_dm_service_change(price=float(avg_price)*exchange_rate)- buff_avg_price)/buff_avg_price,3),
 
         # # buff直接购买的，dmarket直接的当前价格出售
-         "buff_buy_dm_sale_min": round(float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- buff_avg_price, 2),
-         "buff_buy_dm_sale_min_rate": round((float(offer_price)*bank_rate*trans_dm_service_change(price=offer_price)- buff_avg_price)/offer_price,3),
+         "buff_buy_dm_sale_min": round(float(offer_price)*trans_dm_service_change(price=offer_price)- buff_avg_price, 2),
+         "buff_buy_dm_sale_min_rate": round((float(offer_price)*trans_dm_service_change(price=offer_price)- buff_avg_price)/offer_price,3),
 
      
         # dmarket平均价购买出售，buff直接出售
@@ -803,7 +803,7 @@ if __name__ == '__main__':
     exchange_rate=find_us_exchange()
     print("当前的美元汇率是："+str(exchange_rate))
     # # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=100,page=0,page_size=100,price_start=15,price_end=500,selling_num_start=100,platform='YP')
+    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=100,page=0,page_size=100,price_start=100,price_end=500,selling_num_start=100,platform='YP')
     thread_size=5
     process_file_in_threads(thread_size,exchange_rate)
     #导出市场数据
