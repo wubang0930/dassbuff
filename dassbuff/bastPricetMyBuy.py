@@ -149,8 +149,8 @@ def find_buy_price(file_path):
             send_data['buff_price_divided_rate']=0.01
             send_data['category_group_name']=buff_info['category_group_name']
             if buff_info['market_name'] == send_data['cn_name']:
+                send_data['buff_price']=buff_info['sell_min_price']
                 if send_data['price'] is not None and send_data['price']!=0:
-                    send_data['buff_price']=buff_info['sell_min_price']
                     send_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'],2)
                     send_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'])/send_data['price'],2)
                     break
