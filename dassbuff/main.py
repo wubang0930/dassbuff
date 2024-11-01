@@ -282,32 +282,41 @@ class TabbedApp:
 
         # 查询部分
         query_label_inve = tk.Label(tab2, text="出售购买记录")
-        query_label_inve.grid(row=0,columnspan=4, column=0)
+        query_label_inve.grid(row=0,columnspan=5, column=0)
 
 
         default_query="1,100,7.10,5"
 
+        sync_query_type = tk.Entry(tab2,width=10)
+        sync_query_type.grid(row=1, column=0,sticky=tk.E,padx=10)
+        sync_query_type.insert(0, "Sell")
+
         sync_query_time_sale_buy = tk.Entry(tab2,width=30)
-        sync_query_time_sale_buy.grid(row=1, column=0,sticky=tk.E,padx=30)
+        sync_query_time_sale_buy.grid(row=1, column=1,sticky=tk.W,padx=10)
+        
         sync_query_time_sale_buy_limit = tk.Entry(tab2,width=30)
         sync_query_time_sale_buy_limit.insert(0, default_query)
-        sync_query_time_sale_buy_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
-        start_button_time_sale_buy = tk.Button(tab2, text="查询-账号1",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy.get(),self.tree3,config.my_buy_current_file,count_label_value_three,count_label_value_all_three))
-        start_button_time_sale_buy.grid(row=1,  column=2,sticky=tk.W,padx=30)
+        sync_query_time_sale_buy_limit.grid(row=1, column=2,sticky=tk.E,padx=10)
+        start_button_time_sale_buy = tk.Button(tab2, text="查询-账号1",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy.get(),sync_query_type.get(),self.tree3,config.my_buy_current_file,count_label_value_three,count_label_value_all_three))
+        start_button_time_sale_buy.grid(row=1,  column=3,sticky=tk.W,padx=10)
         stop_button_time_sale_buy = tk.Button(tab2, text="同步历史-账号1",width=15, command=lambda: update_my_sale_buy_record(sync_query_time_sale_buy_limit.get(),config.authorization,config.my_buy_current_file))
-        stop_button_time_sale_buy.grid(row=1,  column=3,sticky=tk.W)
+        stop_button_time_sale_buy.grid(row=1,  column=4,sticky=tk.W)
 
 
+        sync_query_type_two = tk.Entry(tab2,width=10)
+        sync_query_type_two.grid(row=2, column=0,sticky=tk.E,padx=10)
+        sync_query_type_two.insert(0, "Sell")
 
         sync_query_time_sale_buy_two = tk.Entry(tab2,width=30)
-        sync_query_time_sale_buy_two.grid(row=2, column=0,sticky=tk.E,padx=30)
+        sync_query_time_sale_buy_two.grid(row=2, column=1,sticky=tk.W,padx=10)
+
         sync_query_time_sale_buy_two_limit = tk.Entry(tab2,width=30)
         sync_query_time_sale_buy_two_limit.insert(0, default_query)
-        sync_query_time_sale_buy_two_limit.grid(row=2, column=1,sticky=tk.E,padx=30)
-        start_button_time_sale_buy_two = tk.Button(tab2, text="查询-账号2",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy_two.get(),self.tree3,config.my_buy_current_file_two,count_label_value_three,count_label_value_all_three))
-        start_button_time_sale_buy_two.grid(row=2,  column=2,sticky=tk.W,padx=30)
+        sync_query_time_sale_buy_two_limit.grid(row=2, column=2,sticky=tk.E,padx=10)
+        start_button_time_sale_buy_two = tk.Button(tab2, text="查询-账号2",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy_two.get(),sync_query_type_two.get(),self.tree3,config.my_buy_current_file_two,count_label_value_three,count_label_value_all_three))
+        start_button_time_sale_buy_two.grid(row=2,  column=3,sticky=tk.W,padx=10)
         stop_button_time_sale_buy_two = tk.Button(tab2, text="同步历史-账号2",width=15, command=lambda: update_my_sale_buy_record(sync_query_time_sale_buy_two_limit.get(),config.authorization_two,config.my_buy_current_file_two))
-        stop_button_time_sale_buy_two.grid(row=2,  column=3,sticky=tk.W)
+        stop_button_time_sale_buy_two.grid(row=2,  column=4,sticky=tk.W)
 
         count_label_three = tk.Label(tab2, text="当前条数:")
         count_label_three.grid(row=4,column=0,sticky=tk.E,padx=30,pady=30)
@@ -348,7 +357,7 @@ class TabbedApp:
         self.display_data1(None, self.tree3)
 
         # 布局
-        self.tree3.grid(row=6,columnspan=4,sticky=tk.NS,padx=30,pady=10)
+        self.tree3.grid(row=6,columnspan=5,sticky=tk.NS,padx=30,pady=10)
         # 绑定行选择事件
         self.tree3.bind("<<TreeviewSelect>>", self.on_row_select3)
 
@@ -402,7 +411,7 @@ change_list=[]
 
 
 
-def query_my_sale_buy_record(query,tree,file_path,count_label_value,count_label_value_all):
+def query_my_sale_buy_record(query,query_type,tree,file_path,count_label_value,count_label_value_all):
     print("查询列表"+query+",路径："+file_path)
     add_list.clear()
     change_list.clear()
@@ -420,12 +429,22 @@ def query_my_sale_buy_record(query,tree,file_path,count_label_value,count_label_
     all_size=0
     for entry in file_all_data:
         all_size+=1
-        if query is None:
-            tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
-        elif query in entry["action"] or query in entry["subject"] or query in entry["cn_name"] or query in entry["category_group_name"]:  # 基于查询内容过滤数据
-            current_size+=1
-            tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
-    
+
+        if query_type is None:
+            if query is None:
+                tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
+            elif query in entry["action"] or query in entry["subject"] or query in entry["cn_name"] or query in entry["category_group_name"]:  # 基于查询内容过滤数据
+                current_size+=1
+                tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
+        elif query_type in entry["action"]:
+            if query is None:
+                tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
+            elif query in entry["action"] or query in entry["subject"] or query in entry["cn_name"] or query in entry["category_group_name"]:  # 基于查询内容过滤数据
+                current_size+=1
+                tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
+        
+
+
     count_label_value.insert(0,str(current_size))
     count_label_value_all.insert(0,str(all_size))
 
