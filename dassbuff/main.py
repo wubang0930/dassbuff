@@ -285,13 +285,14 @@ class TabbedApp:
         query_label_inve.grid(row=0,columnspan=4, column=0)
 
 
+        default_query="1,100,7.10,5"
 
         sync_query_time_sale_buy = tk.Entry(tab2,width=30)
         sync_query_time_sale_buy.grid(row=1, column=0,sticky=tk.E,padx=30)
         sync_query_time_sale_buy_limit = tk.Entry(tab2,width=30)
-        sync_query_time_sale_buy_limit.insert(0, "1,100,7.14,5")
+        sync_query_time_sale_buy_limit.insert(0, default_query)
         sync_query_time_sale_buy_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
-        start_button_time_sale_buy = tk.Button(tab2, text="查询-账号1",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy.get(),self.tree3,config.my_buy_current_file))
+        start_button_time_sale_buy = tk.Button(tab2, text="查询-账号1",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy.get(),self.tree3,config.my_buy_current_file,count_label_value_three,count_label_value_all_three))
         start_button_time_sale_buy.grid(row=1,  column=2,sticky=tk.W,padx=30)
         stop_button_time_sale_buy = tk.Button(tab2, text="同步历史-账号1",width=15, command=lambda: update_my_sale_buy_record(sync_query_time_sale_buy_limit.get(),config.authorization,config.my_buy_current_file))
         stop_button_time_sale_buy.grid(row=1,  column=3,sticky=tk.W)
@@ -301,12 +302,21 @@ class TabbedApp:
         sync_query_time_sale_buy_two = tk.Entry(tab2,width=30)
         sync_query_time_sale_buy_two.grid(row=2, column=0,sticky=tk.E,padx=30)
         sync_query_time_sale_buy_two_limit = tk.Entry(tab2,width=30)
-        sync_query_time_sale_buy_two_limit.insert(0, "1,100,7.14,5")
+        sync_query_time_sale_buy_two_limit.insert(0, default_query)
         sync_query_time_sale_buy_two_limit.grid(row=2, column=1,sticky=tk.E,padx=30)
-        start_button_time_sale_buy_two = tk.Button(tab2, text="查询-账号2",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy_two.get(),self.tree3,config.my_buy_current_file_two))
+        start_button_time_sale_buy_two = tk.Button(tab2, text="查询-账号2",width=15, command=lambda: query_my_sale_buy_record(sync_query_time_sale_buy_two.get(),self.tree3,config.my_buy_current_file_two,count_label_value_three,count_label_value_all_three))
         start_button_time_sale_buy_two.grid(row=2,  column=2,sticky=tk.W,padx=30)
         stop_button_time_sale_buy_two = tk.Button(tab2, text="同步历史-账号2",width=15, command=lambda: update_my_sale_buy_record(sync_query_time_sale_buy_two_limit.get(),config.authorization_two,config.my_buy_current_file_two))
         stop_button_time_sale_buy_two.grid(row=2,  column=3,sticky=tk.W)
+
+        count_label_three = tk.Label(tab2, text="当前条数:")
+        count_label_three.grid(row=4,column=0,sticky=tk.E,padx=30,pady=30)
+        count_label_value_three = tk.Entry(tab2,width=30)
+        count_label_value_three.grid(row=4, column=1,sticky=tk.E,padx=30,pady=30)
+        count_label_all_three = tk.Label(tab2, text="总条数:")
+        count_label_all_three.grid(row=4,column=2,sticky=tk.W,padx=30,pady=30)
+        count_label_value_all_three = tk.Entry(tab2,width=30)
+        count_label_value_all_three.grid(row=4, column=3,sticky=tk.W,pady=30)
    
         
         
@@ -323,7 +333,7 @@ class TabbedApp:
         self.tree3.column("buff_price_divided", width=width_avg, anchor='center')
         self.tree3.column("buff_price_divided_rate", width=width_avg, anchor='center')
         self.tree3.column("category_group_name", width=width_avg, anchor='center')
-        self.tree3.column("updatedAt", width=width_avg, anchor='center')
+        self.tree3.column("updatedAt", width=120, anchor='center')
 
         self.tree3.heading("action", text="销售类型")
         self.tree3.heading("subject", text="名称")
@@ -340,11 +350,28 @@ class TabbedApp:
         # 布局
         self.tree3.grid(row=6,columnspan=4,sticky=tk.NS,padx=30,pady=10)
         # 绑定行选择事件
-        self.tree3.bind("<<TreeviewSelect>>", self.on_row_select)
+        self.tree3.bind("<<TreeviewSelect>>", self.on_row_select3)
 
         # 绑定键盘事件（Ctrl+C 复制选中行）
-        self.root.bind("<Control-c>", self.copy_selection)
+        self.root.bind("<Control-c>", self.copy_selection3)
 
+
+
+    def on_row_select3(self, event):
+        # 获取选中行的内容（可选）
+        print("")
+        selected_item = self.tree3.selection()
+        if selected_item:
+            item_values = self.tree3.item(selected_item)['values'][1]
+            print("选中的行内容:", item_values)
+
+    def copy_selection3(self, event):
+        selected_item = self.tree3.selection()
+        if selected_item:
+            item_values = self.tree3.item(selected_item)['values'][1]
+            # 将选中行的数据拼接成字符串
+            pyperclip.copy(item_values)  # 复制到剪贴板
+            print("已复制到剪贴板:", content)
 
 
     def on_row_select(self, event):
@@ -375,10 +402,13 @@ change_list=[]
 
 
 
-def query_my_sale_buy_record(query,tree,file_path):
+def query_my_sale_buy_record(query,tree,file_path,count_label_value,count_label_value_all):
     print("查询列表"+query+",路径："+file_path)
     add_list.clear()
     change_list.clear()
+
+    count_label_value.delete(0,tk.END)
+    count_label_value_all.delete(0,tk.END)
 
     for item in tree.get_children():
         tree.delete(item)
@@ -386,12 +416,18 @@ def query_my_sale_buy_record(query,tree,file_path):
     file_all_data=bastPricetMyBuy.find_buy_price(file_path)
 
     # 打开文件准备读取
+    current_size=0
+    all_size=0
     for entry in file_all_data:
+        all_size+=1
         if query is None:
             tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
         elif query in entry["action"] or query in entry["subject"] or query in entry["cn_name"] or query in entry["category_group_name"]:  # 基于查询内容过滤数据
+            current_size+=1
             tree.insert("", "end", values=(entry["action"],entry["subject"],entry["cn_name"],entry["price_us"],entry["price"],entry["buff_price"],entry["buff_price_divided"],entry["buff_price_divided_rate"],entry["category_group_name"],entry["updatedAt"]))
-            
+    
+    count_label_value.insert(0,str(current_size))
+    count_label_value_all.insert(0,str(all_size))
 
 def update_my_sale_buy_record(limit,authorization,file_path):
     print("同步列表"+limit+",路径："+file_path)

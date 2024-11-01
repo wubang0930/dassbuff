@@ -494,7 +494,7 @@ if __name__ == '__main__':
 
     # 追加所有的已购买  
     create_my_buy_List_all(1,100,7.14,1,config.authorization)
-    all_data=find_buy_price()
+    all_data=find_buy_price(config.my_buy_current_file)
     export_json_to_excel(all_data)
     
 
