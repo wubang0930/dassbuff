@@ -384,7 +384,7 @@ class TabbedApp:
         sync_query_time_add_limit = tk.Entry(tab2,width=30)
         sync_query_time_add_limit.insert(0, "100")
         sync_query_time_add_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
-        start_button_time_add = tk.Button(tab2, text="查询提现购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree2,"itemLocation[]=true,tradeLockTo[]=0",count_label_value,count_label_value_all))
+        start_button_time_add = tk.Button(tab2, text="查询提现购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree2,"itemLocation[]=true,tradeLockTo[]=0",count_label_value,count_label_value_all,config.authorization_two))
         start_button_time_add.grid(row=1,  column=2,sticky=tk.W,padx=30)
         stop_button_time_add = tk.Button(tab2, text="确认提现",width=15, command=lambda: confirm_task_to_steam_cart())
         stop_button_time_add.grid(row=1,  column=3,sticky=tk.W)
@@ -395,7 +395,7 @@ class TabbedApp:
         sync_query_time_sale_limit = tk.Entry(tab2,width=30)
         sync_query_time_sale_limit.insert(0, "100")
         sync_query_time_sale_limit.grid(row=2, column=1,sticky=tk.E,padx=30)
-        start_button_time_sale = tk.Button(tab2, text="查询出售购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),self.tree2,"itemLocation[]=false,tradeLockTo[]=0",count_label_value,count_label_value_all))
+        start_button_time_sale = tk.Button(tab2, text="查询出售购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),self.tree2,"itemLocation[]=false,tradeLockTo[]=0",count_label_value,count_label_value_all,config.authorization_two))
         start_button_time_sale.grid(row=2,  column=2,sticky=tk.W,padx=30)
         stop_button_time_sale = tk.Button(tab2, text="确认出售购物车",width=15, command=lambda: confirm_task_to_sale_cart())
         stop_button_time_sale.grid(row=2,  column=3,sticky=tk.W)
@@ -738,7 +738,7 @@ def add_task_to_change_cart(content,limit,tree,count_label_value,count_label_val
         return
 
     count_label_value.insert(0,str(len(my_invert_list)))
-    count_label_value_all.insert(0,reponse_json['total']['items'])
+    count_label_value_all.insert(0,reponse_json['total']['offers'])
 
     for entry in my_invert_list:
         print(entry)

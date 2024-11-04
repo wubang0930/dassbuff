@@ -44,7 +44,7 @@ def get_offer_from_market(limit=5,title="",orderBy='price'):
 
 
 # 创建采购单
-def build_target_body_from_offer(price,amount,title):
+def build_target_body_from_offer(price,amount,title,public_key,secret_key):
     if int(price) > 1000:
         print("价格超过10美元，不采购,当前价格为："+price)
         return
@@ -58,7 +58,7 @@ def build_target_body_from_offer(price,amount,title):
                         # "image": offer["image"],
                         "ownerGets": {"amount": "1", "currency": "USD"}}}
     ]}
-    create_target_order(body)
+    create_target_order(body,public_key,secret_key)
 
 
 
@@ -66,7 +66,7 @@ def build_target_body_from_offer(price,amount,title):
 
 
 
-def create_target_order(body):
+def create_target_order(body,public_key,secret_key):
     print("开始创建采购单：产品是："+body["targets"][0]["attributes"]["title"]+"价格是："+str(body["targets"][0]["price"]["amount"])+"，数量是："+str(body["targets"][0]["amount"]))
     api_url_path = "/exchange/v1/target/create"
     method = "POST"
@@ -98,5 +98,5 @@ def create_target_order(body):
 if __name__ == '__main__':
     offer_from_market = get_offer_from_market(title="StatTrak™ Five-SeveN | Hybrid (Field-Tested)")
     offer=offer_from_market[0]
-    body = build_target_body_from_offer(price=offer["price"]['USD'],amount=1,title=offer["title"])
+    body = build_target_body_from_offer(price=offer["price"]['USD'],amount=1,title=offer["title"],public_key=config.dmarket_public_key,secret_key=config.dmarket_secret_key)
     

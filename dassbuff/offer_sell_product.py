@@ -235,6 +235,6 @@ if __name__ == '__main__':
     # 开始添加到出售清单
     if user_input == "Y":
         print("开始添加") 
-        add_my_sell_List(items=add_list)
+        add_my_sell_List(items=add_list,authorization=config.authorization)
         print("开始添加结束")
         exit()

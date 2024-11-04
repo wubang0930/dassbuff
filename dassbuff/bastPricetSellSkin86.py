@@ -718,7 +718,7 @@ def create_avg_target_min(exchange_rate):
 
 
 
-def creat_now(create_target_list,filename,limit,type):
+def creat_now(create_target_list,filename,limit,type,public_key,secret_key):
     create_num=1
     for now_target in create_target_list:
         if create_num>=limit:
@@ -732,7 +732,7 @@ def creat_now(create_target_list,filename,limit,type):
         else:
             print(threading.current_thread().name+"开始购买---"+now_target['title']+"购买价格是："+str(now_target['buy_it'])+"，销售价是："+ str(now_target['buff_avg_price']) +",利率润是："+str(now_target['dm_buy_buff_sale_min_rate']))
 
-        offer_buy_product.build_target_body_from_offer(price=str(now_target['us_price']),amount=now_target['buy_it_num'],title=now_target["drtitle"])
+        offer_buy_product.build_target_body_from_offer(price=str(now_target['us_price']),amount=now_target['buy_it_num'],title=now_target["drtitle"],public_key=public_key,secret_key=secret_key)
         now_target['buy_it_now']=1
         now_target['buy_it_now']=now_target['buy_it_num']
     export_json_to_excel(create_target_list,filename)
