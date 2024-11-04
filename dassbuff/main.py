@@ -36,24 +36,24 @@ class ScheduledTask:
         self.stop_event = threading.Event()  # 用于停止任务的事件
         self.thread = None
 
-    def start(self,search_content,sync_button):
+    def start(self,search_content,sync_button,public_key,secret_key):
         now = datetime.now()
         if self.thread is None or not self.thread.is_alive():
             self.stop_event.clear()  # 清除停止事件
-            self.thread = threading.Thread(target=self.run, args=(search_content,sync_button))
+            self.thread = threading.Thread(target=self.run, args=(search_content,sync_button,public_key,secret_key))
             self.thread.daemon = True
             self.thread.start()
             print(str(now)+f"任务已开始，每 {self.interval/3600} 小时执行一次。")
 
-    def run(self,search_content,sync_button):
+    def run(self,search_content,sync_button,public_key,secret_key):
         while not self.stop_event.is_set():
-            self.execute_task(search_content,sync_button)  # 执行任务
+            self.execute_task(search_content,sync_button,public_key,secret_key)  # 执行任务
             time.sleep(self.interval)  # 等待指定时间
 
-    def execute_task(self,search_content,sync_button):
+    def execute_task(self,search_content,sync_button,public_key,secret_key):
         now = datetime.now()
         print(str(now)+"：执行定时任务..."+search_content)  # 这里可以替换为实际的任务逻辑
-        timer_task_buy_min_data( search_content,sync_button)
+        timer_task_buy_min_data( search_content,sync_button,public_key,secret_key)
 
 
     def stop(self,sync_button):
@@ -73,7 +73,9 @@ class TabbedApp:
         self.tabControl = ttk.Notebook(self.root)
         # 创建多个标签页
         self.create_tab1()
-        self.create_tab2()
+        self.create_tab1_2()
+        self.create_tab2_1()
+        self.create_tab2_2()
         self.create_tab3()
 
         # 将标签框架添加到窗口
@@ -115,28 +117,19 @@ class TabbedApp:
         sync_query_time = tk.Entry(tab1,width=30,state=tk.DISABLED)
         sync_query_time.insert(0, defualt_query)
         sync_query_time.grid(row=2, column=0,sticky=tk.E,padx=30)
-        start_button_time = tk.Button(tab1, text="定时采购最低价",width=15, command=lambda: start_data_timer(sync_query.get(),stop_button_time,start_button_time,self.task_min,sync_button))
+        start_button_time = tk.Button(tab1, text="定时采购最低价",width=15, command=lambda: start_data_timer(sync_query.get(),stop_button_time,start_button_time,self.task_min,sync_button,config.dmarket_public_key,config.dmarket_secret_key))
         start_button_time.grid(row=2,  column=1,sticky=tk.W,padx=30)
-        stop_button_time = tk.Button(tab1, text="暂停采购最低价",width=15, command=lambda: stop_data_timer(sync_query.get(), stop_button_time,start_button_time,self.task_min,sync_button))
+        stop_button_time = tk.Button(tab1, text="暂停采购最低价",width=15, command=lambda: stop_data_timer(sync_query.get(), stop_button_time,start_button_time,self.task_min,sync_button,config.dmarket_public_key,config.dmarket_secret_key))
         stop_button_time.grid(row=2,  column=2,sticky=tk.W)
         stop_button_time.config(state=tk.DISABLED)
 
-
-        # start_avg_query_time = tk.Entry(tab1,width=30)
-        # start_avg_query_time.insert(0, defualt_query)
-        # start_avg_query_time.grid(row=3, column=0,sticky=tk.E,padx=30)
-        # start_avg_button_time = tk.Button(tab1, text="定时采购平均价",width=15, command=lambda: start_avg_data_timer(sync_query.get(),start_avg_query_time.get(), stop_avg_button_time,start_avg_button_time,self.task_avg))
-        # start_avg_button_time.grid(row=3,  column=1,sticky=tk.W,padx=30)
-        # stop_avg_button_time = tk.Button(tab1, text="暂停采购平均价",width=15, command=lambda: stop_avg_data_timer(sync_query.get(),start_avg_query_time.get(), stop_avg_button_time,start_avg_button_time,self.task_avg))
-        # stop_avg_button_time.grid(row=3,  column=2,sticky=tk.W)
-        # stop_avg_button_time.config(state=tk.DISABLED)
 
         search_min_button_query = tk.Entry(tab1,width=30)
         search_min_button_query.insert(0, "")
         search_min_button_query.grid(row=3, column=0,sticky=tk.E,padx=30)
         search_min_button = tk.Button(tab1, text="查询采购最低价",width=15, command=lambda: search_min_data(search_min_button_query.get(),self.tree1))
         search_min_button.grid(row=3,  column=1,sticky=tk.W,padx=30)
-        buy_min_button = tk.Button(tab1, text="采购最低价",width=15, command=lambda: buy_min_data(search_min_button_query.get()))
+        buy_min_button = tk.Button(tab1, text="采购最低价",width=15, command=lambda: buy_min_data(search_min_button_query.get(),config.dmarket_public_key,config.dmarket_secret_key))
         buy_min_button.grid(row=3,  column=2,sticky=tk.W)
 
 
@@ -145,7 +138,7 @@ class TabbedApp:
         search_avg_query.grid(row=4, column=0,sticky=tk.E,padx=30)
         search_avg_button = tk.Button(tab1, text="查询采购平均价",width=15, command=lambda: search_avg_data(search_avg_query.get(),self.tree1))
         search_avg_button.grid(row=4, column=1,sticky=tk.W,padx=30)
-        buy_avg_button = tk.Button(tab1, text="采购平均价",width=15, command=lambda: buy_avg_data(search_avg_query.get(),self.tree1))
+        buy_avg_button = tk.Button(tab1, text="采购平均价",width=15, command=lambda: buy_avg_data(search_avg_query.get(),self.tree1,config.dmarket_public_key,config.dmarket_secret_key))
         buy_avg_button.grid(row=4, column=2,sticky=tk.W)
 
         
@@ -198,9 +191,185 @@ class TabbedApp:
         # 布局
         self.tree1.grid(row=5,columnspan=3,sticky=tk.NS,padx=30,pady=30)
 
+    def create_tab1_2(self):
+        tab2 = ttk.Frame(self.tabControl)
+        self.tabControl.add(tab2, text='悠悠购买DM出售-账号1')
+
+        # 查询部分
+        query_label_inve = tk.Label(tab2, text="库存平台:")
+        query_label_inve.grid(row=0,columnspan=4, column=0)
 
 
-    def create_tab2(self):
+
+        sync_query_time_add_1_2 = tk.Entry(tab2,width=30)
+        sync_query_time_add_1_2.grid(row=1, column=0,sticky=tk.E,padx=30)
+        sync_query_time_add_1_2_limit = tk.Entry(tab2,width=30)
+        sync_query_time_add_1_2_limit.insert(0, "100")
+        sync_query_time_add_1_2_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
+        start_button_time_add_1_2 = tk.Button(tab2, text="查询提现购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add_1_2.get(),sync_query_time_add_1_2_limit.get(),self.tree_1_2,"itemLocation[]=true,tradeLockTo[]=0",count_label_1_2_value,count_label_1_2_value_all,config.authorization))
+        start_button_time_add_1_2.grid(row=1,  column=2,sticky=tk.W,padx=30)
+        stop_button_time_add_1_2 = tk.Button(tab2, text="确认提现",width=15, command=lambda: confirm_task_to_steam_cart(config.authorization))
+        stop_button_time_add_1_2.grid(row=1,  column=3,sticky=tk.W)
+
+
+        sync_query_time_sale_1_2 = tk.Entry(tab2,width=30)
+        sync_query_time_sale_1_2.grid(row=2, column=0,sticky=tk.E,padx=30)
+        sync_query_time_sale_1_2_limit = tk.Entry(tab2,width=30)
+        sync_query_time_sale_1_2_limit.insert(0, "100")
+        sync_query_time_sale_1_2_limit.grid(row=2, column=1,sticky=tk.E,padx=30)
+        start_button_time_sale_1_2 = tk.Button(tab2, text="查询出售购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_sale_1_2.get(),sync_query_time_sale_1_2_limit.get(),self.tree_1_2,"itemLocation[]=false,tradeLockTo[]=0",count_label_1_2_value,count_label_1_2_value_all,config.authorization))
+        start_button_time_sale_1_2.grid(row=2,  column=2,sticky=tk.W,padx=30)
+        stop_button_time_sale_1_2 = tk.Button(tab2, text="确认出售购物车",width=15, command=lambda: confirm_task_to_sale_cart(config.authorization))
+        stop_button_time_sale_1_2.grid(row=2,  column=3,sticky=tk.W)
+        
+
+        sync_query_time_change_1_2 = tk.Entry(tab2,width=30)
+        sync_query_time_change_1_2.grid(row=3, column=0,sticky=tk.E,padx=30)
+        sync_query_time_change_1_2_limit = tk.Entry(tab2,width=30)
+        sync_query_time_change_1_2_limit.insert(0, "100")
+        sync_query_time_change_1_2_limit.grid(row=3, column=1,sticky=tk.E,padx=30)
+        start_button_time_change_1_2 = tk.Button(tab2, text="查询出售中数据",width=15, command=lambda: add_task_to_change_cart(sync_query_time_change_1_2.get(),sync_query_time_change_1_2_limit.get(),self.tree_1_2,count_label_1_2_value,count_label_1_2_value_all,config.authorization))
+        start_button_time_change_1_2.grid(row=3,  column=2,sticky=tk.W,padx=30)
+        stop_button_time_change_1_2 = tk.Button(tab2, text="确认出售中数据",width=15, command=lambda: confirm_task_to_change_cart(config.authorization))
+        stop_button_time_change_1_2.grid(row=3,  column=3,sticky=tk.W)
+        
+
+        count_label_1_2 = tk.Label(tab2, text="当前条数:")
+        count_label_1_2.grid(row=4,column=0,sticky=tk.E,padx=30,pady=30)
+        count_label_1_2_value = tk.Entry(tab2,width=30)
+        count_label_1_2_value.grid(row=4, column=1,sticky=tk.E,padx=30,pady=30)
+        count_label_1_2_all = tk.Label(tab2, text="总条数:")
+        count_label_1_2_all.grid(row=4,column=2,sticky=tk.W,padx=30,pady=30)
+        count_label_1_2_value_all = tk.Entry(tab2,width=30)
+        count_label_1_2_value_all.grid(row=4, column=3,sticky=tk.W,pady=30)
+        
+        # 列表展示部分
+        self.tree_1_2 = ttk.Treeview(tab2, height=25, selectmode="browse",columns=("id", "title", "gameType", "price", "instantPrice"), show='headings')
+        # 创建滚动条
+        self.tree_1_2.column("id", width=300, anchor='center')
+        self.tree_1_2.column("title", width=300, anchor='center')
+        self.tree_1_2.column("gameType", width=150, anchor='center')
+        self.tree_1_2.column("price", width=150, anchor='center')
+        self.tree_1_2.column("instantPrice", width=150, anchor='center')
+
+        self.tree_1_2.heading("id", text="英文名称")
+        self.tree_1_2.heading("title", text="名称")
+        self.tree_1_2.heading("gameType", text="饰品类型")
+        self.tree_1_2.heading("price", text="价格")
+        self.tree_1_2.heading("instantPrice", text="即时销售价格")
+        self.display_data1(None, self.tree_1_2)
+
+        # 布局
+        self.tree_1_2.grid(row=6,columnspan=4,sticky=tk.NS,padx=30,pady=10)
+        # 绑定行选择事件
+        self.tree_1_2.bind("<<TreeviewSelect>>", self.on_row_select_1)
+
+        # 绑定键盘事件（Ctrl+C 复制选中行）
+        self.tree_1_2.bind("<Control-c>", self.copy_selection_1)
+
+
+    def create_tab2_1(self):
+        tab1 = ttk.Frame(self.tabControl,width=1200,height=800)
+        self.tabControl.add(tab1, text='DM购买后BUFF出售-账号2')
+
+        # 查询部分
+        query_label = tk.Label(tab1, text="查询内容平台:")
+        query_label.grid(row=0,columnspan=3, column=0)
+
+        defualt_query = "300,1,100,1,15,200,YP"
+        sync_query_2_1_one_2_1 = tk.Entry(tab1,width=30)
+        sync_query_2_1_one_2_1.insert(0, "8")
+        sync_query_2_1_one_2_1.grid(row=1, column=0,sticky=tk.E,padx=30)
+        sync_query_2_1 = tk.Entry(tab1,width=30)
+        sync_query_2_1.insert(0, defualt_query)
+        sync_query_2_1.grid(row=1, column=1,sticky=tk.W,padx=30)
+        sync_button_2_1 = tk.Button(tab1, text="同步数据",width=15, command=lambda: sync_data(sync_query_2_1.get(), sync_button_2_1))
+        sync_button_2_1.grid(row=1,  column=2,sticky=tk.W)
+        self.sync_button_2_1_one=sync_button_2_1
+
+        self.task_min_2_1 = ScheduledTask(interval=sync_query_2_1_one_2_1.get())
+        
+
+
+        sync_query_2_1_time = tk.Entry(tab1,width=30,state=tk.DISABLED)
+        sync_query_2_1_time.insert(0, defualt_query)
+        sync_query_2_1_time.grid(row=2, column=0,sticky=tk.E,padx=30)
+        start_button_time_2_1 = tk.Button(tab1, text="定时采购最低价",width=15, command=lambda: start_data_timer(sync_query_2_1.get(),stop_button_time_2_1,start_button_time_2_1,self.task_min_2_1,sync_button_2_1,config.dmarket_public_key_two,config.dmarket_secret_key_two))
+        start_button_time_2_1.grid(row=2,  column=1,sticky=tk.W,padx=30)
+        stop_button_time_2_1 = tk.Button(tab1, text="暂停采购最低价",width=15, command=lambda: stop_data_timer(sync_query_2_1.get(), stop_button_time_2_1,start_button_time_2_1,self.task_min_2_1,sync_button_2_1,config.dmarket_public_key_two,config.dmarket_secret_key_two))
+        stop_button_time_2_1.grid(row=2,  column=2,sticky=tk.W)
+        stop_button_time_2_1.config(state=tk.DISABLED)
+
+
+        search_min_button_2_1_query_2_1 = tk.Entry(tab1,width=30)
+        search_min_button_2_1_query_2_1.insert(0, "")
+        search_min_button_2_1_query_2_1.grid(row=3, column=0,sticky=tk.E,padx=30)
+        search_min_button_2_1 = tk.Button(tab1, text="查询采购最低价",width=15, command=lambda: search_min_data(search_min_button_2_1_query_2_1.get(),self.tree_2_1))
+        search_min_button_2_1.grid(row=3,  column=1,sticky=tk.W,padx=30)
+        buy_min_button_2_1 = tk.Button(tab1, text="采购最低价",width=15, command=lambda: buy_min_data(search_min_button_2_1_query_2_1.get(),config.dmarket_public_key_two,config.dmarket_secret_key_two))
+        buy_min_button_2_1.grid(row=3,  column=2,sticky=tk.W)
+
+
+        search_avg_query_2_1 = tk.Entry(tab1,width=30)
+        search_avg_query_2_1.insert(0, "")
+        search_avg_query_2_1.grid(row=4, column=0,sticky=tk.E,padx=30)
+        search_avg_button_2_1 = tk.Button(tab1, text="查询采购平均价",width=15, command=lambda: search_avg_data(search_avg_query_2_1.get(),self.tree_2_1))
+        search_avg_button_2_1.grid(row=4, column=1,sticky=tk.W,padx=30)
+        buy_avg_button_2_1 = tk.Button(tab1, text="采购平均价",width=15, command=lambda: buy_avg_data(search_avg_query_2_1.get(),self.tree_2_1,config.dmarket_public_key_two,config.dmarket_secret_key_two))
+        buy_avg_button_2_1.grid(row=4, column=2,sticky=tk.W)
+
+        
+
+
+
+
+        # 列表展示部分
+        self.tree_2_1 = ttk.Treeview(tab1, height=25, selectmode="browse",columns=("drtitle", "title","totalSales", "date","offer_price", "target_price","buff_avg_price","dm_buy_buff_sale_avg","dm_buy_buff_sale_avg_rate","dm_buy_buff_sale_min","dm_buy_buff_sale_min_rate","price_alter_percentage_7d","price_alter_value_7d","category_group_name"), show='headings')
+        # 创建滚动条
+        col_width = 75
+        self.tree_2_1.column("drtitle", width=60, anchor='center')
+        self.tree_2_1.column("title", width=120, anchor='center')
+        self.tree_2_1.column("totalSales", width=40, anchor='center')
+        self.tree_2_1.column("date", width=col_width, anchor='center')
+        self.tree_2_1.column("offer_price", width=col_width, anchor='center')
+        self.tree_2_1.column("target_price", width=col_width, anchor='center')
+        self.tree_2_1.column("buff_avg_price", width=col_width, anchor='center')
+        self.tree_2_1.column("dm_buy_buff_sale_avg", width=col_width, anchor='center')
+        self.tree_2_1.column("dm_buy_buff_sale_avg_rate", width=col_width, anchor='center')
+        self.tree_2_1.column("dm_buy_buff_sale_min", width=col_width, anchor='center')
+        self.tree_2_1.column("dm_buy_buff_sale_min_rate", width=col_width, anchor='center')
+        self.tree_2_1.column("price_alter_percentage_7d", width=col_width, anchor='center')
+        self.tree_2_1.column("price_alter_value_7d", width=col_width, anchor='center')
+        self.tree_2_1.column("category_group_name", width=col_width, anchor='center')
+
+        self.tree_2_1.heading("drtitle", text="英文名称")
+        self.tree_2_1.heading("title", text="名称")
+        self.tree_2_1.heading("totalSales", text="销售数量")
+        self.tree_2_1.heading("date", text="日期")
+        self.tree_2_1.heading("offer_price", text="平均购买价")
+        self.tree_2_1.heading("target_price", text="当前出售价")
+        self.tree_2_1.heading("buff_avg_price", text="buff在售价")
+        self.tree_2_1.heading("dm_buy_buff_sale_avg", text="dm购买buff出售-平均价")
+        self.tree_2_1.heading("dm_buy_buff_sale_avg_rate", text="dm购买buff出售-平均价率")
+        self.tree_2_1.heading("dm_buy_buff_sale_min", text="dm购买buff出售-当前价")
+        self.tree_2_1.heading("dm_buy_buff_sale_min_rate", text="dm购买buff出售-当前价率")
+        self.tree_2_1.heading("price_alter_percentage_7d", text="7天变化率")
+        self.tree_2_1.heading("price_alter_value_7d", text="7天变化价格")
+        self.tree_2_1.heading("category_group_name", text="饰品类型")
+        # self.tree_2_1.pack(side=tk.LEFT,pady=40,expand=1, fill="both")
+        self.display_data1(None, self.tree_2_1)
+
+         # 创建水平滚动条
+        x_scroll = ttk.Scrollbar(tab1, orient="horizontal", command=self.tree_2_1.xview)
+        y_scroll = ttk.Scrollbar(tab1, orient="vertical", command=self.tree_2_1.yview)
+        self.tree_2_1.configure(xscrollcommand=x_scroll.set)
+        self.tree_2_1.configure(yscrollcommand=y_scroll.set)
+
+        # 布局
+        self.tree_2_1.grid(row=5,columnspan=3,sticky=tk.NS,padx=30,pady=30)
+
+
+    def create_tab2_2(self):
         tab2 = ttk.Frame(self.tabControl)
         self.tabControl.add(tab2, text='悠悠购买DM出售-账号2')
 
@@ -237,7 +406,7 @@ class TabbedApp:
         sync_query_time_change_limit = tk.Entry(tab2,width=30)
         sync_query_time_change_limit.insert(0, "100")
         sync_query_time_change_limit.grid(row=3, column=1,sticky=tk.E,padx=30)
-        start_button_time_change = tk.Button(tab2, text="查询出售中数据",width=15, command=lambda: add_task_to_change_cart(sync_query_time_change.get(),sync_query_time_change_limit.get(),self.tree2,count_label_value,count_label_value_all))
+        start_button_time_change = tk.Button(tab2, text="查询出售中数据",width=15, command=lambda: add_task_to_change_cart(sync_query_time_change.get(),sync_query_time_change_limit.get(),self.tree2,count_label_value,count_label_value_all,config.authorization_two))
         start_button_time_change.grid(row=3,  column=2,sticky=tk.W,padx=30)
         stop_button_time_change = tk.Button(tab2, text="确认出售中数据",width=15, command=lambda: confirm_task_to_change_cart())
         stop_button_time_change.grid(row=3,  column=3,sticky=tk.W)
@@ -271,10 +440,10 @@ class TabbedApp:
         # 布局
         self.tree2.grid(row=6,columnspan=4,sticky=tk.NS,padx=30,pady=10)
         # 绑定行选择事件
-        self.tree2.bind("<<TreeviewSelect>>", self.on_row_select)
+        self.tree2.bind("<<TreeviewSelect>>", self.on_row_select_2)
 
         # 绑定键盘事件（Ctrl+C 复制选中行）
-        self.root.bind("<Control-c>", self.copy_selection)
+        self.root.bind("<Control-c>", self.copy_selection_2)
 
     def create_tab3(self):
         tab2 = ttk.Frame(self.tabControl)
@@ -285,7 +454,7 @@ class TabbedApp:
         query_label_inve.grid(row=0,columnspan=5, column=0)
 
 
-        default_query="1,100,7.10,5"
+        default_query="1,100,7.10,1"
 
         sync_query_type = tk.Entry(tab2,width=10)
         sync_query_type.grid(row=1, column=0,sticky=tk.E,padx=10)
@@ -359,46 +528,63 @@ class TabbedApp:
         # 布局
         self.tree3.grid(row=6,columnspan=5,sticky=tk.NS,padx=30,pady=10)
         # 绑定行选择事件
-        self.tree3.bind("<<TreeviewSelect>>", self.on_row_select3)
+        self.tree3.bind("<<TreeviewSelect>>", self.on_row_select_3)
 
         # 绑定键盘事件（Ctrl+C 复制选中行）
-        self.root.bind("<Control-c>", self.copy_selection3)
+        self.root.bind("<Control-c>", self.copy_selection_3)
 
 
 
-    def on_row_select3(self, event):
+    def on_row_select_1(self, event):
+        # 获取选中行的内容（可选）
+        print("")
+        selected_item = self.tree_1_2.selection()
+        if selected_item:
+            item_values = self.tree_1_2.item(selected_item)['values']
+            print("选中的行内容:", item_values)
+
+    def copy_selection_1(self, event):
+        selected_item = self.tree_1_2.selection()
+        if selected_item:
+            item_values = self.tree_1_2.item(selected_item)['values'][1]
+            # 将选中行的数据拼接成字符串
+            pyperclip.copy(item_values)  # 复制到剪贴板
+            print("已复制到剪贴板:", item_values)
+
+    def on_row_select_2(self, event):
+        # 获取选中行的内容（可选）
+        print("")
+        selected_item = self.tree2.selection()
+        if selected_item:
+            item_values = self.tree2.item(selected_item)['values']
+            print("选中的行内容:", item_values)
+
+    def copy_selection_2(self, event):
+        selected_item = self.tree2.selection()
+        if selected_item:
+            item_values = self.tree2.item(selected_item)['values'][1]
+            # 将选中行的数据拼接成字符串
+            pyperclip.copy(item_values)  # 复制到剪贴板
+            print("已复制到剪贴板:", item_values)
+
+
+
+    def on_row_select_3(self, event):
         # 获取选中行的内容（可选）
         print("")
         selected_item = self.tree3.selection()
         if selected_item:
-            item_values = self.tree3.item(selected_item)['values'][1]
+            item_values = self.tree3.item(selected_item)['values']
             print("选中的行内容:", item_values)
 
-    def copy_selection3(self, event):
+    def copy_selection_3(self, event):
         selected_item = self.tree3.selection()
         if selected_item:
             item_values = self.tree3.item(selected_item)['values'][1]
             # 将选中行的数据拼接成字符串
             pyperclip.copy(item_values)  # 复制到剪贴板
-            print("已复制到剪贴板:", content)
+            print("已复制到剪贴板:", item_values)
 
-
-    def on_row_select(self, event):
-        # 获取选中行的内容（可选）
-        print("")
-        selected_item = self.tree2.selection()
-        if selected_item:
-            item_values = self.tree2.item(selected_item)['values']
-            print("选中的行内容:", item_values)
-
-    def copy_selection(self, event):
-        selected_item = self.tree2.selection()
-        if selected_item:
-            item_values = self.tree2.item(selected_item)['values']
-            # 将选中行的数据拼接成字符串
-            content = "\t".join(item_values)  # 使用制表符分隔
-            pyperclip.copy(content)  # 复制到剪贴板
-            print("已复制到剪贴板:", content)
 
 
 
@@ -464,7 +650,7 @@ def update_my_sale_buy_record(limit,authorization,file_path):
     print("查询列表成功")
 
 
-def add_task_to_steam_cart(content,limit,tree,treeFilters,count_label_value,count_label_value_all):
+def add_task_to_steam_cart(content,limit,tree,treeFilters,count_label_value,count_label_value_all,authorization):
     add_list.clear()
     change_list.clear()
     count_label_value.delete(0,tk.END)
@@ -476,7 +662,7 @@ def add_task_to_steam_cart(content,limit,tree,treeFilters,count_label_value,coun
     else:
         title=content
 
-    reponse_json=offer_sell_product.get_my_invert_List(title=title,limit=limit,treeFilters=treeFilters)
+    reponse_json=offer_sell_product.get_my_invert_List(title=title,limit=limit,treeFilters=treeFilters,authorization=authorization)
     my_invert_list=reponse_json['objects']
 
     if my_invert_list is None or len(my_invert_list) == 0: 
@@ -513,8 +699,8 @@ def add_task_to_steam_cart(content,limit,tree,treeFilters,count_label_value,coun
     print("查询列表成功")
 
 
-def confirm_task_to_steam_cart():
-    offer_sell_product.add_my_invert_List(items=add_list)
+def confirm_task_to_steam_cart(authorization):
+    offer_sell_product.add_my_invert_List(items=add_list,authorization=authorization)
     add_list.clear()
     change_list.clear()
     print("添加任务到steam购物车")
@@ -528,7 +714,7 @@ def confirm_task_to_sale_cart():
 
 
 
-def add_task_to_change_cart(content,limit,tree,count_label_value,count_label_value_all):
+def add_task_to_change_cart(content,limit,tree,count_label_value,count_label_value_all,authorization):
     add_list.clear()
     change_list.clear()
     count_label_value.delete(0,tk.END)
@@ -544,7 +730,7 @@ def add_task_to_change_cart(content,limit,tree,count_label_value,count_label_val
         tree.delete(item)
             # 将新的数据插入到表格中
 
-    reponse_json=offer_sell_product.get_my_offer_List(title=title,limit=limit)
+    reponse_json=offer_sell_product.get_my_offer_List(title=title,limit=limit,authorization=authorization)
     my_invert_list=reponse_json['objects']
 
     if my_invert_list is None or len(my_invert_list) == 0: 
@@ -569,8 +755,8 @@ def add_task_to_change_cart(content,limit,tree,count_label_value,count_label_val
         change_list.append(item['itemId'])
     
 
-def confirm_task_to_change_cart():
-    offer_sell_product.add_my_sell_List(items=change_list)
+def confirm_task_to_change_cart(authorization):
+    offer_sell_product.add_my_sell_List(items=change_list,authorization=authorization)
     add_list.clear()
     change_list.clear()
     print("添加出售中成功")
@@ -600,12 +786,12 @@ def search_min_data(query, tree):
             tree.insert("", "end", values=(entry["drtitle"],entry["title"], entry["totalSales"], entry["date"], entry["offer_price"], entry["target_price"], entry["buff_avg_price"], entry["dm_buy_buff_sale_avg"], entry["dm_buy_buff_sale_avg_rate"], entry["dm_buy_buff_sale_min"], entry["dm_buy_buff_sale_min_rate"], entry["price_alter_percentage_7d"], entry["price_alter_value_7d"], entry["category_group_name"]))
     
 
-def timer_task_buy_min_data( query,sync_button):
+def timer_task_buy_min_data( query,sync_button,public_key,secret_key):
     sync_data(query, sync_button)
-    buy_min_data( None)
+    buy_min_data( None,public_key,secret_key)
 
 
-def buy_min_data( query):
+def buy_min_data( query,public_key,secret_key):
     print("开始采购")
     create_target_list=bastPricetSellSkin86.create_avg_target_min(exchange_rate)
 
@@ -617,7 +803,7 @@ def buy_min_data( query):
             filter_list.append(entry)
 
     filename=config.data_local_excel+"/creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
-    bastPricetSellSkin86.creat_now(filter_list,filename,100,"min")
+    bastPricetSellSkin86.creat_now(filter_list,filename,100,"min",public_key,secret_key)
 
 
 def search_avg_data( query,tree):
@@ -642,7 +828,7 @@ def search_avg_data( query,tree):
     
 
 
-def buy_avg_data( query,tree):
+def buy_avg_data( query,tree,public_key,secret_key):
     print("购买平均价")
     create_avg_target_list=bastPricetSellSkin86.create_avg_target_avg(exchange_rate)
     filename=config.data_local_excel+"/creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
@@ -655,20 +841,20 @@ def buy_avg_data( query,tree):
             filter_list.append(entry)
 
 
-    bastPricetSellSkin86.creat_now(filter_list,filename,50,"avg")
+    bastPricetSellSkin86.creat_now(filter_list,filename,50,"avg",public_key,secret_key)
 
 
 
-def start_data_timer(search_content, stop_button_time,start_button_time,task,sync_button):
+def start_data_timer(search_content, stop_button_time,start_button_time,task,sync_button,public_key,secret_key):
       # 每 5 秒执行一次任务
     start_button_time.config(state=tk.DISABLED)
-    task.start(search_content,sync_button)
+    task.start(search_content,sync_button,public_key,secret_key)
     stop_button_time.config(state=tk.NORMAL)
 
 
-def stop_data_timer(search_content, stop_button_time,start_button_time,task,sync_button):
+def stop_data_timer(search_content, stop_button_time,start_button_time,task,sync_button,public_key,secret_key):
     stop_button_time.config(state=tk.DISABLED)
-    task.stop(sync_button)
+    task.stop(sync_button,public_key,secret_key)
     start_button_time.config(state=tk.NORMAL)
     
 

@@ -81,7 +81,7 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10,
                     buy_data['subject']=item['subject']
                     if item['changes'] is None or len(item['changes'])>0:
                         if item['action'] == "Sell" or item['action'] == "Deposit":
-                            buy_data['price']=round(float(item['changes'][0]['money']['amount'])*recharge_rate*exchange_rate,2) 
+                            buy_data['price']=round(float(item['changes'][0]['money']['amount'])*exchange_rate,2) 
                             buy_data['price_us']=float(item['changes'][0]['money']['amount'])
                         else:
                             buy_data['price']=round(float(item['changes'][0]['money']['amount'])*recharge_rate*exchange_rate,2) 
@@ -151,8 +151,12 @@ def find_buy_price(file_path):
             if buff_info['market_name'] == send_data['cn_name']:
                 send_data['buff_price']=buff_info['sell_min_price']
                 if send_data['price'] is not None and send_data['price']!=0:
-                    send_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'],2)
-                    send_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'])/send_data['price'],2)
+                    if send_data['action'] == "Sell" or send_data['action'] == "Deposit":
+                        send_data['buff_price_divided']=round(send_data['price']-buff_info['sell_min_price'],2)
+                        send_data['buff_price_divided_rate']=round(send_data['price']-buff_info['sell_min_price']/send_data['price'],2)
+                    else:
+                        send_data['buff_price_divided']=round(buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'],2)
+                        send_data['buff_price_divided_rate']=round((buff_info['sell_min_price']*trans_buff_service_change()-send_data['price'])/send_data['price'],2)
                     break
                     
         all_data.append(send_data)

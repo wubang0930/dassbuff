@@ -5,14 +5,14 @@ import config
 
 
 # 获取当前的出售单
-def get_my_offer_List(title="",limit=50):
+def get_my_offer_List(title="",limit=50,authorization=config.authorization):
     try:
         # 设置请求的URL
         url = 'https://api.dmarket.com/exchange/v1/user/offers'
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': config.authorization_two,
+            'authorization': authorization,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '2420eb2e',
@@ -56,14 +56,14 @@ def get_my_offer_List(title="",limit=50):
 
 
 # 获取当前的库存
-def get_my_invert_List(title="",limit=50,treeFilters=""):
+def get_my_invert_List(title="",limit=50,treeFilters="",authorization=config.authorization):
     try:
         # 设置请求的URL
         url = 'https://api.dmarket.com/exchange/v1/user/items'
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': config.authorization_two,
+            'authorization': authorization,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '2420eb2e',
@@ -110,14 +110,14 @@ def get_my_invert_List(title="",limit=50,treeFilters=""):
 
 
 
-def add_my_invert_List(items=[]):
+def add_my_invert_List(items=[],authorization=config.authorization):
     try:
         # 设置请求的URL
         url = 'https://api.dmarket.com/exchange/v1/selection/item'
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': config.authorization_two,
+            'authorization': authorization,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '2420eb2e',
@@ -151,14 +151,14 @@ def add_my_invert_List(items=[]):
 
 
 
-def add_my_sell_List(items=[]):
+def add_my_sell_List(items=[],authorization=config.authorization):
     try:
         # 设置请求的URL
         url = 'https://api.dmarket.com/exchange/v1/selection/offer'
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
-            'authorization': config.authorization_two,
+            'authorization': authorization,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': '2420eb2e',
@@ -220,7 +220,7 @@ if __name__ == '__main__':
 
 
     # 获取当前的出售单
-    reponse_json=get_my_offer_List(title="USP-S | Ticket to Hell (Minimal Wear)",limit=100)
+    reponse_json=get_my_offer_List(title="USP-S | Ticket to Hell (Minimal Wear)",limit=100,authorization=config.authorization)
     my_invert_list=reponse_json['objects']
     print(my_invert_list)
     if my_invert_list is None or len(my_invert_list) == 0: 
