@@ -792,7 +792,7 @@ def timer_task_buy_min_data( query,sync_button,public_key,secret_key):
 
 
 def buy_min_data( query,public_key,secret_key):
-    print("开始采购")
+    print(datetime.now().strftime("%Y%m%d%H%M%S")+":开始采购")
     create_target_list=bastPricetSellSkin86.create_avg_target_min(exchange_rate)
 
     filter_list=[]
@@ -804,6 +804,7 @@ def buy_min_data( query,public_key,secret_key):
 
     filename=config.data_local_excel+"/creat_target_min_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
     bastPricetSellSkin86.creat_now(filter_list,filename,100,"min",public_key,secret_key)
+    print(datetime.now().strftime("%Y%m%d%H%M%S")+":采购完成")
 
 
 def search_avg_data( query,tree):
@@ -829,7 +830,7 @@ def search_avg_data( query,tree):
 
 
 def buy_avg_data( query,tree,public_key,secret_key):
-    print("购买平均价")
+    print(datetime.now().strftime("%Y%m%d%H%M%S")+":购买平均价")
     create_avg_target_list=bastPricetSellSkin86.create_avg_target_avg(exchange_rate)
     filename=config.data_local_excel+"/creat_target_avg_"+"".join(datetime.now().strftime("%Y%m%d%H%M%S"))+".xlsx"
 
@@ -842,6 +843,7 @@ def buy_avg_data( query,tree,public_key,secret_key):
 
 
     bastPricetSellSkin86.creat_now(filter_list,filename,50,"avg",public_key,secret_key)
+    print(datetime.now().strftime("%Y%m%d%H%M%S")+":购买平均价完成")
 
 
 
