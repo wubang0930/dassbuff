@@ -408,7 +408,7 @@ class TabbedApp:
         sync_query_time_change_limit.grid(row=3, column=1,sticky=tk.E,padx=30)
         start_button_time_change = tk.Button(tab2, text="查询出售中数据",width=15, command=lambda: add_task_to_change_cart(sync_query_time_change.get(),sync_query_time_change_limit.get(),self.tree2,count_label_value,count_label_value_all,config.authorization_two))
         start_button_time_change.grid(row=3,  column=2,sticky=tk.W,padx=30)
-        stop_button_time_change = tk.Button(tab2, text="确认出售中数据",width=15, command=lambda: confirm_task_to_change_cart())
+        stop_button_time_change = tk.Button(tab2, text="确认出售中数据",width=15, command=lambda: confirm_task_to_change_cart(config.authorization_two))
         stop_button_time_change.grid(row=3,  column=3,sticky=tk.W)
         
 
@@ -671,7 +671,7 @@ def add_task_to_steam_cart(content,limit,tree,treeFilters,count_label_value,coun
     
 
     count_label_value.insert(0,str(len(my_invert_list)))
-    count_label_value_all.insert(0,reponse_json['total']['items'])
+    count_label_value_all.insert(0,reponse_json['total']['  '])
 
     for item in tree.get_children():
         tree.delete(item)
