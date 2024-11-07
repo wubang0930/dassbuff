@@ -671,7 +671,9 @@ def add_task_to_steam_cart(content,limit,tree,treeFilters,count_label_value,coun
     
 
     count_label_value.insert(0,str(len(my_invert_list)))
-    count_label_value_all.insert(0,reponse_json['total']['  '])
+    count_label_value_all.insert(0,reponse_json['total']['items'])
+    
+    print(reponse_json)
 
     for item in tree.get_children():
         tree.delete(item)
