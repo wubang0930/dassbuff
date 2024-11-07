@@ -532,7 +532,9 @@ class TabbedApp:
 
         # 绑定键盘事件（Ctrl+C 复制选中行）
         self.tree3.bind("<Control-c>", self.copy_selection_3)
-
+        
+        # 绑定键盘事件（Ctrl+C 复制选中行）
+        self.tree3.bind("<Double-1>", self.copy_Double_3)
 
 
     def on_row_select_1(self, event):
@@ -553,19 +555,15 @@ class TabbedApp:
 
     def on_row_select_2(self, event):
         # 获取选中行的内容（可选）
-        print("on_row_select_2")
-        print("")
         selected_item = self.tree2.selection()
         if selected_item:
             item_values = self.tree2.item(selected_item)['values']
             print("选中的行内容:", item_values)
 
     def copy_selection_2(self, event):
-        print("copy_selection_2")
         selected_item = self.tree2.selection()
         if selected_item:
             item_values = self.tree2.item(selected_item)['values'][1]
-            print("选择数据:", item_values)
             # 将选中行的数据拼接成字符串
             pyperclip.copy(item_values)  # 复制到剪贴板
             print("已复制到剪贴板:", item_values)
@@ -574,17 +572,24 @@ class TabbedApp:
 
     def on_row_select_3(self, event):
         # 获取选中行的内容（可选）
-        print("on_row_select_3")
         selected_item = self.tree3.selection()
         if selected_item:
             item_values = self.tree3.item(selected_item)['values']
             print("选中的行内容:", item_values)
 
     def copy_selection_3(self, event):
-        print("copy_selection_3")
         selected_item = self.tree3.selection()
         if selected_item:
             item_values = self.tree3.item(selected_item)['values'][1]
+            # 将选中行的数据拼接成字符串
+            pyperclip.copy(item_values)  # 复制到剪贴板
+            print("已复制到剪贴板:", item_values)
+
+
+    def copy_Double_3(self, event):
+        selected_item = self.tree3.selection()
+        if selected_item:
+            item_values = self.tree3.item(selected_item)['values'][2]
             # 将选中行的数据拼接成字符串
             pyperclip.copy(item_values)  # 复制到剪贴板
             print("已复制到剪贴板:", item_values)
