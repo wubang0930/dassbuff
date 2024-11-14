@@ -386,7 +386,7 @@ class TabbedApp:
         sync_query_time_add_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
         start_button_time_add = tk.Button(tab2, text="查询提现购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree2,"itemLocation[]=true,tradeLockTo[]=0",count_label_value,count_label_value_all,config.authorization_two))
         start_button_time_add.grid(row=1,  column=2,sticky=tk.W,padx=30)
-        stop_button_time_add = tk.Button(tab2, text="确认提现",width=15, command=lambda: confirm_task_to_steam_cart())
+        stop_button_time_add = tk.Button(tab2, text="确认提现",width=15, command=lambda: confirm_task_to_steam_cart(config.authorization_two))
         stop_button_time_add.grid(row=1,  column=3,sticky=tk.W)
 
 
@@ -397,7 +397,7 @@ class TabbedApp:
         sync_query_time_sale_limit.grid(row=2, column=1,sticky=tk.E,padx=30)
         start_button_time_sale = tk.Button(tab2, text="查询出售购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_sale.get(),sync_query_time_sale_limit.get(),self.tree2,"itemLocation[]=false,tradeLockTo[]=0",count_label_value,count_label_value_all,config.authorization_two))
         start_button_time_sale.grid(row=2,  column=2,sticky=tk.W,padx=30)
-        stop_button_time_sale = tk.Button(tab2, text="确认出售购物车",width=15, command=lambda: confirm_task_to_sale_cart())
+        stop_button_time_sale = tk.Button(tab2, text="确认出售购物车",width=15, command=lambda: confirm_task_to_sale_cart(config.authorization_two))
         stop_button_time_sale.grid(row=2,  column=3,sticky=tk.W)
         
 
@@ -717,8 +717,8 @@ def confirm_task_to_steam_cart(authorization):
     print("添加任务到steam购物车")
 
 
-def confirm_task_to_sale_cart():
-    offer_sell_product.add_my_invert_List(items=add_list)
+def confirm_task_to_sale_cart(authorization):
+    offer_sell_product.add_my_invert_List(items=add_list,authorization=authorization)
     add_list.clear()
     change_list.clear()
     print("添加任务到出售购物车")
