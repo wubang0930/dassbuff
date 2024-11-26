@@ -25,6 +25,7 @@ def initFile():
     if not os.path.exists(config.data_local_analysis):
         os.makedirs(config.data_local_analysis)
 
+    global  exchange_rate
     exchange_rate=bastPricetSellSkin86.find_us_exchange()
     print("当前的美元汇率是："+str(exchange_rate))
 
@@ -453,8 +454,9 @@ class TabbedApp:
         query_label_inve = tk.Label(tab2, text="出售购买记录")
         query_label_inve.grid(row=0,columnspan=5, column=0)
 
-        current_exchange_rate=bastPricetSellSkin86.find_us_exchange()
-        default_query="1,100,"+str(current_exchange_rate)+",1"
+        # current_exchange_rate=bastPricetSellSkin86.find_us_exchange()
+        global exchange_rate
+        default_query="1,100,"+str(exchange_rate)+",1"
 
         sync_query_type = tk.Entry(tab2,width=10)
         sync_query_type.grid(row=1, column=0,sticky=tk.E,padx=10)

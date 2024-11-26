@@ -52,3 +52,8 @@ priority_archive="priority_archive.json"
 # 出售购买记录
 my_buy_current_file=data_local_analysis+"/my_buy_list.txt"
 my_buy_current_file_two=data_local_analysis+"/my_buy_list_two.txt"
+
+
+
+
+itone_authorization='tt_14YURir7OGAJKkGVUsgOsUUMKGAjWEin.1e48f05a39ed31edc420928b2aab9dc3'

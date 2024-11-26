@@ -15,6 +15,7 @@ import mysql.connector
 from mysql.connector import Error
 import threading
 import schedule
+import soccersave
 
 log_num=0
 
@@ -24,7 +25,11 @@ skin_86_product_all_igxe_mysql=config.skin_86_product_all_igxe_mysql
 skin_86_product_all_steam_mysql=config.skin_86_product_all_steam_mysql
 csgo_db_deal_mysql=config.csgo_db_deal_mysql
 
-
+# 数据库连接参数
+host = '127.0.0.1'
+database = 'csgo'
+user = 'root'
+password = 'bangye'
 
 taobao_price=545
 
@@ -85,27 +90,18 @@ def save_data_mysql():
                 break
     
 
-
-
-
-    # 数据库连接参数
-    host = '127.0.0.1'
-    database = 'csgo'
-    user = 'root'
-    password = 'bangye'
-
     # 先删除今天的数据 在插入今天的数据
     version_date=str(datetime.now().strftime('%Y-%m-%d'))
     print("version_date："+version_date)
-    delete_today_data(host, database, user, password,version_date)
+    delete_today_data(version_date)
 
 
     # 插入数据的 SQL 查询
     # 调用插入数据的方法
-    insert_today_buff_data(host, database, user, password, all_data_list,version_date)
-    insert_today_sale_data(host, database, user, password, sale_data_list,version_date)
+    insert_today_buff_data( all_data_list,version_date)
+    insert_today_sale_data( sale_data_list,version_date)
 
-def delete_today_data(host, database, user, password,version_date):
+def delete_today_data(version_date):
     print(getNowTime()+"开始删除数据")
     try:
         # 连接到 MySQL 数据库
@@ -142,7 +138,7 @@ def getNowTime():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
-def insert_today_buff_data(host, database, user, password, data_tuple_list,version_date):
+def insert_today_buff_data(data_tuple_list,version_date):
     insert_query = "INSERT INTO `csgo`.`goods`(`goods_id`, `platform_id`, `market_name`, `sell_min_price`, `sell_max_num`, `sell_valuation`, `buy_max_price`, `buy_max_num`, `price_alter_percentage_7d`, `price_alter_value_7d`, `category_group_name`, `rarity_color`, `icon_url`, `is_follow`, `redirect_url`, `exterior`, `rarity`, `market_hash_name`, `en_name`, `today_sale_count`, `today_sale_price`, `create_date`,`version_date`) VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s,%s)"
 
     print(getNowTime()+"开始插入goods数据")
@@ -200,7 +196,7 @@ def insert_today_buff_data(host, database, user, password, data_tuple_list,versi
             connection.close()
             print("数据库连接已关闭")
 
-def insert_today_sale_data(host, database, user, password, data_tuple_list,version_date):
+def insert_today_sale_data(data_tuple_list,version_date):
     insert_query = "INSERT INTO `csgo`.`csgo_db_deal`( `goods_name`, `icon_url`, `today_count`, `today_price`, `all_price`, `create_date`,`version_date`) VALUES (%s, %s,%s, %s,%s, %s, %s)"
 
     print(getNowTime()+"开始插入cs_db数据")
@@ -254,21 +250,84 @@ def insert_today_sale_data(host, database, user, password, data_tuple_list,versi
             connection.close()
             print("数据库连接已关闭")
 
+
+
+def save_soccer_data():
+    print("正在查询足球数据")
+    # 保存足球数据
+    soccer = soccersave.getFbSoccerData()
+    all_data=soccersave.tarnMySoccerData(soccer)
+    
+    insert_query = "INSERT INTO `csgo`.`soccer_analysis`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
+    (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
+
+    print(getNowTime()+"开始插入soccer_analysis数据")
+    
+    # 连接到 MySQL 数据库
+    connection = mysql.connector.connect(
+        host=host,
+        database=database,
+        user=user,
+        password=password
+    )
+        
+    if connection.is_connected():
+        cursor = connection.cursor()
+        # 执行插入查询
+        for values in all_data:
+            try:
+                print(values)
+                inert_values = (
+                    values.get('soccer_id',''),
+                    values.get('race_name',''),
+                    values.get('team_home',''),
+                    values.get('team_guest',''),
+                    values.get('team_cr',''),
+                    values.get('c_time',0),
+                    values.get('m_type',''),
+                    values.get('m_type_value',0),
+                    values.get('m_odds',0),
+                    values.get('goal_home',''),
+                    values.get('goal_guest',''),
+                    values.get('start_time',None),
+                    values['create_time'],
+                    values.get('s_type',''),
+                    values.get('s_type_value',0),
+                    values.get('s_odds',0)
+                )
+                cursor.execute(insert_query, inert_values)
+                connection.commit()  # 提交事务
+            except Error as e:
+                print(f"数据库soccer_analysis连接错误: {e}")
+        print(getNowTime()+"数据插入soccer_analysis成功")
+    if connection.is_connected():
+        cursor.close()
+        connection.close()
+        print("数据库soccer_analysis连接已关闭")
+
+
+
+
+
 if __name__ == '__main__':
 # def start():    
     start_time=int(time.time())
+    # save_soccer_data()
 
 
     # 每天晚上11点执行
-    schedule.every().day.at("23:00").do(save_data_mysql)
+    # schedule.every().day.at("23:00").do(save_data_mysql)
     # 持续运行以保持调度
+    # 每隔一分钟执行一次
+    schedule.every(1).minutes.do(save_soccer_data)
+
     
     while True:
         schedule.run_pending()
         time.sleep(1)
         log_num+=1
 
-        if log_num%600==0:
+        if log_num%10==0:
             print(str(datetime.now())+"  正在运行中")
 
 
