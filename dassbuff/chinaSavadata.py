@@ -253,11 +253,22 @@ def insert_today_sale_data(data_tuple_list,version_date):
 
 
 def save_soccer_data():
-    print("正在查询足球数据")
+    print(str(datetime.now())+"  正在查询足球数据")
     # 保存足球数据
     soccer = soccersave.getFbSoccerData()
-    all_data=soccersave.tarnMySoccerData(soccer)
+    if soccer is None:
+        print("获取足球数据失败")
+        return
     
+    all_data=soccersave.tarnMySoccerData(soccer)
+
+    if all_data is None or len(all_data)==0:
+        print("获取足球数据为空")
+        return
+    
+
+
+
     insert_query = "INSERT INTO `csgo`.`soccer_analysis`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
     (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
 
@@ -276,7 +287,7 @@ def save_soccer_data():
         # 执行插入查询
         for values in all_data:
             try:
-                print(values)
+                # print(values)
                 inert_values = (
                     values.get('soccer_id',''),
                     values.get('race_name',''),
@@ -299,11 +310,68 @@ def save_soccer_data():
                 connection.commit()  # 提交事务
             except Error as e:
                 print(f"数据库soccer_analysis连接错误: {e}")
-        print(getNowTime()+"数据插入soccer_analysis成功")
+        # print(getNowTime()+"数据插入soccer_analysis成功")
     if connection.is_connected():
         cursor.close()
         connection.close()
-        print("数据库soccer_analysis连接已关闭")
+        # print("数据库soccer_analysis连接已关闭")
+
+
+
+        # 下注
+    for values in all_data:
+        print()
+
+        print(str(values.get('soccer_id',"race_name"))+","+values.get('race_name',"race_name")+"，主队是："+values.get('team_home',"team_home")+"，客队是："+values.get('team_guest',"team_guest")+\
+                "，时间："+str(values.get('c_time',''))
+              )
+        print("大："+str(values.get('m_type_value',''))+"，赔率："+str(values.get('m_odds',''))+\
+                "----小："+str(values.get('s_type_value',''))+",赔率："+str(values.get('s_odds',0))+\
+                "----主队进球："+str(values.get('goal_home',''))+",客队进球："+str(values.get('goal_guest',''))
+              )
+
+            # 先下注3分的数据试试看
+        if values.get('c_time',0)==4 and values.get('m_type_value',0)==3 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
+             # 要下注的，暂停1秒后，继续下注
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',20)).start()
+            continue
+
+        elif values.get('c_time',0)==5 and values.get('m_type_value',0)==2.25 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
+             # 要下注的，暂停1秒后，继续下注
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',20)).start()
+            continue
+
+        elif values.get('c_time',0)==20 and values.get('m_type_value',0)==2.5 and (values.get('goal_home',0)+ values.get('goal_guest',0))==1:
+             # 要下注的，暂停1秒后，继续下注
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',20)).start()
+            continue
+
+        elif values.get('c_time',0)==16 and values.get('m_type_value',0)==3.25 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
+             # 要下注的，暂停1秒后，继续下注
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',20)).start()
+            continue
+            
+        # if values.get('c_time',0)==28 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
+        #      # 要下注的，暂停1秒后，继续下注
+        #     time.sleep(1)
+        #     print("符合条件的小球比赛："+values.get('race_name',"race_name")+"，主队是："+values.get('team_home',"team_home")+"，客队是："+values.get('team_guest',"team_guest"))
+        #     print("开始下注"+str(values))
+        #     threading.Thread(target=soccersave.save_bet_data,args=(values,'小')).start()
+        #     continue
+            
+
+        # print("不是指定时间的比赛,不下注："+values.get('race_name',"race_name")+"，主队是："+values.get('team_home',"team_home")+"，客队是："+values.get('team_guest',"team_guest"))
+
+       
+
 
 
 
@@ -319,15 +387,15 @@ if __name__ == '__main__':
     # schedule.every().day.at("23:00").do(save_data_mysql)
     # 持续运行以保持调度
     # 每隔一分钟执行一次
-    schedule.every(1).minutes.do(save_soccer_data)
+    schedule.every().minutes.at(":01").do(save_soccer_data)
 
     
     while True:
         schedule.run_pending()
-        time.sleep(1)
+        time.sleep(0.9)
         log_num+=1
 
-        if log_num%10==0:
+        if log_num%60==0:
             print(str(datetime.now())+"  正在运行中")
 
 

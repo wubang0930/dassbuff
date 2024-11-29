@@ -3,6 +3,16 @@ import json
 import datetime
 import math
 import config
+import time
+import mysql.connector
+from mysql.connector import Error
+
+
+# 数据库连接参数
+host = '127.0.0.1'
+database = 'csgo'
+user = 'root'
+password = 'bangye'
 
 # 数据
 def getFbSoccerData():
@@ -35,11 +45,10 @@ def getFbSoccerData():
         }
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        print(response)
+        # print(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             soccer=reponse_json['data']
-            # 过滤平均销量大于30的列表
             return soccer
         return None
     except Exception as e:
@@ -55,7 +64,7 @@ def tarnMySoccerData(soccer):
         return None
     
     for item in soccer['records']:
-        print(item)
+        # print(item)
         single_data={}
         single_data['soccer_id'] = item['id']
         single_data['team_cr'] = item['lg']['rnm']
@@ -126,7 +135,7 @@ def getMatchDetail(matchId,oddsType):
         }
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        print(response)
+        # print(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             detail=reponse_json['data']
@@ -147,6 +156,9 @@ def singlePass(authorization,singleBetList):
         url = 'https://api.xyz2277.com/v1/order/bet/singlePass'
         # 设置请求头
         headers = {
+            "Connection":"keep-alive",
+            "Origin":"https://p.9512230.com",
+            "Referer":"https://p.9512230.com/",
             'accept': 'application/json, text/plain, */*',
             'accept-language': 'zh-CN,zh;q=0.9',
             'Authorization': authorization,
@@ -163,19 +175,29 @@ def singlePass(authorization,singleBetList):
         # 设置请求的数据
         params = {
             "languageType": "CMN",
-            "singleBetList": singleBetList,
+            "singleBetList": [{
+                "unitStake": singleBetList[0]['unitStake'],
+                "oddsChange": singleBetList[0]['oddsChange'],
+                "betOptionList": [
+                    {
+                        "marketId": singleBetList[0]['betOptionList'][0]['marketId'],
+                        "odds": singleBetList[0]['betOptionList'][0]['odds']-0.1,
+                        "optionType": singleBetList[0]['betOptionList'][0]['optionType'],
+                        "oddsFormat": singleBetList[0]['betOptionList'][0]['oddsFormat']
+                    }
+                ]
+            }],
             "currencyId": 1,
 
         }
+        print(params)
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        print(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             print(reponse_json)
             if reponse_json['code'] == 0:
                 detail=reponse_json['data']
-                print(deatail)
                 return detail
             else:
                 print(reponse_json['message'])
@@ -261,51 +283,58 @@ def getBalance(authorization):
         print(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
-            balance=reponse_json['data']
-            # 过滤平均销量大于30的列表
-            return balance
-        return None
+            # if reponse_json['code'] == 14010:
+            #     print("token失效")
+            #     return None
+                
+            # if reponse_json['code'] == 0:
+            #     print("查询成功："+reponse_json)
+            #     balance=reponse_json['data']
+            #     return balance
+        return reponse_json
     except Exception as e:
         print(e)
         return None
 
 
-def getMatchList(deatail,balance,bet_amount=10):
+def tranTypeValue(typeValue):
+    if '/' in typeValue:
+        return  (eval(typeValue.split('/')[0])+eval(typeValue.split('/')[1]))/2
+    else:
+        return  eval(typeValue)
+
+def getMatchList(deatail,bet_amount=10,type='大'):
     # if balance is None or balance['bl']<bet_amount:
     #     print("余额不足,当前余额是："+str(balance['bl']))
     #     return None
-
+    
+    hashFalg=False
     for mg in deatail['mg']:
         if 1007 == mg['mty'] and 1001 == mg['pe'] :
             marketId = mg['mks'][0]['id']
             for t_type in mg['mks'][0]['op']:
-                if '大' in t_type['na']:
-                    current_m_typy_value=0
-                    if '/' in t_type['li']:
-                        current_m_typy_value =  (eval(t_type['li'].split('/')[0])+eval(t_type['li'].split('/')[1]))/2
-                    else:
-                        current_m_typy_value = eval(t_type['li'])
-
+                if type in t_type['na']:
                     odds =  t_type['bod']
                     oddsFormat =  t_type['odt']
                     optionType =  t_type['ty']
-
+                    currentValue=tranTypeValue(t_type['li'])
+                    hashFalg=True
                     break
-                elif '小' in t_type['na']:
-                    current_s_typy_value=0
-                    if '/' in t_type['li']:
-                        current_s_typy_value =  (eval(t_type['li'].split('/')[0])+eval(t_type['li'].split('/')[1]))/2
-                    else:
-                        current_s_typy_value = eval(t_type['li'])
-
-
+                elif type in t_type['na']:
                     odds =  t_type['bod']
                     oddsFormat =  t_type['odt']
                     optionType =  t_type['ty']
+                    currentValue=tranTypeValue(t_type['li'])
+                    hashFalg=True
                     break
 
+    if not hashFalg:
+        print("没有找到大盘数据")
+        return None
+    
     singleBetList=[]
     single={
+        "currentValue": currentValue,
         "unitStake": bet_amount,
         "oddsChange": 1,
         "betOptionList": [
@@ -320,10 +349,152 @@ def getMatchList(deatail,balance,bet_amount=10):
     singleBetList.append(single)
     return singleBetList
 
+def notify_dingding(msg):
+    # 钉钉机器人通知
+    print("通知管理员："+msg)
+
+
+def gobuyitone(matchId,currentNum,bet_amount,type):
+    order_result={}
+    order_result['orderStatus']=False
+    order_result['require_amount']=currentNum
+    order_result['msg']=''
+    order_result['bet_amount']=bet_amount
+    order_result['matchId']=matchId
+
+
+    # 获取余额，查询比赛，封装下注，下注，查询订单状态
+    balance_response=getBalance(config.itone_authorization)
+    if balance_response['code'] == 14010:
+        order_result['msg'] = "token失效，通知管理员"
+        order_result['orderStatus'] = True
+        return order_result
+    
+    elif balance_response['code'] == 0:
+        print("查询成功,余额为："+str(balance_response['data']['bl']) )
+        order_result['balance'] = balance_response['data']['bl']
+    else:
+        order_result['msg'] = "余额查询失败："+str(balance_response)
+        order_result['orderStatus'] = False
+        return order_result
+    
+    if float(order_result.get('balance',0)) < float(bet_amount):
+        order_result['msg'] = "余额不足，当前余额是："+str(order_result['balance'])
+        order_result['orderStatus'] = False
+        return order_result
+
+    deatail = getMatchDetail(matchId,1)
+    singleBetList=getMatchList(deatail,bet_amount,type)
+    print(singleBetList)
+
+    if singleBetList is None or len(singleBetList)==0:
+        order_result['msg'] = "没有找到大盘数据,等几分钟在尝试"
+        order_result['orderStatus'] = False
+        return order_result
+# 
+    # order_result['currentValue'] = singleBetList[0].get('currentValue',0) 
+    # print("当前比赛盘口已变化，无需重复下注,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，下注盘口为："+ str(currentNum))
+    order_result['currentValue']=singleBetList[0].get('currentValue',0)
+
+
+    if singleBetList[0].get('currentValue',0) != currentNum:
+        print("当前比赛盘口已变化，无需重复下注,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，下注盘口为："+ str(currentNum))
+        return False
+
+    #判断要下注的比赛大小，是否和当前比赛的大小一致
+
+    # 太快会导致失败
+    singlePassDetail=singlePass(config.itone_authorization,singleBetList)
+
+
+    orderIds=[]
+    if singlePassDetail is not None:
+        for item in singlePassDetail:
+            orderIds.append(item['id'])
+
+    orderStatus=getStakeOrderStatus(config.itone_authorization,orderIds)
+    if orderStatus:
+        order_result['msg'] = "下注成功"
+        order_result['orderStatus'] = True
+    
+    return order_result
+
+def start_buy_itone(matchId,currentNum,bet_amount,type):
+    for i in range(1,3):
+        order_result=gobuyitone(matchId,currentNum,bet_amount,type)
+        if order_result.get('orderStatus',False):
+            return order_result
+        # 失败，则等待x秒后再试
+        time.sleep(15)
+    
+    return order_result
+
+
+def getNowTime():
+    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+
+
+def save_bet_data(values,type='大',bet_amount=10):
+    print(getNowTime()+"  正在存储下注数据")
+    # 这里取下注
+    order_result=start_buy_itone(values.get('soccer_id',None),values.get('m_type_value',0),bet_amount,type)
+
+    # order_result = start_buy_itone(2775624,0.75,bet_amount)
+    print(order_result)
+    
+    insert_query = "INSERT INTO `csgo`.`soccer_bet`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `odds_amount`, `odds_result`, `start_time`, `create_time`,`odds_status`,`actual_type_value`) VALUES\
+    (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s, %s, %s)"
+
+    print(getNowTime()+"开始插入 soccer_bet 数据")
+    
+    # 连接到 MySQL 数据库
+    connection = mysql.connector.connect(
+        host=host,
+        database=database,
+        user=user,
+        password=password
+    )
+        
+    if connection.is_connected():
+        cursor = connection.cursor()
+        # 执行插入查询
+        try:
+            print(values)
+            inert_values = (
+                values.get('soccer_id',''),
+                values.get('race_name',''),
+                values.get('team_home',''),
+                values.get('team_guest',''),
+                values.get('team_cr',''),
+                values.get('c_time',0),
+                type,
+                values.get('m_type_value',0),
+                values.get('m_odds',0),
+                bet_amount,
+                order_result.get('msg','无日志'),
+                values.get('start_time',None),
+                datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                order_result.get('orderStatus',False),
+                order_result.get('currentValue',0),
+            )
+            print(inert_values)
+            cursor.execute(insert_query, inert_values)
+            connection.commit()  # 提交事务
+        except Error as e:
+            print(f"数据库soccer_bet连接错误: {e}")
+        print(getNowTime()+"数据插入soccer_bet成功")
+    if connection.is_connected():
+        cursor.close()
+        connection.close()
+        print("数据库soccer_bet连接已关闭")
+
+    return True
+
 
     
 if __name__ == '__main__':
-    # soccer = getFbSoccerData()
+    soccer = getFbSoccerData()
     # tarnMySoccerData(soccer)
     #比赛详情
     # deatail = getMatchDetail(2570855,1)
@@ -342,5 +513,12 @@ if __name__ == '__main__':
     #         orderIds.append(item['id'])
     # print(deatail)
 
-    orderIds=["1329802262804964140"]
-    orderStatus=getStakeOrderStatus(config.itone_authorization,orderIds)
+    # orderIds=["1329802262804964140"]
+    # orderStatus=getStakeOrderStatus(config.itone_authorization,orderIds)
+    #  order_result = start_buy_itone(2775624,0.75,10)
+    #  print(order_result)
+    values={}
+    values['soccer_id']= 2760674
+    values['m_type_value']=3.00
+    values['c_time']=3
+    save_bet_data(values,type='大')
