@@ -6,6 +6,7 @@ import config
 import time
 import mysql.connector
 from mysql.connector import Error
+import re
 
 
 # 数据库连接参数
@@ -492,33 +493,222 @@ def save_bet_data(values,type='大',bet_amount=10):
     return True
 
 
+
+
+
+
+# 获取余额
+def getMyBetHistoryList(authorization,page=1,page_size=10):
+    try:
+        # 设置请求的URL
+        url = 'https://api.xyz2277.com/v1/order/new/bet/list'
+        # 设置请求头
+        headers = {
+            'accept': 'application/json, text/plain, */*',
+            'accept-language': 'zh-CN,zh;q=0.9',
+            'Authorization': authorization,
+            'content-type': 'application/json;charset=UTF-8',
+            'Connection': 'keep-alive',
+            'Sec-Fetch-Dest': 'empty',
+            'Sec-Fetch-Mode': 'cors',
+            'Sec-Fetch-Site': 'cross-site',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+            'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': 'Windows'
+            }
+        # 设置请求的数据
+        params = {
+            "languageType": "CMN",
+            "isSettled": True,
+            "current": page,
+            "size": page_size,
+        }
+        # 发送POST请求
+        response = requests.post(url,headers=headers,json=params)
+        print(response)
+        if response.status_code == 200:
+            reponse_json = json.loads(response.text)
+            if reponse_json['code'] == 14010:
+                print("token失效")
+                return None
+            
+        return reponse_json
+    except Exception as e:
+        print(e)
+        return None
+
+
+
+def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
+     
+    while True:
+        print("获取第"+str(page)+"页数据")
+        time.sleep(1)
+        if limit_page<page:
+            print("获取数据结束了，退出")
+            break
+        
+        page_data=getMyBetHistoryList(config.itone_authorization,page,page_size)
+        if page_data is None:
+            print("获取数据失败，退出")
+            break
+        
+        if page_data['code']!= 0:
+            print("获取数据失败，退出")
+            break
+        
+        if 'data' not in page_data or len(page_data['data']['records'])==0 :
+            print("没有数据了，退出")
+            break
+        
+        
+        for item in page_data['data']['records']:
+            try:
+                # print(item)
+                # save_bet_data(item)
+                goal=extract_numbers(item['ops'][0]['bsc'])
+                goal_reslut=extract_numbers(item['ops'][0]['rs'])
+
+
+                # bet_history_data={
+                #     "lid": item['ops'][0]['lid'],
+                #     "soccer_id": item['ops'][0]['mid'],
+                #     "race_name": item['ops'][0]['ln'],
+                #     "team_home": item['ops'][0]['te'][0]['na'],
+                #     "team_guest": item['ops'][0]['te'][1]['na'],
+                #     "team_cr":"",
+                #     "c_time":0,
+
+                #     "m_type": item['ops'][0]['on'],
+                #     "m_type_value": item['ops'][0]['li'],
+                #     "m_odds": item['ops'][0]['bo'],
+
+                #     "goal_home": goal[0],
+                #     "goal_guest": goal[1],
+                #     "odds_amount": item['sat'],
+
+
+                #     "goal_home_result": goal_reslut[0],
+                #     "goal_guest_result": goal_reslut[1],
+                #     "odds_amount_result": item['uwl'],
+
+                #     "bet_time": datetime.datetime.fromtimestamp(item['cte']/1000).strftime('%Y-%m-%d %H:%M:%S'),
+                #     "start_time": datetime.datetime.fromtimestamp(item['ops'][0]['bt']/1000).strftime('%Y-%m-%d %H:%M:%S'),
+                #     "create_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                # }
+
+                bet_history_data=(
+                    item['id'],
+                    item['ops'][0]['mid'],
+                    item['ops'][0]['ln'],
+                    item['ops'][0]['te'][0]['na'],
+                    item['ops'][0]['te'][1]['na'],
+                    "",
+                    0,
+                    item['ops'][0]['on'],
+                    item['ops'][0]['li'],
+                    item['ops'][0]['bo'],
+
+                    goal[0],
+                    goal[1],
+                    item['sat'],
+                    goal_reslut[0],
+                    goal_reslut[1],
+                    item['uwl'],
+                    datetime.datetime.fromtimestamp(item['cte']/1000).strftime('%Y-%m-%d %H:%M:%S'),
+                    datetime.datetime.fromtimestamp(item['ops'][0]['bt']/1000).strftime('%Y-%m-%d %H:%M:%S'),
+                    datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    bet_history_victory(item['uwl']),
+                    datetime.datetime.now().strftime('%Y-%m-%d'),
+                )
+                # print(bet_history_data)
+                insert_if_not_exists(item['id'], item['ops'][0]['mid'], bet_history_data)
+            except Exception as e:
+                print("解析数据失败")
+                print(e)
+
+
+        page+=1
+
+def bet_history_victory(odds_amount_result):
+    if float(odds_amount_result)>0:
+        return "胜"
+    elif float(odds_amount_result)<0:
+        return "负"
+    else:
+        return "平"
+
+
+def insert_if_not_exists(bet_id, soccer_id, insert_data):
+  
+    try:
+        # 连接到 MySQL 数据库
+        conn = mysql.connector.connect(
+            host=host,
+            database=database,
+            user=user,
+            password=password
+        )
+        # 连接到数据库
+        if conn.is_connected():
+            cursor = conn.cursor()
+
+            # 构建查询条件
+
+            # 查询是否存在
+            cursor.execute("select count(1) from soccer_bet_history where bet_id="+str(bet_id)+" and soccer_id="+str(soccer_id))
+            exists = cursor.fetchone()[0] > 0
+            if not exists:
+                print(insert_data)
+                insert_query = "INSERT INTO `csgo`.`soccer_bet_history`(`bet_id`, `soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `odds_amount`, `goal_home_result`, `goal_guest_result`, `odds_amount_result`, `bet_time`, `start_time`, `create_time`, `result_flag`,`bet_time_day`) VALUES\
+                (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s)"
+                cursor.execute(insert_query, insert_data)
+                conn.commit()
+
+                print(getNowTime()+"数据插入 soccer_bet_history 成功")
+            else:
+                print("数据已存在，未进行插入操作")
+    except Error as e:
+       print(f"数据库 soccer_bet_history 连接错误: {e}")
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+            print("数据库 soccer_bet_history 连接已关闭")
+
+    return True
+
+
+
+
+def extract_numbers(s):
+    # 使用正则表达式提取数字
+    numbers = re.findall(r'\d+', s)
+    # 将提取的数字转为集合，确保唯一性
+    return numbers
+
+
+
+
+
+    
+
     
 if __name__ == '__main__':
-    soccer = getFbSoccerData()
-    # tarnMySoccerData(soccer)
-    #比赛详情
-    # deatail = getMatchDetail(2570855,1)
-    # print(deatail)
-    
-    # # 余额
-    # balance=getBalance(config.itone_authorization)
-    # # 单注下注列表
-    # singleBetList=getMatchList(deatail,balance,bet_amount=13.26)
-    # print(singleBetList)
-    # # 下注
-    # singlePassDetail=singlePass(config.itone_authorization,singleBetList)
-    # orderIds=[]
-    # if singlePassDetail is not None:
-    #     for item in singlePassDetail:
-    #         orderIds.append(item['id'])
-    # print(deatail)
+    # 下注
+    # values={}
+    # values['soccer_id']= 2579443
+    # values['m_type_value']=3.50
+    # values['c_time']=45
+    # bet_amount=30
+    # save_bet_data(values,type='小',bet_amount=bet_amount)
+# 示例字符串
+    # input_string = "1-7"
+    # result = extract_numbers(input_string)
+    # print(result)
+    # print(result[0])
+    # print(result[1])
+    saveMyBetHistoryList(limit_page=1,page=1,page_size=10)
 
-    # orderIds=["1329802262804964140"]
-    # orderStatus=getStakeOrderStatus(config.itone_authorization,orderIds)
-    #  order_result = start_buy_itone(2775624,0.75,10)
-    #  print(order_result)
-    values={}
-    values['soccer_id']= 2760674
-    values['m_type_value']=3.00
-    values['c_time']=3
-    save_bet_data(values,type='大')
+

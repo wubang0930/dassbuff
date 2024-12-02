@@ -330,34 +330,126 @@ def save_soccer_data():
                 "----主队进球："+str(values.get('goal_home',''))+",客队进球："+str(values.get('goal_guest',''))
               )
 
-            # 先下注3分的数据试试看
-        if values.get('c_time',0)==4 and values.get('m_type_value',0)==3 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
-             # 要下注的，暂停1秒后，继续下注
+        if values.get('c_time',0)==3 and values.get('m_type_value',0)==2 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
             time.sleep(1)
             print("开始下注"+str(values))
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',20)).start()
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',10)).start()
+            continue
+        
+        elif values.get('c_time',0)==25 and values.get('m_type_value',0)==2.5 and (values.get('goal_home',0)+ values.get('goal_guest',0))==0:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',10)).start()
             continue
 
-        elif values.get('c_time',0)==5 and values.get('m_type_value',0)==2.25 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
-             # 要下注的，暂停1秒后，继续下注
+        elif values.get('c_time',0)==22 and values.get('m_type_value',0)==2.5 and (values.get('goal_home',0)+ values.get('goal_guest',0))==1:
             time.sleep(1)
             print("开始下注"+str(values))
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',20)).start()
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',10)).start()
             continue
 
-        elif values.get('c_time',0)==20 and values.get('m_type_value',0)==2.5 and (values.get('goal_home',0)+ values.get('goal_guest',0))==1:
-             # 要下注的，暂停1秒后，继续下注
+        elif values.get('c_time',0)==30 and values.get('m_type_value',0)==2.75 and (values.get('goal_home',0)+ values.get('goal_guest',0))==1:
             time.sleep(1)
             print("开始下注"+str(values))
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',20)).start()
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',10)).start()
             continue
 
-        elif values.get('c_time',0)==16 and values.get('m_type_value',0)==3.25 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
-             # 要下注的，暂停1秒后，继续下注
+        elif values.get('c_time',0)==21 and values.get('m_type_value',0)==3 and (values.get('goal_home',0)+ values.get('goal_guest',0))==1:
             time.sleep(1)
             print("开始下注"+str(values))
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',20)).start()
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',10)).start()
             continue
+
+
+        elif values.get('c_time',0)==23 and values.get('m_type_value',0)==3.5 and (values.get('goal_home',0)+ values.get('goal_guest',0))==1:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',10)).start()
+            continue
+        
+
+
+        elif values.get('c_time',0)==3 and values.get('m_type_value',0)==1.75 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',10)).start()
+            continue
+
+
+
+        elif values.get('c_time',0)==13 and values.get('m_type_value',0)==3 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',10)).start()
+            continue
+
+        
+        elif values.get('c_time',0)==5 and values.get('m_type_value',0)==3.25 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',10)).start()
+            continue
+
+        elif values.get('c_time',0)==37 and values.get('m_type_value',0)==2.25 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==1:
+            time.sleep(1)
+            print("开始下注"+str(values))   
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',10)).start()
+            continue
+
+        elif values.get('c_time',0)==22 and values.get('m_type_value',0)==3.25 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==1:
+            time.sleep(1)
+            print("开始下注"+str(values))   
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',10)).start()
+            continue
+
+
+
+#     样本比较少的数据
+
+        elif values.get('c_time',0)==11 and values.get('m_type_value',0)==3.75 and (values.get('goal_home',0)+ values.get('goal_guest',0))==1:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',10)).start()
+            continue
+        
+        elif values.get('c_time',0)==21 and values.get('m_type_value',0)==3.75 and (values.get('goal_home',0)+ values.get('goal_guest',0))==2:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',10)).start()
+            continue
+
+        elif values.get('c_time',0)==27 and values.get('m_type_value',0)==4 and (values.get('goal_home',0)+ values.get('goal_guest',0))==2:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',10)).start()
+            continue
+
+
+        elif values.get('c_time',0)==25 and values.get('m_type_value',0)==3.75 and (values.get('goal_home',0)+ values.get('goal_guest',0))==1:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',10)).start()
+            continue
+
+        elif values.get('c_time',0)==20 and values.get('m_type_value',0)==4 and (values.get('goal_home',0)+ values.get('goal_guest',0))==1:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',10)).start()
+            continue
+
+        elif values.get('c_time',0)==31 and values.get('m_type_value',0)==4.25 and (values.get('goal_home',0)+ values.get('goal_guest',0))==2:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',10)).start()
+            continue
+
+        elif values.get('c_time',0)==36 and values.get('m_type_value',0)==4.5 and (values.get('goal_home',0)+ values.get('goal_guest',0))==2:
+            time.sleep(1)
+            print("开始下注"+str(values))
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',10)).start()
+            continue
+
+
             
         # if values.get('c_time',0)==28 and values.get('goal_home',0)==0 and values.get('goal_guest',0)==0:
         #      # 要下注的，暂停1秒后，继续下注
