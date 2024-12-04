@@ -630,6 +630,9 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
 
 
         page+=1
+    update_cr_bettime()
+
+    
 
 def bet_history_victory(odds_amount_result):
     if float(odds_amount_result)>0:
@@ -741,6 +744,6 @@ if __name__ == '__main__':
     # print(result[0])
     # print(result[1])
     saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
-    update_cr_bettime()
+    
 
 

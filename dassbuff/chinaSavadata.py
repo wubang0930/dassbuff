@@ -466,6 +466,9 @@ def save_soccer_data():
 
 
 
+def updateMyBetHistoryList():
+    print(str(datetime.now())+"  正在更新bet_history数据")
+    soccersave.saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
 
 
 
@@ -480,6 +483,8 @@ if __name__ == '__main__':
     # 持续运行以保持调度
     # 每隔一分钟执行一次
     schedule.every().minutes.at(":01").do(save_soccer_data)
+
+    schedule.every().hour.do(updateMyBetHistoryList)
 
     
     while True:
