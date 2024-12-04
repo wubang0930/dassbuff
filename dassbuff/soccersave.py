@@ -632,7 +632,7 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
         page+=1
     update_cr_bettime()
 
-    
+
 
 def bet_history_victory(odds_amount_result):
     if float(odds_amount_result)>0:
@@ -731,19 +731,19 @@ def extract_numbers(s):
     
 if __name__ == '__main__':
     # 下注
-    # values={}
-    # values['soccer_id']= 2579443
-    # values['m_type_value']=3.50
+    values={}
+    values['soccer_id']= 2791337
+    values['m_type_value']=1.50
     # values['c_time']=45
-    # bet_amount=30
-    # save_bet_data(values,type='小',bet_amount=bet_amount)
+    bet_amount=80
+    save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
     # input_string = "1-7"
     # result = extract_numbers(input_string)
     # print(result)
     # print(result[0])
     # print(result[1])
-    saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
+    # saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
     
 
 

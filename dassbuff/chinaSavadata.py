@@ -476,7 +476,7 @@ if __name__ == '__main__':
 # def start():    
     start_time=int(time.time())
     # save_soccer_data()
-
+    print(str(datetime.now())+"  开始运行了")
 
     # 每天晚上11点执行
     # schedule.every().day.at("23:00").do(save_data_mysql)
