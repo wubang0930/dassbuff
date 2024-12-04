@@ -682,6 +682,37 @@ def insert_if_not_exists(bet_id, soccer_id, insert_data):
 
 
 
+def update_cr_bettime():
+  
+    try:
+        # 连接到 MySQL 数据库
+        conn = mysql.connector.connect(
+            host=host,
+            database=database,
+            user=user,
+            password=password
+        )
+        # 连接到数据库
+        if conn.is_connected():
+            cursor = conn.cursor()
+
+            # 构建查询条件
+
+            # 查询是否存在
+            cursor.execute("UPDATE soccer_bet_history his LEFT JOIN soccer_bet bet on his.soccer_id  =bet.soccer_id and his.m_type  =bet.m_type and his.m_type_value  =bet.m_type_value set his.team_cr= bet.team_cr, his.c_time= bet.c_time where his.team_cr=''  and his.c_time=0")
+            print(getNowTime()+"更新国家和时间成功")
+    except Error as e:
+       print(f"数据库 soccer_bet_history 连接错误: {e}")
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+            print("数据库 soccer_bet_history 连接已关闭")
+
+    return True
+
+
+
 def extract_numbers(s):
     # 使用正则表达式提取数字
     numbers = re.findall(r'\d+', s)
@@ -709,6 +740,7 @@ if __name__ == '__main__':
     # print(result)
     # print(result[0])
     # print(result[1])
-    saveMyBetHistoryList(limit_page=1,page=1,page_size=10)
+    saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
+    update_cr_bettime()
 
 
