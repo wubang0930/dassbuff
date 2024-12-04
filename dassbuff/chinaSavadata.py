@@ -492,7 +492,7 @@ if __name__ == '__main__':
         time.sleep(0.9)
         log_num+=1
 
-        if log_num%60==0:
+        if log_num%10==0:
             print(str(datetime.now())+"  正在运行中")
 
 
