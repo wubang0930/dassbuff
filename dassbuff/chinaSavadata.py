@@ -484,12 +484,12 @@ if __name__ == '__main__':
     # 每隔一分钟执行一次
     schedule.every().minutes.at(":01").do(save_soccer_data)
 
-    schedule.every().hour.do(updateMyBetHistoryList)
+    # schedule.every().hour.do(updateMyBetHistoryList)
 
-    
+    log_num=0
     while True:
         schedule.run_pending()
-        time.sleep(0.9)
+        time.sleep(8)
         log_num+=1
 
         if log_num%10==0:
