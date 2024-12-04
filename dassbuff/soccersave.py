@@ -426,7 +426,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
 def start_buy_itone(matchId,currentNum,bet_amount,type):
     for i in range(1,3):
         order_result=gobuyitone(matchId,currentNum,bet_amount,type)
-        if order_result.get('orderStatus',False):
+        if order_result['orderStatus']:
             return order_result
         # 失败，则等待x秒后再试
         time.sleep(15)

@@ -489,10 +489,11 @@ if __name__ == '__main__':
     log_num=0
     while True:
         schedule.run_pending()
-        time.sleep(10)
+        time.sleep(1)
         log_num+=1
-        # if log_num%1==0:
-        print(str(datetime.now())+"  正在运行中,第"+str(log_num)+"次执行")
+
+        if log_num%10==0:
+            print(str(datetime.now())+"  正在运行中,第"+str(log_num//10)+"次执行")
 
 
 
