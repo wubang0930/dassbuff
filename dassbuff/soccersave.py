@@ -211,8 +211,12 @@ def singlePass(authorization,singleBetList):
 
 # 下注
 def getStakeOrderStatus(authorization,orderIds):
+    status_result={}
+    status_result['msg'] = ""
+    status_result['orderStatus'] = False
+
     if len(orderIds)==0:
-        return False
+        return status_result
     
     try:
         # 设置请求的URL
@@ -244,15 +248,14 @@ def getStakeOrderStatus(authorization,orderIds):
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             print("查询订单状态为："+str(reponse_json))
-            if reponse_json['code'] == 0:
-                return True
+            if reponse_json['code'] == 0 and reponse_json['data'][0].get('rjs',None) is None:
+                status_result['msg'] = reponse_json['data'][0].get('rjs',"成功")
+                status_result['orderStatus'] = True
 
-        return False
     except Exception as e:
         print(e)
-        return False
 
-
+    return status_result
 
 
 # 获取余额
@@ -413,10 +416,10 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
         for item in singlePassDetail:
             orderIds.append(item['id'])
 
-    orderStatus=getStakeOrderStatus(config.itone_authorization,orderIds)
-    if orderStatus:
-        order_result['msg'] = "下注成功"
-        order_result['orderStatus'] = True
+    status_result=getStakeOrderStatus(config.itone_authorization,orderIds)
+    if status_result['orderStatus']:
+        order_result['msg'] = status_result['msg']
+        order_result['orderStatus'] = status_result['orderStatus']
     
     return order_result
 
@@ -732,10 +735,10 @@ def extract_numbers(s):
 if __name__ == '__main__':
     # 下注
     values={}
-    values['soccer_id']= 2791337
-    values['m_type_value']=1.50
+    values['soccer_id']= 2590596
+    values['m_type_value']=3.75
     # values['c_time']=45
-    bet_amount=80
+    bet_amount=25
     save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
     # input_string = "1-7"
