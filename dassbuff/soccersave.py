@@ -571,7 +571,7 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
                 # print(item)
                 # save_bet_data(item)
                 goal=extract_numbers(item['ops'][0]['bsc'])
-                goal_reslut=extract_numbers(item['ops'][0]['rs'])
+                goal_reslut=extract_numbers(item['ops'][0].get('rs',"0-0"))
 
 
                 # bet_history_data={
@@ -734,19 +734,14 @@ def extract_numbers(s):
     
 if __name__ == '__main__':
     # 下注
-    values={}
-    values['soccer_id']= 2590596
-    values['m_type_value']=3.75
-    # values['c_time']=45
-    bet_amount=25
-    save_bet_data(values,type='大',bet_amount=bet_amount)
+    # values={}
+    # values['soccer_id']= 2590596
+    # values['m_type_value']=3.75
+    # # values['c_time']=45
+    # bet_amount=25
+    # save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
-    # input_string = "1-7"
-    # result = extract_numbers(input_string)
-    # print(result)
-    # print(result[0])
-    # print(result[1])
-    # saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
+    saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
     
 
 
