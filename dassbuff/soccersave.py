@@ -633,6 +633,7 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
 
 
         page+=1
+    print("获取数据结束,开始更新历史数据")
     update_cr_bettime()
 
 
@@ -707,6 +708,7 @@ def update_cr_bettime():
             # 查询是否存在
             cursor.execute("UPDATE soccer_bet_history his LEFT JOIN soccer_bet bet on his.soccer_id  =bet.soccer_id and his.m_type  =bet.m_type and his.m_type_value  =bet.m_type_value set his.team_cr= bet.team_cr, his.c_time= bet.c_time where his.team_cr=''  and his.c_time=0")
             print(getNowTime()+"更新国家和时间成功")
+            conn.commit()
     except Error as e:
        print(f"数据库 soccer_bet_history 连接错误: {e}")
     finally:
