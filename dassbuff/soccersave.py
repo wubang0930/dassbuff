@@ -403,7 +403,8 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
 
     if singleBetList[0].get('currentValue',0) != currentNum:
         print("当前比赛盘口已变化，无需重复下注,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，下注盘口为："+ str(currentNum))
-        return False
+        order_result['msg'] = "当前比赛盘口已变化"
+        return order_result
 
     #判断要下注的比赛大小，是否和当前比赛的大小一致
 
@@ -736,14 +737,14 @@ def extract_numbers(s):
     
 if __name__ == '__main__':
     # 下注
-    # values={}
-    # values['soccer_id']= 2590596
-    # values['m_type_value']=3.75
-    # # values['c_time']=45
-    # bet_amount=25
-    # save_bet_data(values,type='大',bet_amount=bet_amount)
+    values={}
+    values['soccer_id']= 2836389
+    values['m_type_value']=5.75
+    # values['c_time']=45
+    bet_amount=25
+    save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
-    saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
+    # saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
     
 
 
