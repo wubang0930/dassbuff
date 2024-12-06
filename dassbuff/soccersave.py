@@ -779,8 +779,8 @@ if __name__ == '__main__':
     # bet_amount=25
     # save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
-    # saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
-    notify_email("测试邮件")
+    saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
+    # notify_email("测试邮件")
     
 
 
