@@ -18,6 +18,8 @@ database = 'csgo'
 user = 'root'
 password = 'bangye'
 
+has_notified=False
+
 # 数据
 def getFbSoccerData():
     try:
@@ -356,8 +358,13 @@ def getMatchList(deatail,bet_amount=10,type='大'):
     singleBetList.append(single)
     return singleBetList
 
-
 def notify_email(msg):
+    # 通知一次就可以，如果已经通知过了，则打印日志，并返回
+    # 设置一个全局变量，记录是否已经通知过
+    if has_notified:
+        print("已经通知过了")
+        return
+
     print("通知管理员："+msg)
 
     # 邮件服务器配置
@@ -384,7 +391,9 @@ def notify_email(msg):
         print("邮件发送成功")
         # 关闭连接
         smtp_obj.quit()
-        
+        # 标记通知过
+        global  has_notified
+        has_notified = True
     except Exception as e:
         print("邮件发送失败:", str(e))
 
