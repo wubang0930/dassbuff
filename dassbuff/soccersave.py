@@ -7,6 +7,9 @@ import time
 import mysql.connector
 from mysql.connector import Error
 import re
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
 
 
 # 数据库连接参数
@@ -353,9 +356,39 @@ def getMatchList(deatail,bet_amount=10,type='大'):
     singleBetList.append(single)
     return singleBetList
 
-def notify_dingding(msg):
-    # 钉钉机器人通知
+
+def notify_email(msg):
     print("通知管理员："+msg)
+
+    # 邮件服务器配置
+    smtp_server = "smtp.qq.com" 
+    smtp_port = 587
+    sender = "524925243@qq.com"
+    password = "prtckhscqlftbhjh"
+    receiver = "bangwu1992@qq.com"
+
+    # 创建邮件内容
+    message = MIMEText(msg, 'plain', 'utf-8')
+    message['From'] = Header(sender)
+    message['To'] = Header(receiver)
+    message['Subject'] = Header('系统通知')
+
+    try:
+        # 连接SMTP服务器
+        smtp_obj = smtplib.SMTP(smtp_server, smtp_port)
+        smtp_obj.starttls()
+        smtp_obj.login(sender, password)
+        
+        # 发送邮件
+        smtp_obj.sendmail(sender, [receiver], message.as_string())
+        print("邮件发送成功")
+        # 关闭连接
+        smtp_obj.quit()
+        
+    except Exception as e:
+        print("邮件发送失败:", str(e))
+
+
 
 
 def gobuyitone(matchId,currentNum,bet_amount,type):
@@ -372,6 +405,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     if balance_response['code'] == 14010:
         order_result['msg'] = "token失效，通知管理员"
         order_result['orderStatus'] = True
+        notify_email(order_result['msg'])
         return order_result
     
     elif balance_response['code'] == 0:
@@ -384,7 +418,8 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     
     if float(order_result.get('balance',0)) < float(bet_amount):
         order_result['msg'] = "余额不足，当前余额是："+str(order_result['balance'])
-        order_result['orderStatus'] = False
+        order_result['orderStatus'] = True
+        notify_email(order_result['msg'])
         return order_result
 
     deatail = getMatchDetail(matchId,1)
@@ -737,14 +772,15 @@ def extract_numbers(s):
     
 if __name__ == '__main__':
     # 下注
-    values={}
-    values['soccer_id']= 2836389
-    values['m_type_value']=5.75
-    # values['c_time']=45
-    bet_amount=25
-    save_bet_data(values,type='大',bet_amount=bet_amount)
+    # values={}
+    # values['soccer_id']= 2836389
+    # values['m_type_value']=5.75
+    # # values['c_time']=45
+    # bet_amount=25
+    # save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
-    # saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
+    # saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
+    notify_email("测试邮件")
     
 
 
