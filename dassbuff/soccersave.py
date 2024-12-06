@@ -371,7 +371,7 @@ def notify_email(msg):
     message = MIMEText(msg, 'plain', 'utf-8')
     message['From'] = Header(sender)
     message['To'] = Header(receiver)
-    message['Subject'] = Header('系统通知')
+    message['Subject'] = Header('系统通知-fb_异常')
 
     try:
         # 连接SMTP服务器
