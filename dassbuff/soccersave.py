@@ -359,6 +359,7 @@ def getMatchList(deatail,bet_amount=10,type='大'):
     return singleBetList
 
 def notify_email(msg):
+    global has_notified
     # 通知一次就可以，如果已经通知过了，则打印日志，并返回
     # 设置一个全局变量，记录是否已经通知过
     if has_notified:
@@ -392,7 +393,6 @@ def notify_email(msg):
         # 关闭连接
         smtp_obj.quit()
         # 标记通知过
-        global  has_notified
         has_notified = True
     except Exception as e:
         print("邮件发送失败:", str(e))
