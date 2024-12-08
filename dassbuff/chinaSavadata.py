@@ -340,7 +340,7 @@ def save_soccer_data():
             if values.get('c_time',0)==bet[0] and values.get('m_type_value',0)==bet[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet[2]:
                 time.sleep(1)
                 print("开始bet"+str(values))
-                threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],values,bet[4])).start()
+                threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],bet[4])).start()
                 continue
 
 
