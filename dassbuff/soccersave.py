@@ -782,13 +782,13 @@ def extract_numbers(s):
 if __name__ == '__main__':
     # 下注
     # values={}
-    # values['soccer_id']= 2836389
-    # values['m_type_value']=5.75
+    # values['soccer_id']= 2775471
+    # values['m_type_value']=2.25
     # # values['c_time']=45
-    # bet_amount=25
+    # bet_amount=85
     # save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
-    saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
+    saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
     # notify_email("测试邮件")
     
 
