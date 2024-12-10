@@ -733,6 +733,41 @@ def insert_if_not_exists(bet_id, soccer_id, insert_data):
 
 
 
+def get_soccer_data_start(soccer_id):
+  
+    try:
+        # 连接到 MySQL 数据库
+        conn = mysql.connector.connect(
+            host=host,
+            database=database,
+            user=user,
+            password=password
+        )
+        # 连接到数据库
+        if conn.is_connected():
+            cursor = conn.cursor()
+
+            # 构建查询条件
+
+            # 查询是否存在
+            cursor.execute("select m_type_value from soccer_analysis_start where c_time<10 and soccer_id ="+str(soccer_id) + " limit 1")
+            row = cursor.fetchone()
+            if row is not None :
+                return row[0]
+            else:
+                print("数据不存在")
+    except Error as e:
+       print(f"数据库 soccer_analysis_start 连接错误: {e}")
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+            print("数据库 soccer_analysis_start 连接已关闭")
+
+    return None
+
+
+
 
 def update_cr_bettime():
   
@@ -788,8 +823,8 @@ if __name__ == '__main__':
     # bet_amount=85
     # save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
-    saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
+    # saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
     # notify_email("测试邮件")
-    
+    get_soccer_data_start(2731807)
 
 
