@@ -825,6 +825,7 @@ if __name__ == '__main__':
 # 示例字符串
     # saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
     # notify_email("测试邮件")
-    get_soccer_data_start(2731807)
+    st=get_soccer_data_start(2846449)
+    print(st)
 
 

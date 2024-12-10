@@ -401,11 +401,13 @@ def save_soccer_data():
         #         continue
 
         st_value= soccersave.get_soccer_data_start(values.get('soccer_id',0))
+        print(str(st_value)+","+str(values.get('c_time',0))+","+str(values.get('goal_home',0) +values.get('goal_guest',0))+ ',x,'+str(values.get('m_type_value',0))+ ',20')
+
         if st_value is None:
             print("获取初盘数据失败")
             continue
 
-
+        
         for bet in bet_new_data:
             if st_value==bet[0] and values.get('c_time',0)==bet[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet[2]\
                   and bet[4]==values.get('m_type_value',0) :
