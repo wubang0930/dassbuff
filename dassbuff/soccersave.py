@@ -407,6 +407,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     order_result['msg']=''
     order_result['bet_amount']=bet_amount
     order_result['matchId']=matchId
+    
 
 
     # 获取余额，查询比赛，封装下注，下注，查询订单状态
@@ -458,9 +459,11 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
 
     orderIds=[]
     if singlePassDetail is not None:
+        order_result['bet_id']=singlePassDetail[0]['id']
         for item in singlePassDetail:
             orderIds.append(item['id'])
 
+    
     status_result=getStakeOrderStatus(config.itone_authorization,orderIds)
     if status_result['orderStatus']:
         order_result['msg'] = status_result['msg']
@@ -492,8 +495,8 @@ def save_bet_data(values,type='大',bet_amount=10):
     # order_result = start_buy_itone(2775624,0.75,bet_amount)
     print(order_result)
     
-    insert_query = "INSERT INTO `csgo`.`soccer_bet`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `odds_amount`, `odds_result`, `start_time`, `create_time`,`odds_status`,`actual_type_value`) VALUES\
-    (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s, %s, %s)"
+    insert_query = "INSERT INTO `csgo`.`soccer_bet`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `odds_amount`, `odds_result`, `start_time`, `create_time`,`odds_status`,`actual_type_value`,`bet_id`) VALUES\
+    (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s, %s, %s, %s)"
 
     print(getNowTime()+"开始插入 soccer_bet 数据")
     
@@ -526,6 +529,7 @@ def save_bet_data(values,type='大',bet_amount=10):
                 datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 order_result.get('orderStatus',False),
                 order_result.get('currentValue',0),
+                order_result.get('bet_id',""),
             )
             print(inert_values)
             cursor.execute(insert_query, inert_values)
@@ -816,16 +820,15 @@ def extract_numbers(s):
     
 if __name__ == '__main__':
     # 下注
-    # values={}
-    # values['soccer_id']= 2775471
-    # values['m_type_value']=2.25
-    # # values['c_time']=45
-    # bet_amount=85
-    # save_bet_data(values,type='大',bet_amount=bet_amount)
+    values={}
+    values['soccer_id']= 2868972
+    values['m_type_value']=6
+    # values['c_time']=45
+    bet_amount=12
+    save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
     # saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
     # notify_email("测试邮件")
-    st=get_soccer_data_start(2846449)
-    print(st)
+    # get_soccer_data_start(2846449)
 
 

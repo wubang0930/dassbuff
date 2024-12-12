@@ -55,4 +55,4 @@ my_buy_current_file_two=data_local_analysis+"/my_buy_list_two.txt"
 
 
 
-itone_authorization='tt_dcL3IJoLugCVNBKa3BsVr8teNcs04Ntp.e8b7b41ded7e38488a43063cf1e58b37'
+itone_authorization='tt_NKXt4YVJtRp4GOP5JDMHYNRLj4Hg1Zrl.3611c6c90f4f9ef72a1ba44940dc515b'
