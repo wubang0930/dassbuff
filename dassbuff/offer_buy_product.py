@@ -4,12 +4,14 @@ from datetime import datetime
 from nacl.bindings import crypto_sign
 import requests
 import config
+import dassbuff.messagesend as messagesend
+
 public_key = config.dmarket_public_key
 secret_key = config.dmarket_secret_key
 
 # change url to prod
 rootApiUrl = "https://api.dmarket.com"
-
+has_notified=False
 
 
 def get_offer_from_market(limit=5,title="",orderBy='price'):
@@ -82,7 +84,7 @@ def create_target_order(body,public_key,secret_key):
         "X-Request-Sign": signature_prefix + signature,
         "X-Sign-Date": nonce
     }
-
+    global has_notified
     try:
         resp = requests.post(rootApiUrl + api_url_path, json=body, headers=headers)
         result = json.loads(resp.text)
@@ -90,6 +92,8 @@ def create_target_order(body,public_key,secret_key):
             print("创建采购单成功："+result["results"][0]['targetId'])
         else:
             print("创建采购单失败："+result["results"][0]['message'])
+            messagesend.notify_email("创建采购单失败："+result["results"][0]['message'],has_notified)
+            has_notified=True
     except Exception as e:
         print(result)
         print("创建采购单异常："+str(e))
