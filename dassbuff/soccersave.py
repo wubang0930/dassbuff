@@ -7,7 +7,7 @@ import time
 import mysql.connector
 from mysql.connector import Error
 import re
-import emailsend
+import messagesend as messagesend
 
 
 # 数据库连接参数
@@ -372,7 +372,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     if balance_response['code'] == 14010:
         order_result['msg'] = "token失效，通知管理员"
         order_result['orderStatus'] = True
-        emailsend.notify_email(order_result['msg'],has_notified)
+        messagesend.notify_email(order_result['msg'],has_notified)
         has_notified=True
         return order_result
     
@@ -387,7 +387,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     if float(order_result.get('balance',0)) < float(bet_amount):
         order_result['msg'] = "余额不足，当前余额是："+str(order_result['balance'])
         order_result['orderStatus'] = True
-        emailsend.notify_email(order_result['msg'],has_notified)
+        messagesend.notify_email(order_result['msg'],has_notified)
         has_notified=True
         return order_result
 

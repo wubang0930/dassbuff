@@ -4,7 +4,7 @@ from datetime import datetime
 from nacl.bindings import crypto_sign
 import requests
 import config
-import dassbuff.messagesend as messagesend
+import messagesend as messagesend
 
 public_key = config.dmarket_public_key
 secret_key = config.dmarket_secret_key
