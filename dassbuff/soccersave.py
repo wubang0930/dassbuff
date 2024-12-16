@@ -555,11 +555,12 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
      
     while True:
         print("获取第"+str(page)+"页数据")
-        time.sleep(1)
+        time.sleep(2)
         if limit_page<page:
             print("获取数据结束了，退出")
             break
         
+        # 睡眠1秒，防止频繁请求
         page_data=getMyBetHistoryList(config.itone_authorization,page,page_size)
         if page_data is None:
             print("获取数据失败，退出")
@@ -630,7 +631,7 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
                     datetime.datetime.fromtimestamp(item['cte']/1000).strftime('%Y-%m-%d %H:%M:%S'),
                     datetime.datetime.fromtimestamp(item['ops'][0]['bt']/1000).strftime('%Y-%m-%d %H:%M:%S'),
                     datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                    bet_history_victory(item['uwl']),
+                    bet_history_victory(float(goal_reslut[0]),float(goal_reslut[1]),item['ops'][0]['on'],float(item['ops'][0]['li'])),
                     datetime.datetime.now().strftime('%Y-%m-%d'),
                 )
                 # print(bet_history_data)
@@ -646,13 +647,32 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
 
 
 
-def bet_history_victory(odds_amount_result):
-    if float(odds_amount_result)>0:
-        return "胜"
-    elif float(odds_amount_result)<0:
-        return "负"
-    else:
+def bet_history_victory(goal_home,goal_guest,m_type,m_type_value):
+    print(goal_home,goal_guest,m_type,m_type_value)
+    if m_type == "大" and (goal_home + goal_guest-m_type_value)==0:
         return "平"
+    elif m_type == "大" and (goal_home + goal_guest-m_type_value)>=0.5:
+        return "胜"
+    elif m_type == "大" and (goal_home + goal_guest-m_type_value)==0.25:
+        return "胜一半"
+    elif m_type == "大" and (goal_home + goal_guest-m_type_value)<=-0.5:
+        return "负"
+    elif m_type == "大" and (goal_home + goal_guest-m_type_value)==-0.25:
+        return "负一半"
+    elif m_type == "小" and (goal_home + goal_guest-m_type_value)==0:
+        return "平"
+    elif m_type == "小" and m_type_value-(goal_home + goal_guest)>=0.5:
+        return "胜"
+    elif m_type == "小" and m_type_value-(goal_home + goal_guest)==0.25:
+        return "胜一半"
+    elif m_type == "小" and m_type_value-(goal_home + goal_guest)<=-0.5:
+        return "负"
+    elif m_type == "小" and m_type_value-(goal_home + goal_guest)==-0.25:
+        return "负一半"
+    else:
+        return "未知"
+    
+    
 
 
 def insert_if_not_exists(bet_id, soccer_id, insert_data):
@@ -786,7 +806,7 @@ if __name__ == '__main__':
     # bet_amount=12
     # save_bet_data(values,type='大',bet_amount=bet_amount)
 # 示例字符串
-    saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
+    saveMyBetHistoryList(limit_page=15,page=6,page_size=10)
     # notify_email("测试邮件")
     # get_soccer_data_start(2846449)
 
