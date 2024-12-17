@@ -424,9 +424,19 @@ def save_soccer_data():
             if st_value==bet[0] and values.get('c_time',0)==bet[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet[2]\
                   and bet[4]==values.get('m_type_value',0) :
                 print("开始bet，开始盘口是："+str(st_value))
-                time.sleep(1)
+                time.sleep(2)
                 threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],bet[5])).start()
+
+                # 20的金额的，赔率大于1.88时，下22的金额
+                if bet[5]==20 and float(values.get('m_odds',0))>=1.89:
+                    time.sleep(5)
+                    print("开始bet大于等于赔率1.89以上的，开始盘口是："+str(st_value))
+                    threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],22)).start()
+
                 continue
+
+
+    
 
 
 
