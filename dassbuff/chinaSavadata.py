@@ -16,6 +16,7 @@ from mysql.connector import Error
 import threading
 import schedule
 import soccersave
+import os
 
 log_num=0
 
@@ -395,15 +396,29 @@ def save_soccer_data():
 
 
         # 下注
+    log_time="当前时间是：" + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    print(log_time)
+    with open(config.log_file, 'a+', encoding='utf-8') as f:
+        f.write(log_time+'\n')
+        f.write('\n')
+
     for values in all_data:
         print()
-        print(str(values.get('soccer_id',"race_name"))+","+values.get('race_name',"race_name")+"，主队是："+values.get('team_home',"team_home")+"，客队是："+values.get('team_guest',"team_guest")+\
+        log_head=str(values.get('soccer_id',"race_name"))+","+values.get('race_name',"race_name")+"，主队是："+values.get('team_home',"team_home")+"，客队是："+values.get('team_guest',"team_guest")+\
                 "，时间："+str(values.get('c_time',''))
-              )
-        print("大："+str(values.get('m_type_value',''))+"，赔率："+str(values.get('m_odds',''))+\
+        log_line="大："+str(values.get('m_type_value',''))+"，赔率："+str(values.get('m_odds',''))+\
                 "----小："+str(values.get('s_type_value',''))+",赔率："+str(values.get('s_odds',0))+\
                 "----主队进球："+str(values.get('goal_home',''))+",客队进球："+str(values.get('goal_guest',''))
-              )
+        
+        print(log_head)
+        print(log_line)
+
+        with open(config.log_file, 'a+', encoding='utf-8') as f:
+            f.write(log_head+'\n')
+            f.write(log_line+'\n')
+            f.write('\n')
+
+        #  获取初盘数据
 
         # for bet in bet_data:
         #     if values.get('c_time',0)==bet[0] and values.get('m_type_value',0)==bet[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet[2]:
@@ -470,6 +485,9 @@ def updateMyBetHistoryList():
     print(str(datetime.now())+"  正在更新bet_history数据")
     soccersave.saveMyBetHistoryList(limit_page=6,page=1,page_size=10)
 
+def init_file():
+    if os.path.exists(config.log_file):
+        os.remove(config.log_file)
 
 
 if __name__ == '__main__':
@@ -477,6 +495,7 @@ if __name__ == '__main__':
     start_time=int(time.time())
     # save_soccer_data()
     print(str(datetime.now())+"  开始运行了")
+    init_file()
 
     # 每天晚上11点执行
     # schedule.every().day.at("23:00").do(save_data_mysql)
