@@ -400,7 +400,6 @@ def save_soccer_data():
     print(log_time)
     with open(config.log_file, 'a+', encoding='utf-8') as f:
         f.write(log_time+'\n')
-        f.write('\n')
 
     for values in all_data:
         print()
@@ -488,6 +487,9 @@ def updateMyBetHistoryList():
 def init_file():
     if os.path.exists(config.log_file):
         os.remove(config.log_file)
+        
+    with open(config.log_file, 'a+', encoding='utf-8') as f:
+        f.write("日志文件初始化"+str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'\n')
 
 
 if __name__ == '__main__':
