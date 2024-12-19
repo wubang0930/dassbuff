@@ -398,8 +398,7 @@ def save_soccer_data():
         # 下注
     log_time="当前时间是：" + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print(log_time)
-    with open(config.log_file, 'a+', encoding='utf-8') as f:
-        f.write(log_time+'\n')
+   
 
     for values in all_data:
         print()
@@ -412,10 +411,6 @@ def save_soccer_data():
         print(log_head)
         print(log_line)
 
-        with open(config.log_file, 'a+', encoding='utf-8') as f:
-            f.write(log_head+'\n')
-            f.write(log_line+'\n')
-            f.write('\n')
 
         #  获取初盘数据
 
@@ -429,21 +424,17 @@ def save_soccer_data():
 
         #  第1分钟，大2.75球  赔率大于等于1.88 下 16
         if values.get('c_time',0)==1 and values.get('m_type_value',0)==2.75 and float(values.get('m_odds',0))>=1.88:
-            print("开始bet，第1分钟，大2.75球  赔率大于等于1.88，开始盘口是："+str(st_value))
+            print("开始bet，第1分钟，大2.75球  赔率大于等于1.88，开始盘口是："+str(values))
             time.sleep(1)
             threading.Thread(target=soccersave.save_bet_data,args=(values,'大',14)).start()
-
-
         #  第1分钟，大3.5球  赔率大于等于1.92 下 16
-        if values.get('c_time',0)==1 and values.get('m_type_value',0)==3.5 and float(values.get('m_odds',0))>=1.92:
-            print("开始bet，第1分钟，大3.5球  赔率大于等于1.92，开始盘口是："+str(st_value))
+        elif values.get('c_time',0)==1 and values.get('m_type_value',0)==3.5 and float(values.get('m_odds',0))>=1.92:
+            print("开始bet，第1分钟，大3.5球  赔率大于等于1.92，开始盘口是："+str(values))
             time.sleep(1)
             threading.Thread(target=soccersave.save_bet_data,args=(values,'大',16)).start()
-
-
         #  第1分钟，小3球 
-        if values.get('c_time',0)==1 and values.get('m_type_value',0)==3:
-            print("开始bet，第1分钟，小3球，开始盘口是："+str(st_value))
+        elif values.get('c_time',0)==1 and values.get('m_type_value',0)==3:
+            print("开始bet，第1分钟，小3球，开始盘口是："+str(values))
             time.sleep(1)
             threading.Thread(target=soccersave.save_bet_data,args=(values,'小',24)).start()
 
@@ -497,7 +488,7 @@ if __name__ == '__main__':
     start_time=int(time.time())
     # save_soccer_data()
     print(str(datetime.now())+"  开始运行了")
-    init_file()
+    # init_file()
 
     # 每天晚上11点执行
     # schedule.every().day.at("23:00").do(save_data_mysql)
