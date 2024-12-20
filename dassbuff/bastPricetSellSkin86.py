@@ -803,7 +803,7 @@ if __name__ == '__main__':
     exchange_rate=find_us_exchange()
     print("当前的美元汇率是："+str(exchange_rate))
     # # 初始化数据
-    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=100,page=0,page_size=100,price_start=100,price_end=500,selling_num_start=100,platform='YP')
+    Skin86BaseData.get_skin_86_market_all(file_name= buff_file,limit_page=100,page=0,page_size=50,price_start=5,price_end=100,selling_num_start=100,platform='YP')
     thread_size=5
     process_file_in_threads(thread_size,exchange_rate)
     #导出市场数据

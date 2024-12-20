@@ -579,7 +579,10 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
             try:
                 # print(item)
                 # save_bet_data(item)
-                goal=extract_numbers(item['ops'][0]['bsc'])
+                if 'bsc' in item['ops'][0]:
+                    goal=extract_numbers(item['ops'][0]['bsc'])
+                else:
+                    goal=[0,0]
                 goal_reslut=extract_numbers(item['ops'][0].get('rs',"0-0"))
 
 

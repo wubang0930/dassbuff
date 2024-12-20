@@ -473,7 +473,7 @@ def save_soccer_data():
 
 def updateMyBetHistoryList():
     print(str(datetime.now())+"  正在更新bet_history数据")
-    soccersave.saveMyBetHistoryList(limit_page=6,page=1,page_size=10)
+    soccersave.saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
 
 def init_file():
     if os.path.exists(config.log_file):
