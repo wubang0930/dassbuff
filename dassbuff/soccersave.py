@@ -586,32 +586,6 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
                 goal_reslut=extract_numbers(item['ops'][0].get('rs',"0-0"))
 
 
-                # bet_history_data={
-                #     "lid": item['ops'][0]['lid'],
-                #     "soccer_id": item['ops'][0]['mid'],
-                #     "race_name": item['ops'][0]['ln'],
-                #     "team_home": item['ops'][0]['te'][0]['na'],
-                #     "team_guest": item['ops'][0]['te'][1]['na'],
-                #     "team_cr":"",
-                #     "c_time":0,
-
-                #     "m_type": item['ops'][0]['on'],
-                #     "m_type_value": item['ops'][0]['li'],
-                #     "m_odds": item['ops'][0]['bo'],
-
-                #     "goal_home": goal[0],
-                #     "goal_guest": goal[1],
-                #     "odds_amount": item['sat'],
-
-
-                #     "goal_home_result": goal_reslut[0],
-                #     "goal_guest_result": goal_reslut[1],
-                #     "odds_amount_result": item['uwl'],
-
-                #     "bet_time": datetime.datetime.fromtimestamp(item['cte']/1000).strftime('%Y-%m-%d %H:%M:%S'),
-                #     "start_time": datetime.datetime.fromtimestamp(item['ops'][0]['bt']/1000).strftime('%Y-%m-%d %H:%M:%S'),
-                #     "create_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                # }
 
                 bet_history_data=(
                     item['id'],
