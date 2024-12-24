@@ -608,7 +608,7 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
                     datetime.datetime.fromtimestamp(item['cte']/1000).strftime('%Y-%m-%d %H:%M:%S'),
                     datetime.datetime.fromtimestamp(item['ops'][0]['bt']/1000).strftime('%Y-%m-%d %H:%M:%S'),
                     datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                    bet_history_victory(float(goal_reslut[0]),float(goal_reslut[1]),item['ops'][0]['on'],float(item['ops'][0]['li'])),
+                    bet_history_victory(float(item['sat']),float(item['ops'][0]['bo']),float(item['uwl'])),
                     datetime.datetime.now().strftime('%Y-%m-%d'),
                 )
                 # print(bet_history_data)
@@ -624,32 +624,20 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
 
 
 
-def bet_history_victory(goal_home,goal_guest,m_type,m_type_value):
-    print(goal_home,goal_guest,m_type,m_type_value)
-    if m_type == "大" and (goal_home + goal_guest-m_type_value)==0:
-        return "平"
-    elif m_type == "大" and (goal_home + goal_guest-m_type_value)>=0.5:
+def bet_history_victory(odds_amount,m_odds,odds_amount_result):
+    print(odds_amount,m_odds,odds_amount_result)
+    if odds_amount_result > 0 and odds_amount_result > odds_amount*(m_odds-1)*0.9:
         return "胜"
-    elif m_type == "大" and (goal_home + goal_guest-m_type_value)==0.25:
+    elif odds_amount_result > 0 and odds_amount_result < odds_amount*(m_odds-1)*0.9:
         return "胜一半"
-    elif m_type == "大" and (goal_home + goal_guest-m_type_value)<=-0.5:
+    elif odds_amount_result < 0 and odds_amount == -odds_amount_result:
         return "负"
-    elif m_type == "大" and (goal_home + goal_guest-m_type_value)==-0.25:
+    elif odds_amount_result < 0 and odds_amount == -odds_amount_result*0.5:
         return "负一半"
-    elif m_type == "小" and (goal_home + goal_guest-m_type_value)==0:
+    elif odds_amount_result == 0:
         return "平"
-    elif m_type == "小" and m_type_value-(goal_home + goal_guest)>=0.5:
-        return "胜"
-    elif m_type == "小" and m_type_value-(goal_home + goal_guest)==0.25:
-        return "胜一半"
-    elif m_type == "小" and m_type_value-(goal_home + goal_guest)<=-0.5:
-        return "负"
-    elif m_type == "小" and m_type_value-(goal_home + goal_guest)==-0.25:
-        return "负一半"
     else:
         return "未知"
-    
-    
 
 
 def insert_if_not_exists(bet_id, soccer_id, insert_data):

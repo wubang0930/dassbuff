@@ -55,6 +55,6 @@ my_buy_current_file_two=data_local_analysis+"/my_buy_list_two.txt"
 
 log_file=data_local_analysis+"/bet_log.txt"
 
-itone_authorization='tt_Yn18bYaiodVo6rAanp4aOzbPtu2zxk8A.5314399084a53792464ab013785c8e1f'
+itone_authorization='tt_e1Ns39GnEMpQDJ3pDfPN89yyEM9pAkGE.51da7a66cfc43b8b5dbd770213b2f55b'
 
 
