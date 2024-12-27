@@ -445,11 +445,11 @@ def save_soccer_data():
                 time.sleep(2)
                 threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],bet[5])).start()
 
-                # 20的金额的，赔率大于等于1.89时，下22的金额
-                if bet[5]==20 and float(values.get('m_odds',0))>=1.89:
-                    time.sleep(2)
-                    print("开始bet大于等于赔率1.89以上的，开始盘口是："+str(st_value))
-                    threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],22)).start()
+                # # 20的金额的，赔率大于等于1.89时，下22的金额
+                # if bet[5]==20 and float(values.get('m_odds',0))>=1.89:
+                #     time.sleep(2)
+                #     print("开始bet大于等于赔率1.89以上的，开始盘口是："+str(st_value))
+                #     threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],22)).start()
 
                 continue
 
