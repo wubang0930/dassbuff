@@ -416,17 +416,17 @@ def save_soccer_data():
         if values.get('c_time',0)==1 and values.get('m_type_value',0)==2.75 and float(values.get('m_odds',0))>=1.88:
             print("开始bet，第1分钟，大2.75球  赔率大于等于1.88，开始盘口是："+str(values))
             time.sleep(1)
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',14)).start()
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',28)).start()
         #  第1分钟，大3.5球  赔率大于等于1.92 下 16
         elif values.get('c_time',0)==1 and values.get('m_type_value',0)==3.5 and float(values.get('m_odds',0))>=1.92:
             print("开始bet，第1分钟，大3.5球  赔率大于等于1.92，开始盘口是："+str(values))
             time.sleep(1)
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',16)).start()
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',32)).start()
         #  第1分钟，小3球 
         elif values.get('c_time',0)==1 and values.get('m_type_value',0)==3:
             print("开始bet，第1分钟，小3球，开始盘口是："+str(values))
             time.sleep(1)
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',24)).start()
+            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',36)).start()
 
 
 
