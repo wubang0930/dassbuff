@@ -639,11 +639,11 @@ def create_avg_target_avg(exchange_rate):
                         buy_it_num=1
                         us_price= int(round(create_target['dmarket_sale_Price']/exchange_rate*100,0))
 
-                        if create_target['dmarket_sale_Price']>1 and create_target['dmarket_sale_Price']<5 and create_target['dm_buy_buff_sale_avg_rate']>0.15 and create_target['price_alter_percentage_7d']<20:
+                        if create_target['dmarket_sale_Price']>1 and create_target['dmarket_sale_Price']<5 and create_target['dm_buy_buff_sale_avg_rate']>0.10 and create_target['price_alter_percentage_7d']<20:
                             buy_flag=True
                             us_price= us_price+1
                             buy_it_num=5
-                        elif '武器箱' not in create_target['category_group_name'] and create_target['dmarket_sale_Price']>=5 and create_target['dmarket_sale_Price']<15 and create_target['dm_buy_buff_sale_avg_rate']>0.15  and create_target['price_alter_percentage_7d']<15:
+                        elif '武器箱' not in create_target['category_group_name'] and create_target['dmarket_sale_Price']>=5 and create_target['dmarket_sale_Price']<15 and create_target['dm_buy_buff_sale_avg_rate']>0.10  and create_target['price_alter_percentage_7d']<15:
                             buy_flag=True
                             us_price= us_price+2
                             buy_it_num=2
@@ -691,11 +691,11 @@ def create_avg_target_min(exchange_rate):
                         buy_it_num=1
                         us_price= int(round(create_target['offer_price']/exchange_rate*100,0))
 
-                        if create_target['offer_price']>1 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.08 and create_target['price_alter_percentage_7d']<20:
+                        if create_target['offer_price']>1 and create_target['offer_price']<5 and create_target['dm_buy_buff_sale_min_rate']>0.04 and create_target['price_alter_percentage_7d']<20:
                             buy_flag=True
                             us_price= us_price+1
                             buy_it_num=2
-                        elif '武器箱' not in create_target['category_group_name'] and create_target['offer_price']>=5 and create_target['offer_price']<10 and create_target['dm_buy_buff_sale_min_rate']>0.08  and create_target['price_alter_percentage_7d']<15:
+                        elif '武器箱' not in create_target['category_group_name'] and create_target['offer_price']>=5 and create_target['offer_price']<10 and create_target['dm_buy_buff_sale_min_rate']>0.04  and create_target['price_alter_percentage_7d']<15:
                             buy_flag=True
                             us_price= us_price+2
                             buy_it_num=1
