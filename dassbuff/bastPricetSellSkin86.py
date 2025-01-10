@@ -272,7 +272,7 @@ def get_target_market(title,exchange_rate):
         url = 'https://api.dmarket.com/exchange/v1/appraise/targets'
         # 设置请求头
         headers = {
-            'authorization': config.authorization,
+            'authorization': config.authorization_two,
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json',
             'jkkat': 'cde0c75',
