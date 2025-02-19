@@ -1,0 +1,46 @@
+
+
+
+
+
+# 获取福利列表
+def getBalance(authorization):
+    try:
+        # 设置请求的URL
+        url = 'https://api.xyz2277.com/v1/user/base'
+        # 设置请求头
+        headers = {
+            'accept': 'application/json, text/plain, */*',
+            'accept-language': 'zh-CN,zh;q=0.9',
+            'Authorization': authorization,
+            'content-type': 'application/json;charset=UTF-8',
+            'Connection': 'keep-alive',
+            'Sec-Fetch-Dest': 'empty',
+            'Sec-Fetch-Mode': 'cors',
+            'Sec-Fetch-Site': 'cross-site',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+            'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': 'Windows'
+            }
+        # 设置请求的数据
+        params = {
+            "languageType": "CMN",
+        }
+        # 发送POST请求
+        response = requests.post(url,headers=headers,json=params)
+        print(response)
+        if response.status_code == 200:
+            reponse_json = json.loads(response.text)
+            # if reponse_json['code'] == 14010:
+            #     print("token失效")
+            #     return None
+                
+            # if reponse_json['code'] == 0:
+            #     print("查询成功："+reponse_json)
+            #     balance=reponse_json['data']
+            #     return balance
+        return reponse_json
+    except Exception as e:
+        print(e)
+        return None

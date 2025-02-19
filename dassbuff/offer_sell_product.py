@@ -99,7 +99,7 @@ def get_my_invert_List(title="",limit=50,treeFilters="",authorization=config.aut
 
         # 发送POST请求
         response = requests.get(url, params=params,headers=headers)
-        # print(response.text)
+        print(response.text)
         reponse_json = json.loads(response.text)
         
         
