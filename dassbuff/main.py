@@ -25,9 +25,9 @@ def initFile():
     if not os.path.exists(config.data_local_analysis):
         os.makedirs(config.data_local_analysis)
 
-    if os.path.exists(config.log_file):
-        os.remove(config.log_file)
-        os.makedirs(config.log_file)
+    # if os.path.exists(config.log_file):
+    #     os.remove(config.log_file)
+    #     os.makedirs(config.log_file)
 
     global  exchange_rate
     exchange_rate=bastPricetSellSkin86.find_us_exchange()

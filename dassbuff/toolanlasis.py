@@ -42,7 +42,7 @@ def parse_custom_json(s):
 # 转换并打印结果
 all_data = []
 
-with open('E:\\projectInfo\\华宝新能\\user-service\\20250305-注销账户同步user\\xxx2.txt', 'r', encoding='utf-8') as f:
+with open('E:\\projectInfo\\华宝新能\\user-service\\20250305-注销账户同步user\\生产环境.txt', 'r', encoding='utf-8') as f:
     #一行一行的读出来
     for line in f:
         parsed_data = parse_custom_json(line)
@@ -62,6 +62,10 @@ if all_data is not None:
         cancle_user['remark'] = "jackery-client cancle"
         all_filter_data.append(cancle_user)
 
-print(all_filter_data)
+# print(all_filter_data)
+# 存储到文件
+with open('E:\\projectInfo\\华宝新能\\user-service\\20250305-注销账户同步user\\生产环境-jackery.txt', 'w', encoding='utf-8') as f:
+    for data in all_filter_data:
+        f.write(json.dumps(data, ensure_ascii=False) + '\n')
             
             

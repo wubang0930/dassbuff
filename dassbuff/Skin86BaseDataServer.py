@@ -128,4 +128,4 @@ def readBuffData():
 
 def sync_data():
     print("开始同步数据")
-    get_skin_86_market_all(file_name=buff_file,limit_page=1,page=0,page_size=100,price_start=10,price_end=200,selling_num_start=100)
+    get_skin_86_market_all(file_name=buff_file,limit_page=10,page=0,page_size=100,price_start=10,price_end=200,selling_num_start=100)

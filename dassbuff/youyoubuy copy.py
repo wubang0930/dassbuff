@@ -193,7 +193,7 @@ def sycBuyAndSellList():
             sell_item['sell_flag'] = False
             filter_sell_history_list.append(sell_item)
 
-
+        # 升序排序
     filter_buy_history_list.sort(key=lambda x:x['updatedAt'])
     filter_sell_history_list.sort(key=lambda x:x['createOrderTime'])
 
@@ -253,7 +253,7 @@ def tranStrToDatetime(str_time):
 
 
 if __name__ == '__main__':
-    # create_my_sell_List_all(page=10,pageSize=20,limitPage=60,authorization=config.my_sell_uu_user_token)
+    # create_my_sell_List_all(page=1,pageSize=20,limitPage=5,authorization=config.my_sell_uu_user_token)
     start_time = time.time()
     sycBuyAndSellList()
     end_time = time.time()
