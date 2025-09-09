@@ -10,6 +10,7 @@ import threading
 import offer_sell_product
 import pyperclip  # 用于复制到剪贴板
 import bastPricetMyBuy
+import soccerbenefit
 
 
 exchange_rate=7.10
@@ -121,31 +122,56 @@ class TabbedApp:
             button = tk.Button(tab0, text="按钮"+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
             button.grid(row=i, column=0, sticky=tk.W, padx=30)
             
-            
             # 单独定义按钮点击事件方法
             def tab0_button_command(idx):
                 import os
                 from datetime import datetime
 
-                log_msg = f"按钮{idx+1}被点击，日志打印到此。\n"
-                # 日志内容加上时间戳
-                time_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                log_with_time = f"{time_str} {log_msg}"
-
                 box = self.tab0_scroll_boxes[idx]
-                box.configure(state=tk.NORMAL)
-                box.insert(tk.END, log_with_time)
-                box.see(tk.END)  # 自动滚动到底部
-                box.configure(state=tk.DISABLED)
 
-                # 日志写入本地文件
-                log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "log")
-                if not os.path.exists(log_dir):
-                    os.makedirs(log_dir)
-                file_name = f"按钮{idx+1}.txt"
-                file_path = os.path.join(log_dir, file_name)
-                with open(file_path, "a", encoding="utf-8") as f:
-                    f.write(log_with_time)
+                # 定义一个日志写入函数，既写入文本框也写入文件
+                def write_log(msg):
+                    time_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    log_with_time = f"{time_str} {msg}"
+                    box.configure(state=tk.NORMAL)
+                    box.insert(tk.END, log_with_time)
+                    box.see(tk.END)  # 自动滚动到底部
+                    box.configure(state=tk.DISABLED)
+                    # 日志写入本地文件
+                    log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "log")
+                    if not os.path.exists(log_dir):
+                        os.makedirs(log_dir)
+                    file_name = f"按钮{idx+1}.txt"
+                    file_path = os.path.join(log_dir, file_name)
+                    with open(file_path, "a", encoding="utf-8") as f:
+                        f.write(log_with_time)
+
+                if idx == 0:
+                    # 捕获soccerbenefit.process_long_term_bonus的print输出，写入日志
+                    import io
+                    import sys
+
+                    old_stdout = sys.stdout
+                    sys.stdout = mystdout = io.StringIO()
+                    try:
+                        soccerbenefit.process_long_term_bonus(text_box.get())
+                    except Exception as e:
+                        write_log(f"执行出错: {e}\n")
+                    finally:
+                        sys.stdout = old_stdout
+                    output = mystdout.getvalue()
+                    if output:
+                        for line in output.splitlines():
+                            write_log(line + "\n")
+                    log_msg = ""  # 不再单独写按钮被点击
+                elif idx == 1:
+                    log_msg = f"按钮{idx+1}被点击，日志打印到此。\n"
+                    write_log(log_msg)
+                elif idx == 2:
+                    log_msg = f"按钮{idx+1}被点击，日志打印到此。\n"
+                    write_log(log_msg)
+
+
 
         tab1 = ttk.Frame(self.tabControl,width=1200,height=800)
         self.tabControl.add(tab1, text='DM购买后BUFF出售-账号1')
