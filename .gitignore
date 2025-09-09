@@ -6,7 +6,8 @@ daassbuff/data/*
 .venv/*
 venv/*
 data_local/*
-daassbuff/log/*
+log/*
+
  
 # local env files
 .env.local
