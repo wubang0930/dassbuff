@@ -41,7 +41,7 @@ def get_long_term_bonus_detail(authorization):
         '_ga_2RY83PV4BH': 'GS2.1.s1757411177$o59$g1$t1757413246$j60$l0$h1233480035'
     }
     try:
-        response = requests.post(url, headers=headers, cookies=cookies)
+        response = requests.get(url, headers=headers, cookies=cookies)
         print("接口返回：", response.text)
         return response.json()
     except Exception as e:
