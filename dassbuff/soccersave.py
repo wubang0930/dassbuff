@@ -8,6 +8,7 @@ import mysql.connector
 from mysql.connector import Error
 import re
 import messagesend as messagesend
+import log_utils
 
 
 # 数据库连接参数
@@ -763,6 +764,7 @@ def extract_numbers(s):
 
     
 if __name__ == '__main__':
+    log_utils.init_logger("soccersave")
     # 下注
     # values={}
     # values['soccer_id']= 2868972

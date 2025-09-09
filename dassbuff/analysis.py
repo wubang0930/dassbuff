@@ -2,6 +2,7 @@ import json
 import pandas as pd
 from datetime import datetime
 import time
+import log_utils
 
 
 data_path="E:/pythonFile/python/python_data/dassbuff/data"
@@ -162,6 +163,7 @@ def filter_name_cs():
 
 
 if __name__ == '__main__':
+    log_utils.init_logger("analysis")
     # case_name_analysis()
     filter_all_name()
     # filter_name_cs()
