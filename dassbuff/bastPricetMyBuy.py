@@ -60,7 +60,7 @@ def create_my_buy_List_all(offset=0,limit=10,exchange_rate=7.14,seartch_page=10,
 
             time.sleep(1)
             reponse_json=get_my_buy_List(page,offset,limit,authorization)
-
+            print(reponse_json)
             if reponse_json is None:
                 print("获取数据有误")
                 break

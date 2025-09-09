@@ -1,6 +1,4 @@
 import requests
-from requests import auth
-
 
 authauthorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJubyI6IjQ5OTE3OTY2M2FlOGU4YTRjZGYyODBjOWE3ZGQxOTAyIiwidmUiOiIiLCJsYSI6InpoLWNuIiwidGkiOiIxIiwidWEiOiIycUFPYVFNUjVnSDVYSXdrQmZJa1orUkg4V21kWmJ3Ym5BSzBmS21LYWM2TGhPN24xZW9FazJwSWZPUDZ1QTk4TGFiL1NsWXpTRXRuaDZLejZTMlkzOStqYlhyendlM0pWNFZ0ZndFVjdHUDgvOUM3dVZteHJyaHd6elBHUEY1U0djSTdHKzV2Rnlyb2Y3enRucUN6dlE9PSIsImlhdCI6IjE3NTc0MTI5NjQiLCJpZCI6Ijg4Njk4NCIsIm5hIjoic2h1YWkxIiwidHYiOiI2Mzg5MzAwOTc2NDgzNTUyNjAiLCJyZSI6IjE3NTgwMTc3NjQiLCJuYmYiOjE3NTc0MTI5NjQsImV4cCI6MTc1NzQ0MTc2NCwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwIiwiYXVkIjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwIn0.-ikNKT0PCPDkYNVOh2nMAJxaC1_NvcKaefTTIM1MsyE"
 
@@ -28,7 +26,6 @@ def get_long_term_bonus_detail(authorization):
         'sentry-trace': '00ed60a954f9425784458a5f3e8b8374-9be4fdd36773bcd0-0',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
     }
-    # 如果需要带cookie，可以加上cookies参数
     cookies = {
         '_ga': 'GA1.1.714685064.1756178500',
         '_hjSessionUser_3823075': 'eyJpZCI6ImJlMjFlZGJlLTRjZTItNThmNC1hYTc2LWM4YjgyOTg0MWMwOCIsImNyZWF0ZWQiOjE3NTYxNzg0OTkxNjMsImV4aXN0aW5nIjp0cnVlfQ==',
@@ -48,5 +45,27 @@ def get_long_term_bonus_detail(authorization):
         print("请求失败：", e)
         return None
 
+def process_long_term_bonus(authorization):
+    """
+    获取长期彩金详情，并遍历判断isAccumulate为True且amount大于0的项，打印日志并进行下一步操作
+    """
+    result = get_long_term_bonus_detail(authorization)
+    if not result or "data" not in result or "list" not in result["data"]:
+        print("未获取到有效的长期彩金数据")
+        return
+
+    bonus_list = result["data"]["list"]
+    for item in bonus_list:
+        is_accumulate = item.get("isAccumulate", False)
+        amount = item.get("amount", 0)
+        if is_accumulate and amount > 0:
+            print(f"检测到可累积彩金，ID: {item.get('id')}, 标题: {item.get('title')}, 金额: {amount}")
+            # 这里可以进行下一步操作，比如调用领取接口等
+            # do_next_operation(item)
+        else:
+            print(f"跳过彩金，ID: {item.get('id')}, isAccumulate: {is_accumulate}, amount: {amount}")
+
 # 示例调用
-get_long_term_bonus_detail(authauthorization)          
+# process_long_term_bonus(authauthorization)
+if __name__ == '__main__':
+    print("调用成功")

@@ -107,18 +107,40 @@ class TabbedApp:
 
         
 
-        for i in range(3):
-            # 定义每行的日志框
-            scroll_box = tk.Text(tab0, width=80, height=15, wrap="word")
-            scroll_box.grid(row=i, column=2, sticky=tk.W, padx=30, pady=10)
-            scroll_box.configure(state=tk.DISABLED)
-            scroll_box.insert(tk.END, "日志信息\n")
-            self.tab0_scroll_boxes.append(scroll_box)
+        # 只需要一个scroll_box显示日志，且占据右边一半页面
+        # 创建日志框，只创建一次
+        scroll_box = tk.Text(tab0, width=80, height=45, wrap="word")
+        scroll_box.grid(row=0, column=2, rowspan=3, sticky=tk.NSEW, padx=30, pady=10)
+        scroll_box.configure(state=tk.DISABLED)
+        scroll_box.insert(tk.END, "日志信息\n")
+        self.tab0_scroll_boxes.append(scroll_box)
 
+        import threading
+
+        def update_log_box():
+            try:
+                with open("dassbuff/log/main.log", "r", encoding="utf-8") as f:
+                    lines = f.readlines()
+                    last_100_lines = lines[-100:] if len(lines) > 100 else lines
+                    log_text = "".join(last_100_lines)
+            except Exception as e:
+                log_text = f"日志读取失败: {e}\n"
+            scroll_box.configure(state=tk.NORMAL)
+            scroll_box.delete(1.0, tk.END)
+            scroll_box.insert(tk.END, log_text)
+            scroll_box.see(tk.END)
+            scroll_box.configure(state=tk.DISABLED)
+            # 每隔1秒刷新一次
+            scroll_box.after(1000, update_log_box)
+
+        # 启动日志自动刷新
+        update_log_box()
+
+        # 创建三行，每行一个按钮和一个文本框
+        for i in range(3):
             text_box = tk.Entry(tab0, width=30)
             text_box.grid(row=i, column=1, sticky=tk.W, padx=30)
 
-            # 按钮点击时，将日志打印到对应的scroll_box，并自动滚动
             button = tk.Button(tab0, text="按钮"+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
             button.grid(row=i, column=0, sticky=tk.W, padx=30)
 
