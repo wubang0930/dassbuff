@@ -94,9 +94,59 @@ class TabbedApp:
         self.task_min.stop(self.sync_button_one)
         self.root.destroy()
         
-    
+        
+
+        
 
     def create_tab1(self):
+        tab0 = ttk.Frame(self.tabControl,width=1200,height=800)
+        self.tabControl.add(tab0, text='首页-其他汇总')
+        # 展示3行，每行有1个按钮、1个文本框和1个上下滑动的大文本框，按钮用来触发某个功能，文本框用来输入参数，大文本框用来展示执行过程中的日志信息
+        self.tab0_scroll_boxes = []  # 保存每行的日志框，便于后续访问
+
+        
+
+        for i in range(3):
+            # 定义每行的日志框
+            scroll_box = tk.Text(tab0, width=80, height=15, wrap="word")
+            scroll_box.grid(row=i, column=2, sticky=tk.W, padx=30, pady=10)
+            scroll_box.configure(state=tk.DISABLED)
+            scroll_box.insert(tk.END, "日志信息\n")
+            self.tab0_scroll_boxes.append(scroll_box)
+
+            text_box = tk.Entry(tab0, width=30)
+            text_box.grid(row=i, column=1, sticky=tk.W, padx=30)
+
+            # 按钮点击时，将日志打印到对应的scroll_box，并自动滚动
+            button = tk.Button(tab0, text="按钮"+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
+            button.grid(row=i, column=0, sticky=tk.W, padx=30)
+            
+            
+            # 单独定义按钮点击事件方法
+            def tab0_button_command(idx):
+                import os
+                from datetime import datetime
+
+                log_msg = f"按钮{idx+1}被点击，日志打印到此。\n"
+                # 日志内容加上时间戳
+                time_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                log_with_time = f"{time_str} {log_msg}"
+
+                box = self.tab0_scroll_boxes[idx]
+                box.configure(state=tk.NORMAL)
+                box.insert(tk.END, log_with_time)
+                box.see(tk.END)  # 自动滚动到底部
+                box.configure(state=tk.DISABLED)
+
+                # 日志写入本地文件
+                log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "log")
+                if not os.path.exists(log_dir):
+                    os.makedirs(log_dir)
+                file_name = f"按钮{idx+1}.txt"
+                file_path = os.path.join(log_dir, file_name)
+                with open(file_path, "a", encoding="utf-8") as f:
+                    f.write(log_with_time)
+
         tab1 = ttk.Frame(self.tabControl,width=1200,height=800)
         self.tabControl.add(tab1, text='DM购买后BUFF出售-账号1')
 
@@ -389,9 +439,9 @@ class TabbedApp:
         sync_query_time_add_limit = tk.Entry(tab2,width=30)
         sync_query_time_add_limit.insert(0, "100")
         sync_query_time_add_limit.grid(row=1, column=1,sticky=tk.E,padx=30)
-        start_button_time_add = tk.Button(tab2, text="查询提现购物车",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree2,"itemLocation[]=true,tradeLockTo[]=0",count_label_value,count_label_value_all,config.authorization_two))
+        start_button_time_add = tk.Button(tab2, text="查询提现购物车2",width=15, command=lambda: add_task_to_steam_cart(sync_query_time_add.get(),sync_query_time_add_limit.get(),self.tree2,"itemLocation[]=true,tradeLockTo[]=0",count_label_value,count_label_value_all,config.authorization_two))
         start_button_time_add.grid(row=1,  column=2,sticky=tk.W,padx=30)
-        stop_button_time_add = tk.Button(tab2, text="确认提现",width=15, command=lambda: confirm_task_to_steam_cart(config.authorization_two))
+        stop_button_time_add = tk.Button(tab2, text="确认提现2",width=15, command=lambda: confirm_task_to_steam_cart(config.authorization_two))
         stop_button_time_add.grid(row=1,  column=3,sticky=tk.W)
 
 
@@ -910,7 +960,6 @@ def sync_data(search_content, sync_button):
     sync_button.config(state=tk.NORMAL,text="同步")
     print("同步结束")
 
-    
 if __name__ == "__main__":
     initFile()
     root = tk.Tk()
