@@ -84,8 +84,16 @@ class TabbedApp:
         import threading
 
         def update_log_box():
+            import os
+            log_file_path = "dassbuff/log/main.log"
             try:
-                with open("dassbuff/log/main.log", "r", encoding="utf-8") as f:
+                # 如果日志文件不存在，则创建该文件
+                if not os.path.exists(log_file_path):
+                    # 确保目录存在
+                    os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
+                    with open(log_file_path, "w", encoding="utf-8") as f_create:
+                        f_create.write("日志文件已创建。\n")
+                with open(log_file_path, "r", encoding="utf-8") as f:
                     lines = f.readlines()
                     last_100_lines = lines[-100:] if len(lines) > 100 else lines
                     log_text = "".join(last_100_lines)

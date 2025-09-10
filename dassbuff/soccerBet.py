@@ -235,17 +235,12 @@ def init_file():
         f.write("日志文件初始化"+str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'\n')
 
 
-def startBetSoccer(domain_cookie, stop_flag=None):
+def startBetSoccer(domain_cookie):
         # 更新全局变量
     update_global_vars(domain_cookie)
     schedule.every().minutes.at(":01").do(save_soccer_data)
     log_num=0
     while True:
-        # 检查停止标志
-        if stop_flag and stop_flag.is_set():
-            print(str(datetime.now())+"  收到停止信号，退出startBetSoccer")
-            break
-            
         schedule.run_pending()
         time.sleep(1)
         log_num+=1
