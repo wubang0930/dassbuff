@@ -56,8 +56,31 @@ class TabbedApp:
         
 
     def on_closing(self):
-        self.task_min.stop(self.sync_button_one)
+        import threading
+        import sys
+
+        print("正在关闭程序，尝试关闭所有线程...")
+
+        # 获取当前所有活动线程
+        threads = threading.enumerate()
+        main_thread = threading.current_thread()
+
+        # 通知所有非主线程退出（如果有自定义线程可加退出标志）
+        for t in threads:
+            if t is not main_thread:
+                try:
+                    # 如果线程有自定义的stop/exit方法，可以调用
+                    if hasattr(t, "stop"):
+                        t.stop()
+                    elif hasattr(t, "terminate"):
+                        t.terminate()
+                except Exception as e:
+                    print(f"关闭线程{t.name}时出错: {e}")
+
+        # 强制退出程序
         self.root.destroy()
+        sys.exit(0)
+     
         
         
     def create_tab0(self):
@@ -85,7 +108,9 @@ class TabbedApp:
 
         def update_log_box():
             import os
-            log_file_path = "log/main.log"
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            log_file_path = os.path.join(base_dir, "log/main.log")
+
             try:
                 # 如果日志文件不存在，则创建该文件
                 if not os.path.exists(log_file_path):
@@ -138,7 +163,7 @@ class TabbedApp:
             if idx == 0:
                 domain_cookie = httpUtils.parse_curl_to_params(text_box_value)
                 print(domain_cookie)
-                threading.Thread(target=soccerBet.receive_all_bonus_action, args=(domain_cookie,)).start()
+                threading.Thread(target=soccerbenefit.receive_all_bonus_action, args=(domain_cookie,)).start()
                 print("按钮执行结束1")
             if idx == 1:
                 domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value)
