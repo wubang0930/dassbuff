@@ -291,7 +291,7 @@ def receive_all_bonus_action(domain_cookie):
 # 示例调用
 # process_long_term_bonus(authauthorization)
 if __name__ == '__main__':
-    log_utils.init_logger("soccer.log")
+    log_utils.init_logger("main.log")
     print("类开始启动")
 
     # domain = 'https://www.ltkavor.site'

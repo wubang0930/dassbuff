@@ -1,3 +1,4 @@
+from turtle import up
 import requests
 import json
 import datetime
@@ -161,6 +162,7 @@ def getMatchDetail(matchId,oddsType):
         # print(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
+            print(reponse_json)
             detail=reponse_json['data']
             # 过滤平均销量大于30的列表
             return detail
@@ -232,7 +234,7 @@ def singlePass(singleBetList):
 
 
 # 下注
-def getStakeOrderStatus(authorization,orderIds):
+def getStakeOrderStatus(orderIds):
     status_result={}
     status_result['msg'] = ""
     status_result['orderStatus'] = False
@@ -333,7 +335,6 @@ def getMatchList(deatail,bet_amount=10,type='大'):
     # if balance is None or balance['bl']<bet_amount:
     #     print("余额不足,当前余额是："+str(balance['bl']))
     #     return None
-    
     hashFalg=False
     for mg in deatail['mg']:
         if 1007 == mg['mty'] and 1001 == mg['pe'] :
@@ -387,7 +388,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
 
     global has_notified
     # 获取余额，查询比赛，封装下注，下注，查询订单状态
-    balance_response=getBalance(config.itone_authorization)
+    balance_response=getBalance(authorization)
     if balance_response['code'] == 14010:
         order_result['msg'] = "token失效，通知管理员"
         order_result['orderStatus'] = True
@@ -432,7 +433,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     #判断要下注的比赛大小，是否和当前比赛的大小一致
 
     # 太快会导致失败
-    singlePassDetail=singlePass(config.itone_authorization,singleBetList)
+    singlePassDetail=singlePass(singleBetList)
 
 
     orderIds=[]
@@ -442,7 +443,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
             orderIds.append(item['id'])
 
     
-    status_result=getStakeOrderStatus(config.itone_authorization,orderIds)
+    status_result=getStakeOrderStatus(orderIds)
     if status_result['orderStatus']:
         order_result['msg'] = status_result['msg']
         order_result['orderStatus'] = status_result['orderStatus']
@@ -530,10 +531,10 @@ def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
 
 
 # 获取余额
-def getMyBetHistoryList(authorization,page=1,page_size=10):
+def getMyBetHistoryList(page=1,page_size=10):
     try:
         # 设置请求的URL
-        url = 'https://api.xyz2277.com/v1/order/new/bet/list'
+        url = f'{domain}/v1/order/new/bet/list'
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -556,6 +557,7 @@ def getMyBetHistoryList(authorization,page=1,page_size=10):
             "current": page,
             "size": page_size,
         }
+        print(url)
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
         print(response)
@@ -572,8 +574,8 @@ def getMyBetHistoryList(authorization,page=1,page_size=10):
 
 
 
-def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
-     
+def saveMyBetHistoryList(domain_cookie2=None,limit_page=5,page=1,page_size=10):
+    update_global_vars(domain_cookie2)
     while True:
         print("获取第"+str(page)+"页数据")
         time.sleep(2)
@@ -582,7 +584,7 @@ def saveMyBetHistoryList(limit_page=5,page=1,page_size=10):
             break
         
         # 睡眠1秒，防止频繁请求
-        page_data=getMyBetHistoryList(config.itone_authorization,page,page_size)
+        page_data=getMyBetHistoryList(page,page_size)
         if page_data is None:
             print("获取数据失败，退出")
             break
@@ -785,15 +787,23 @@ def extract_numbers(s):
     
 if __name__ == '__main__':
     log_utils.init_logger("main.log")
+
+        # 全局变量
+    domain_cookie = {
+        "domain": "https://a.a5y8i.com",
+        "authauthorization": "tt_BLOnpF3nn6GqtTZvVRvdIQlAOiS8bGrz.ef73337b3e22af9382922131075ca880"
+    }
+
+    update_global_vars(domain_cookie)
     # 下注
-    # values={}
-    # values['soccer_id']= 2868972
-    # values['m_type_value']=6
-    # # values['c_time']=45
-    # bet_amount=12
-    # save_bet_data(values,type='大',bet_amount=bet_amount)
+    values={}
+    values['soccer_id']= 3675319
+    values['m_type_value']=2.75
+    values['c_time']=7
+    bet_amount=20
+    save_bet_data(values,type='大',bet_amount=bet_amount,domain_cookie=domain_cookie)
 # 示例字符串
-    saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
+    # saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
     # notify_email("测试邮件")
     # get_soccer_data_start(2846449)
 
