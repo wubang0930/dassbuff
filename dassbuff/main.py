@@ -51,7 +51,7 @@ class ScheduledTask:
             self.thread = threading.Thread(target=self.run, args=(search_content,sync_button,public_key,secret_key))
             self.thread.daemon = True
             self.thread.start()
-            print(str(now)+f"任务已开始，每 {self.interval/3600} 小时执行一次。")
+            print(str(now)+f"任务已开始了，每 {self.interval/3600} 小时执行一次。")
 
     def run(self,search_content,sync_button,public_key,secret_key):
         while not self.stop_event.is_set():
