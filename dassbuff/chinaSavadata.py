@@ -9,13 +9,8 @@ from zipfile import ZipFile
 
 import config
 import Skin86BaseData
-import bastPricetSellSkin86
-import math
 import mysql.connector
 from mysql.connector import Error
-import threading
-import schedule
-import soccersave
 import os
 
 log_num=0
@@ -33,6 +28,8 @@ user = 'root'
 password = 'bangye'
 
 taobao_price=545
+
+
 
 
 
@@ -253,210 +250,6 @@ def insert_today_sale_data(data_tuple_list,version_date):
 
 
 
-def save_soccer_data():
-    print(str(datetime.now())+"  正在查询足球数据")
-    # 保存足球数据
-    soccer = soccersave.getFbSoccerData()
-    if soccer is None:
-        print("获取足球数据失败")
-        return
-    
-    all_data=soccersave.tarnMySoccerData(soccer)
-
-    if all_data is None or len(all_data)==0:
-        print("获取足球数据为空")
-        return
-    
-
-
-
-    insert_query = "INSERT INTO `csgo`.`soccer_analysis`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
-    (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
-
-    print(getNowTime()+"开始插入soccer_analysis数据")
-    
-    # 连接到 MySQL 数据库
-    connection = mysql.connector.connect(
-        host=host,
-        database=database,
-        user=user,
-        password=password
-    )
-        
-    if connection.is_connected():
-        cursor = connection.cursor()
-        # 执行插入查询
-        for values in all_data:
-            try:
-                # print(values)
-                inert_values = (
-                    values.get('soccer_id',''),
-                    values.get('race_name',''),
-                    values.get('team_home',''),
-                    values.get('team_guest',''),
-                    values.get('team_cr',''),
-                    values.get('c_time',0),
-                    values.get('m_type',''),
-                    values.get('m_type_value',0),
-                    values.get('m_odds',0),
-                    values.get('goal_home',''),
-                    values.get('goal_guest',''),
-                    values.get('start_time',None),
-                    values['create_time'],
-                    values.get('s_type',''),
-                    values.get('s_type_value',0),
-                    values.get('s_odds',0)
-                )
-                cursor.execute(insert_query, inert_values)
-                connection.commit()  # 提交事务
-            except Error as e:
-                print(f"数据库soccer_analysis连接错误: {e}")
-        # print(getNowTime()+"数据插入soccer_analysis成功")
-    if connection.is_connected():
-        cursor.close()
-        connection.close()
-        # print("数据库soccer_analysis连接已关闭")
-
-
-    #  更新时间2024-12-09 12：00：00  
-
-# 时间 盘口 当前进数 类型 金额   
-    # bet_data=[[3,2,0,'大',20],[37,2.25,1,'大',20],[25,2.5,0,'大',40],[22,2.5,1,'大',40],[30,2.75,1,'大',40],[21,3,1,'大',20],[23,3.5,1,'大',20],\
-    #             [3,1.75,0,'小',20],[13,3,0,'小',20],[5,3.25,0,'小',20],[22,3.25,1,'小',20],\
-    #             [11,3.75,1,'大',40],[21,3.75,2,'大',40],[27,4,2,'大',20],\
-    #                 [22,3.75,1,'小',20],[20,4,1,'小',20],[31,4.25,2,'小',20],[36,4.5,2,'小',20],\
-                    
-    #                     [65,2.75,2,'大',30],\
-    #                         [29,1.75,0,'小',15],[68,1.75,1,'小',15],[56,1.5,0,'小',15],[74,1.5,1,'小',15]
-    #                     ]
-    
-    bet_new_data=[\
-
-[2,20,1,'大',2.75,40],\
-[2,60,1,'大',1.75,40],\
-[2,63,2,'大',2.75,60],\
-[2.25,26,1,'大',2.75,40],\
-[2.25,41,0,'小',1.25,40],\
-[2.25,66,0,'大',0.75,60],\
-[2.5,27,0,'大',1.75,40],\
-[2.5,30,1,'大',2.75,40],\
-[2.5,59,3,'小',4,40],\
-[2.5,64,1,'大',1.75,60],\
-[2.5,66,2,'大',2.75,60],\
-[2.75,52,0,'小',1.25,60],\
-[2.75,56,2,'小',3.25,60],\
-[2.75,70,3,'大',3.75,40],\
-[3,16,0,'小',2.5,40],\
-[3,56,2,'小',3.25,60],\
-[3,78,1,'小',1.5,40],\
-[3,78,3,'小',3.5,60],\
-[3.25,12,0,'小',3,40],\
-
-                    ]
-
-
-    # bet_data=[[3,2,0,'大',40],[4,4,0,'大',20],\
-    #     [3,1.75,0,'小',30],[29,1.75,0,'小',30],[28,2,0,'小',30],[23,2.25,0,'小',30],[24,2.5,0,'小',30],\
-    #         [22,2.75,0,'小',30],[12,3,0,'小',30],[21,3.25,0,'小',20],[14,3.5,0,'小',20],[9,3.75,0,'小',20],\
-                
-    #             [29,2.25,1,'大',30],[23,2.5,1,'大',30],[29,2.75,1,'大',30],[22,3,1,'大',30],[34,3.5,1,'大',30],[10,3.75,1,'大',30],\
-    #                 [35,3.25,1,'小',30],\
-                        
-    #                     [33,3.25,2,'大',20],[19,3.75,2,'大',20],\
-    #                         [31,4.5,2,'小',20],\
-                            
-
-
-    #                         [58,1,0,'小',15],[51,1.25,0,'小',15],[56,1.5,0,'小',15],\
-    #                         [74,1.5,1,'小',15],[68,1.75,1,'小',15],[62,2,1,'小',15],[55,2.25,1,'小',15],[51,2.5,1,'小',15],\
-                            
-    #                         [69,2.5,2,'大',15],[65,2.75,2,'大',15],\
-    #                         [72,2.75,2,'小',15],[65,3,2,'小',15],[56,3.25,2,'小',15],[54,3.5,2,'小',15],
-        
-
-
-    #                         ]
-
-
-        # 下注
-    log_time="当前时间是：" + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    print(log_time)
-   
-
-    for values in all_data:
-        print()
-        log_head=str(values.get('soccer_id',"race_name"))+","+values.get('race_name',"race_name")+"，主队是："+values.get('team_home',"team_home")+"，客队是："+values.get('team_guest',"team_guest")+\
-                "，时间："+str(values.get('c_time',''))
-        log_line="大："+str(values.get('m_type_value',''))+"，赔率："+str(values.get('m_odds',''))+\
-                "----小："+str(values.get('s_type_value',''))+",赔率："+str(values.get('s_odds',0))+\
-                "----主队进球："+str(values.get('goal_home',''))+",客队进球："+str(values.get('goal_guest',''))
-        
-        print(log_head)
-        print(log_line)
-
-
-        #  获取初盘数据
-
-        # for bet in bet_data:
-        #     if values.get('c_time',0)==bet[0] and values.get('m_type_value',0)==bet[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet[2]:
-        #         time.sleep(1)
-        #         print("开始bet"+str(values))
-        #         threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],bet[4])).start()
-        #         continue
-
-
-        #  第1分钟，大2.75球  赔率大于等于1.88 下 16
-        if values.get('c_time',0)==1 and values.get('m_type_value',0)==2.75 and float(values.get('m_odds',0))>=1.88:
-            print("开始bet，第1分钟，大2.75球  赔率大于等于1.88，开始盘口是："+str(values))
-            time.sleep(1)
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',56)).start()
-        #  第1分钟，大3.5球  赔率大于等于1.92 下 16
-        elif values.get('c_time',0)==1 and values.get('m_type_value',0)==3.5 and float(values.get('m_odds',0))>=1.92:
-            print("开始bet，第1分钟，大3.5球  赔率大于等于1.92，开始盘口是："+str(values))
-            time.sleep(1)
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'大',32)).start()
-        #  第1分钟，小3球 
-        elif values.get('c_time',0)==1 and values.get('m_type_value',0)==3:
-            print("开始bet，第1分钟，小3球，开始盘口是："+str(values))
-            time.sleep(1)
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',72)).start()
-
-
-
-        st_value= soccersave.get_soccer_data_start(values.get('soccer_id',0))
-        print(str(st_value)+","+str(values.get('c_time',0))+","+str(values.get('goal_home',0) +values.get('goal_guest',0))+ ',x,'+str(values.get('m_type_value',0))+ ',20')
-
-        if st_value is None:
-            print("获取初盘数据失败")
-            continue
-
-        # 14,16,20,22,24,30
-        for bet in bet_new_data:
-            if st_value==bet[0] and values.get('c_time',0)==bet[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet[2]\
-                  and bet[4]==values.get('m_type_value',0) :
-                print("开始bet，开始盘口是："+str(st_value))
-                time.sleep(2)
-                threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],bet[5])).start()
-
-                # # 20的金额的，赔率大于等于1.89时，下22的金额
-                # if bet[5]==20 and float(values.get('m_odds',0))>=1.89:
-                #     time.sleep(2)
-                #     print("开始bet大于等于赔率1.89以上的，开始盘口是："+str(st_value))
-                #     threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],22)).start()
-
-                continue
-
-
-        
-
-    
-
-
-
-
-def updateMyBetHistoryList():
-    print(str(datetime.now())+"  正在更新bet_history数据")
-    soccersave.saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
 
 def init_file():
     if os.path.exists(config.log_file):
@@ -466,36 +259,38 @@ def init_file():
         f.write("日志文件初始化"+str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'\n')
 
 
+
+
 if __name__ == '__main__':
 # def start():    
     start_time=int(time.time())
-    # save_soccer_data()
-    print(str(datetime.now())+"  开始运行了")
-    # init_file()
+    # # save_soccer_data()
+    # print(str(datetime.now())+"  开始运行了")
+    # # init_file()
 
-    # 每天晚上11点执行
-    # schedule.every().day.at("23:00").do(save_data_mysql)
-    # 持续运行以保持调度
-    # 每隔一分钟执行一次
-    schedule.every().minutes.at(":01").do(save_soccer_data)
+    # # 每天晚上11点执行
+    # # schedule.every().day.at("23:00").do(save_data_mysql)
+    # # 持续运行以保持调度
+    # # 每隔一分钟执行一次
+    # schedule.every().minutes.at(":01").do(save_soccer_data)
 
-    schedule.every().hour.do(updateMyBetHistoryList)
+    # schedule.every().hour.do(updateMyBetHistoryList)
 
-    log_num=0
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-        log_num+=1
+    # log_num=0
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)
+    #     log_num+=1
 
-        if log_num%10==0:
-            print(str(datetime.now())+"  正在运行中,第"+str(log_num//10)+"次执行")
+    #     if log_num%10==0:
+    #         print(str(datetime.now())+"  正在运行中,第"+str(log_num//10)+"次执行")
 
 
 
-    # save_data_mysql()
+    # # save_data_mysql()
 
-    end_time=int(time.time())
-    print("运行时间："+str(end_time-start_time))
+    # end_time=int(time.time())
+    # print("运行时间："+str(end_time-start_time))
 
 
 

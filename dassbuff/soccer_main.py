@@ -1,0 +1,165 @@
+from math import e
+import tkinter as tk
+from tkinter import ttk
+import bastPricetSellSkin86
+import os
+import config
+from datetime import datetime
+import soccerbenefit
+import log_utils
+import httpUtils
+import soccerBet
+
+
+exchange_rate=7.10
+
+def initFile():
+    log_utils.init_logger("main")
+    print("文件初始化")
+    if not os.path.exists(config.data_local):
+        os.makedirs(config.data_local)
+
+    if not os.path.exists(config.data_local_excel):
+        os.makedirs(config.data_local_excel)
+
+    if not os.path.exists(config.data_local_analysis):
+        os.makedirs(config.data_local_analysis)
+
+    # if os.path.exists(config.log_file):
+    #     os.remove(config.log_file)
+    #     os.makedirs(config.log_file)
+
+    global  exchange_rate
+    exchange_rate=bastPricetSellSkin86.find_us_exchange()
+    print("当前的美元汇率是："+str(exchange_rate))
+
+
+ 
+
+
+class TabbedApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Tabbed Application")
+
+        # 创建一个标签框架
+        self.tabControl = ttk.Notebook(self.root)
+        # 创建多个标签页
+        self.create_tab0()
+       
+
+        # 将标签框架添加到窗口
+        self.tabControl.pack(expand=1, fill="both")
+        root.grid_rowconfigure(0, weight=1)  # 设置行权重为1，使得 Treeview 可以伸缩
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+    
+        
+
+    def on_closing(self):
+        self.task_min.stop(self.sync_button_one)
+        self.root.destroy()
+        
+        
+    def create_tab0(self):
+        tab0 = ttk.Frame(self.tabControl, width=1200, height=800)
+        self.tabControl.add(tab0, text='首页-其他汇总')
+        # 展示3行，每行有1个按钮、1个文本框和1个上下滑动的大文本框，按钮用来触发某个功能，文本框用来输入参数，大文本框用来展示执行过程中的日志信息
+        self.tab0_scroll_boxes = []  # 保存每行的日志框，便于后续访问
+
+        # 设置grid列权重，使日志框只占1/3且靠右
+        tab0.grid_columnconfigure(0, weight=1)
+        tab0.grid_columnconfigure(1, weight=1)
+        tab0.grid_columnconfigure(2, weight=1)  # 日志框所在列
+        tab0.grid_rowconfigure(0, weight=1)
+        tab0.grid_rowconfigure(1, weight=1)
+        tab0.grid_rowconfigure(2, weight=1)
+
+        # 创建日志框，只创建一次，宽度设置小一些以适应1/3页面
+        scroll_box = tk.Text(tab0, width=40, height=45, wrap="word")
+        scroll_box.grid(row=0, column=3, rowspan=3, sticky=tk.NSEW, padx=30, pady=10)
+        scroll_box.configure(state=tk.DISABLED)
+        scroll_box.insert(tk.END, "日志信息\n")
+        self.tab0_scroll_boxes.append(scroll_box)
+
+        import threading
+
+        def update_log_box():
+            try:
+                with open("dassbuff/log/main.log", "r", encoding="utf-8") as f:
+                    lines = f.readlines()
+                    last_100_lines = lines[-100:] if len(lines) > 100 else lines
+                    log_text = "".join(last_100_lines)
+            except Exception as e:
+                log_text = f"日志读取失败: {e}\n"
+            scroll_box.configure(state=tk.NORMAL)
+            scroll_box.delete(1.0, tk.END)
+            scroll_box.insert(tk.END, log_text)
+            scroll_box.see(tk.END)
+            scroll_box.configure(state=tk.DISABLED)
+            # 每隔1秒刷新一次
+            scroll_box.after(1000, update_log_box)
+
+        # 启动日志自动刷新
+        update_log_box()
+
+        # 创建三行，每行一个按钮和一个可自定义长宽高的文本框
+        # 先创建一个列表保存每个text_box的引用
+        self.tab0_text_boxes = []
+        for i in range(3):
+            # 这里将Entry替换为Text，并允许自定义宽高
+            text_box = tk.Text(tab0, width=60, height=15)
+            text_box.grid(row=i, column=2, sticky=tk.W, padx=30)
+            self.tab0_text_boxes.append(text_box)
+
+            button = tk.Button(tab0, text="开始bet"+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
+            button.grid(row=i, column=0, sticky=tk.W, padx=30)
+
+            button = tk.Button(tab0, text="停止bet"+str(i+1), width=15, command=lambda idx=i: tab0_button_stop(idx))
+            button.grid(row=i, column=1, sticky=tk.W, padx=30)
+
+        
+            
+# 单独定义按钮点击事件方法
+        def tab0_button_command(idx):
+            # 获取对应text_box的内容
+            text_box_value = self.tab0_text_boxes[idx].get("1.0", tk.END).strip()
+            log_msg = f"按钮{idx+1}被点击，输入框内容为：{text_box_value}\n"
+            print(log_msg)
+
+
+            if idx == 0:
+                domain_cookie = httpUtils.parse_curl_to_params(text_box_value)
+                print(domain_cookie)
+                threading.Thread(target=soccerBet.receive_all_bonus_action, args=(domain_cookie,)).start()
+                print("按钮执行结束1")
+            if idx == 1:
+                domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value)
+                print(domain_cookie2)
+                threading.Thread(target=soccerBet.startBetSoccer, args=(domain_cookie2,)).start()
+                print("按钮执行结束2")
+            if idx == 2:
+                print("按钮执行结束3")
+        
+        def tab0_button_stop(idx):
+            # 获取当前主线程
+            main_thread = threading.main_thread()
+            # 遍历所有活动线程
+            for t in threading.enumerate():
+                # 跳过主线程
+                if t is main_thread:
+                    continue
+                try:
+                    # 线程对象没有直接的终止方法，这里采用强制退出进程的方式
+                    # 只要有非主线程存在就强制退出整个进程
+                    print(f"中断线程: {t.name}")
+                    os._exit(0)
+                except Exception as e:
+                    print(f"中断线程失败: {e}")
+
+
+if __name__ == "__main__":
+    initFile()
+    root = tk.Tk()
+    root.geometry("1200x800")
+    app = TabbedApp(root)
+    root.mainloop()

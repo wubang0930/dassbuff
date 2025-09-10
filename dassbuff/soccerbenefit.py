@@ -2,23 +2,22 @@ import json
 import requests
 import log_utils
 
+# 全局变量
+domain_cookie = None
+domain = None
+cookies = None
+authorization = None
 
+def update_global_vars(new_domain_cookie):
+    """更新全局变量"""
+    global domain_cookie, domain, cookies, authorization
+    domain_cookie = new_domain_cookie
+    domain = domain_cookie.get("domain")
+    cookies = domain_cookie.get("cookies")
+    authorization = domain_cookie.get("authauthorization")
 
-domain = 'https://www.ltkavor.site'
-authauthorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJubyI6ImM3MDAyMTE2MzI0YmI5ODNlOGUwNDM1NWFjMGVkNWNkIiwidmUiOiIiLCJsYSI6InpoLWNuIiwidGkiOiIxIiwidWEiOiIycUFPYVFNUjVnSDVYSXdrQmZJa1orUkg4V21kWmJ3Ym5BSzBmS21LYWM2TGhPN24xZW9FazJwSWZPUDZ1QTk4TGFiL1NsWXpTRXRuaDZLejZTMlkzOStqYlhyendlM0pWNFZ0ZndFVjdHTzBKK01wTFlETnpuUGRXVk0vWEpNcCtOY3pXYTJ5ZXAvSFk0dHF5R2tHQ0E9PSIsImlhdCI6IjE3NTc0Njg5NzUiLCJpZCI6Ijg4Njk4NCIsIm5hIjoic2h1YWkxIiwidHYiOiI2Mzg5MzA2NTc3NTQ3MjE1NTkiLCJyZSI6IjE3NjAwODk3NzUiLCJuYmYiOjE3NTc0Njg5NzUsImV4cCI6MTc1NzQ5Nzc3NSwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwIiwiYXVkIjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwIn0.VxMN-dtFHx1vIx4xLpHn0CkLwupQEZb_3paCYNrSVLI"
-cookies = {
-        'visid_incap_3227610': 'HYsKdnQaRb2An9C/Gyo/stzYwGgAAAAAQUIPAAAAAADsrjEpYu75vp8RTBhJqQSI',
-        'nlbi_3227610': 'oVNJGwe8wRZgRLspK7Qb8AAAAADVEbv/sqPC5Vs/cB3iVil0',
-        'incap_ses_1510_3227610': 'yosrRzGqvny1aAuDNZn0FN7YwGgAAAAA358J9MYFmcIVi04XrZgUsw==',
-        '_hjSessionUser_3823075': 'eyJpZCI6IjEyOGNlNTYyLWNmMjgtNTI5Yi1iNzQxLTgwZjJkNWViNmEwOSIsImNyZWF0ZWQiOjE3NTc0Njg5MDI1NjIsImV4aXN0aW5nIjp0cnVlfQ==',
-        '_hjSession_3823075': 'eyJpZCI6IjUyNDkzYjU1LWUzNzAtNGU0My1iNDRjLTgwNDE4N2QwYTdiMyIsImMiOjE3NTc0Njg5MDI1NjMsInMiOjEsInIiOjEsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MH0=',
-        '_hjHasCachedUserAttributes': 'true',
-        '_hjUserAttributesHash': '6b88065dfe6e9520eec28f8db1e7d9ce',
-        'JSESSIONID': '60FA9437501CE282D072E73E708C248F'
-    }
+def get_long_term_bonus_detail():
 
-
-def get_long_term_bonus_detail(authorization):
     url = f'{domain}/v2/asset/bonus/longtermbonusdetail'
     print("请求地址：", url)
     headers = {
@@ -53,7 +52,8 @@ def get_long_term_bonus_detail(authorization):
 
     
     
-def receive_backwater_bonus_action(authorization,result):
+def receive_backwater_bonus_action(result):
+
 
     if not result or "data" not in result or "list" not in result["data"]:
         print("未获取到有效的长期彩金数据")
@@ -66,7 +66,7 @@ def receive_backwater_bonus_action(authorization,result):
         amount = item.get("amount", 0)
         if is_accumulate and amount > 0:
             print(f"检测到可累积彩金，ID: {item.get('id')}, 标题: {item.get('title')}, 金额: {amount}")
-            receive_backwater_bonus(authorization, item.get('id'))
+            receive_backwater_bonus(item.get('id'))
             # 这里可以进行下一步操作，比如调用领取接口等
             # do_next_operation(item)
         else:
@@ -75,14 +75,12 @@ def receive_backwater_bonus_action(authorization,result):
 
 
 
-def receive_backwater_bonus(authorization, bonus_id):
+def receive_backwater_bonus(bonus_id):
     """
     领取返水彩金接口
-    :param authorization: 授权token字符串，格式为 Bearer xxxxx
     :param bonus_id: 返水彩金ID
     :return: 返回接口响应的json数据
     """
-    import requests
 
     url = f'{domain}/v2/asset/bonus/receivebackwater?bonusId={bonus_id}'
     headers = {
@@ -116,14 +114,11 @@ def receive_backwater_bonus(authorization, bonus_id):
         return None
 
 
-def get_user_balance(authorization):
+def get_user_balance():
     """
     查询用户钱包余额接口
-    :param authorization: 授权token字符串，格式为 Bearer xxxxx
-    :param domain: 域名，默认为 https://www.ltkavor.site
     :return: 返回接口响应的json数据
     """
-    import requests
 
     url = f"{domain}/v1/asset/wallet/userbalance"
     headers = {
@@ -148,6 +143,8 @@ def get_user_balance(authorization):
         'sentry-trace': '490712c7449f4b53a83abbddb406dae4-88e0fb801355f0d3',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
     }
+
+ 
 
     try:
         response = requests.get(url, headers=headers, cookies=cookies)
@@ -178,7 +175,9 @@ def get_user_balance(authorization):
         return None
 
 
-def get_vip_bonus_detail(authorization):
+def get_vip_bonus_detail():
+
+
     """
     获取未领取的vip奖金详情
     :param auth: 授权token字符串（Bearer ...）
@@ -218,10 +217,9 @@ def get_vip_bonus_detail(authorization):
         return None
 
 
-def receive_vip_bonus(authorization, bonus_id, collected_currency="CNY"):
+def receive_vip_bonus(bonus_id, collected_currency="CNY"):
     """
     领取返水彩金
-    :param authorization: 授权token字符串（Bearer ...）
     :param bonus_id: 返水彩金ID
     :param collected_currency: 领取币种，默认为CNY
     :return: 返回接口返回的json数据，若失败返回None
@@ -259,7 +257,7 @@ def receive_vip_bonus(authorization, bonus_id, collected_currency="CNY"):
         return None
 
     
-def receive_vip_bonus_action(authorization,result):
+def receive_vip_bonus_action(result):
     print("领取vip奖励开始")
 
     if not result or "data" not in result or "list" not in result["data"] or not result["data"]["list"]:
@@ -268,28 +266,52 @@ def receive_vip_bonus_action(authorization,result):
     vip_list = result["data"]["list"]
     for item in vip_list:
         print(f"检测到可累积彩金，ID: {item.get('id')}, 标题: {item.get('title')}, 金额: {item.get('amount')}")
-        receive_vip_bonus(authorization, item.get('id'))
+        receive_vip_bonus(item.get('id'))
 
 
 
-def receive_all_bonus_action(authorization):
+def receive_all_bonus_action(domain_cookie):
+    # 更新全局变量
+    update_global_vars(domain_cookie)
+    
     # 获取余额
-    get_user_balance(authorization)
+    get_user_balance()
     # 获取返水彩金
-    result=get_long_term_bonus_detail(authorization)
+    result=get_long_term_bonus_detail()
     # 领取返水彩金
-    receive_backwater_bonus_action(authorization,result)
+    receive_backwater_bonus_action(result)
     # 获取余额
-    get_user_balance(authorization)
+    get_user_balance()
     # 获取VIP奖励详情
-    vip_result = get_vip_bonus_detail(authorization)
+    vip_result = get_vip_bonus_detail()
     # 获取VIP奖励
-    receive_vip_bonus_action(authorization,vip_result)
+    receive_vip_bonus_action(vip_result)
 
 
 # 示例调用
 # process_long_term_bonus(authauthorization)
 if __name__ == '__main__':
-    log_utils.init_logger("soccerBenefit.log")
+    log_utils.init_logger("soccer.log")
     print("类开始启动")
-    receive_all_bonus_action(authauthorization)
+
+    # domain = 'https://www.ltkavor.site'
+    # authauthorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJubyI6ImM3MDAyMTE2MzI0YmI5ODNlOGUwNDM1NWFjMGVkNWNkIiwidmUiOiIiLCJsYSI6InpoLWNuIiwidGkiOiIxIiwidWEiOiIycUFPYVFNUjVnSDVYSXdrQmZJa1orUkg4V21kWmJ3Ym5BSzBmS21LYWM2TGhPN24xZW9FazJwSWZPUDZ1QTk4TGFiL1NsWXpTRXRuaDZLejZTMlkzOStqYlhyendlM0pWNFZ0ZndFVjdHTzBKK01wTFlETnpuUGRXVk0vWEpNcCtOY3pXYTJ5ZXAvSFk0dHF5R2tHQ0E9PSIsImlhdCI6IjE3NTc0Njg5NzUiLCJpZCI6Ijg4Njk4NCIsIm5hIjoic2h1YWkxIiwidHYiOiI2Mzg5MzA2NTc3NTQ3MjE1NTkiLCJyZSI6IjE3NjAwODk3NzUiLCJuYmYiOjE3NTc0Njg5NzUsImV4cCI6MTc1NzQ5Nzc3NSwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwIiwiYXVkIjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwIn0.VxMN-dtFHx1vIx4xLpHn0CkLwupQEZb_3paCYNrSVLI"
+    # cookies = {
+    #     'visid_incap_3227610': 'HYsKdnQaRb2An9C/Gyo/stzYwGgAAAAAQUIPAAAAAADsrjEpYu75vp8RTBhJqQSI',
+    #     'nlbi_3227610': 'oVNJGwe8wRZgRLspK7Qb8AAAAADVEbv/sqPC5Vs/cB3iVil0',
+    #     'incap_ses_1510_3227610': 'yosrRzGqvny1aAuDNZn0FN7YwGgAAAAA358J9MYFmcIVi04XrZgUsw==',
+    #     '_hjSessionUser_3823075': 'eyJpZCI6IjEyOGNlNTYyLWNmMjgtNTI5Yi1iNzQxLTgwZjJkNWViNmEwOSIsImNyZWF0ZWQiOjE3NTc0Njg5MDI1NjIsImV4aXN0aW5nIjp0cnVlfQ==',
+    #     '_hjSession_3823075': 'eyJpZCI6IjUyNDkzYjU1LWUzNzAtNGU0My1iNDRjLTgwNDE4N2QwYTdiMyIsImMiOjE3NTc0Njg5MDI1NjMsInMiOjEsInIiOjEsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MH0=',
+    #     '_hjHasCachedUserAttributes': 'true',
+    #     '_hjUserAttributesHash': '6b88065dfe6e9520eec28f8db1e7d9ce',
+    #     'JSESSIONID': '60FA9437501CE282D072E73E708C248F'
+    # }
+
+    # domain_cookie = {
+    #     'domain': domain,
+    #     'authorization': authauthorization,
+    #     'cookies': cookies
+    # }
+
+    # # 获取余额
+    # receive_all_bonus_action(domain_cookie)

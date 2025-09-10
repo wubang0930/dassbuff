@@ -1,3 +1,4 @@
+from math import e
 import tkinter as tk
 from tkinter import ttk
 import json
@@ -10,7 +11,6 @@ import threading
 import offer_sell_product
 import pyperclip  # 用于复制到剪贴板
 import bastPricetMyBuy
-import soccerbenefit
 import log_utils
 
 
@@ -80,7 +80,6 @@ class TabbedApp:
         # 创建一个标签框架
         self.tabControl = ttk.Notebook(self.root)
         # 创建多个标签页
-        self.create_tab0()
         self.create_tab1()
         self.create_tab1_2()
         self.create_tab2_1()
@@ -98,54 +97,6 @@ class TabbedApp:
         self.task_min.stop(self.sync_button_one)
         self.root.destroy()
         
-        
-    def create_tab0(self):
-        tab0 = ttk.Frame(self.tabControl,width=1200,height=800)
-        self.tabControl.add(tab0, text='首页-其他汇总')
-        # 展示3行，每行有1个按钮、1个文本框和1个上下滑动的大文本框，按钮用来触发某个功能，文本框用来输入参数，大文本框用来展示执行过程中的日志信息
-        self.tab0_scroll_boxes = []  # 保存每行的日志框，便于后续访问
-
-        
-
-        # 只需要一个scroll_box显示日志，且占据右边一半页面
-        # 创建日志框，只创建一次
-        scroll_box = tk.Text(tab0, width=80, height=45, wrap="word")
-        scroll_box.grid(row=0, column=2, rowspan=3, sticky=tk.NSEW, padx=30, pady=10)
-        scroll_box.configure(state=tk.DISABLED)
-        scroll_box.insert(tk.END, "日志信息\n")
-        self.tab0_scroll_boxes.append(scroll_box)
-
-        import threading
-
-        def update_log_box():
-            try:
-                with open("dassbuff/log/main.log", "r", encoding="utf-8") as f:
-                    lines = f.readlines()
-                    last_100_lines = lines[-100:] if len(lines) > 100 else lines
-                    log_text = "".join(last_100_lines)
-            except Exception as e:
-                log_text = f"日志读取失败: {e}\n"
-            scroll_box.configure(state=tk.NORMAL)
-            scroll_box.delete(1.0, tk.END)
-            scroll_box.insert(tk.END, log_text)
-            scroll_box.see(tk.END)
-            scroll_box.configure(state=tk.DISABLED)
-            # 每隔1秒刷新一次
-            scroll_box.after(1000, update_log_box)
-
-        # 启动日志自动刷新
-        update_log_box()
-
-        # 创建三行，每行一个按钮和一个文本框
-        for i in range(3):
-            text_box = tk.Entry(tab0, width=30)
-            text_box.grid(row=i, column=1, sticky=tk.W, padx=30)
-
-            button = tk.Button(tab0, text="按钮"+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
-            button.grid(row=i, column=0, sticky=tk.W, padx=30)
-
-
-
 
 
     def create_tab1(self):
@@ -663,18 +614,7 @@ add_list=[]
 change_list=[]
 
 
-# 单独定义按钮点击事件方法
-def tab0_button_command(idx):
-    if idx == 0:
-        # soccerbenefit.process_long_term_bonus(text_box.get())
-        log_msg = f"按钮{idx+1}被点击，日志打印到此。\n"
-        print(log_msg)
-    elif idx == 1:
-        log_msg = f"按钮{idx+1}被点击，日志打印到此。\n"
-        print(log_msg)
-    elif idx == 2:
-        log_msg = f"按钮{idx+1}被点击，日志打印到此。\n"
-        print(log_msg)
+
 
 def query_my_sale_buy_record(query,query_type,tree,file_path,count_label_value,count_label_value_all):
     print("查询列表"+query+",路径："+file_path)

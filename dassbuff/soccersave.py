@@ -19,11 +19,29 @@ password = 'bangye'
 
 has_notified=False
 
+
+# 全局变量
+domain_cookie = None
+domain = None
+cookies = None
+authorization = None
+
+def update_global_vars(new_domain_cookie):
+    """更新全局变量"""
+    global domain_cookie, domain, cookies, authorization
+    domain_cookie = new_domain_cookie
+    domain = domain_cookie.get("domain")
+    cookies = domain_cookie.get("cookies")
+    authorization = domain_cookie.get("authauthorization")
+
+
 # 数据
-def getFbSoccerData():
+def getFbSoccerData(domain_cookie):
+    update_global_vars(domain_cookie)
+
     try:
         # 设置请求的URL
-        url = 'https://api.xyz7477.com/v1/match/getList'
+        url = f'{domain}/v1/match/getList'
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -117,7 +135,7 @@ def tarnMySoccerData(soccer):
 def getMatchDetail(matchId,oddsType):
     try:
         # 设置请求的URL
-        url = 'https://api.xyz2277.com/v1/match/getMatchDetail'
+        url = f'{domain}/v1/match/getMatchDetail'
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -154,11 +172,11 @@ def getMatchDetail(matchId,oddsType):
 
 
 # 下注
-def singlePass(authorization,singleBetList):
+def singlePass(singleBetList):
     # orderIds=[]
     try:
         # 设置请求的URL
-        url = 'https://api.xyz2277.com/v1/order/bet/singlePass'
+        url = f'{domain}/v1/order/bet/singlePass'
         # 设置请求头
         headers = {
             "Connection":"keep-alive",
@@ -447,7 +465,9 @@ def getNowTime():
 
 
 
-def save_bet_data(values,type='大',bet_amount=10):
+def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
+    update_global_vars(domain_cookie)
+
     print(getNowTime()+"  正在存储下注数据")
     # 这里取下注
     order_result=start_buy_itone(values.get('soccer_id',None),values.get('m_type_value',0),bet_amount,type)
@@ -699,7 +719,7 @@ def get_soccer_data_start(soccer_id):
             # 构建查询条件
 
             # 查询是否存在
-            cursor.execute("select m_type_value from soccer_analysis_start where c_time<10 and soccer_id ="+str(soccer_id) + " limit 1")
+            cursor.execute("select m_type_value from soccer_analysis_start where c_time<80 and soccer_id ="+str(soccer_id) + " limit 1")
             row = cursor.fetchone()
             if row is not None :
                 return row[0]
@@ -764,7 +784,7 @@ def extract_numbers(s):
 
     
 if __name__ == '__main__':
-    log_utils.init_logger("soccersave")
+    log_utils.init_logger("main.log")
     # 下注
     # values={}
     # values['soccer_id']= 2868972
