@@ -223,10 +223,9 @@ def save_soccer_data():
 
 
 
-def updateMyBetHistoryList(domain_cookie2):
+def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
     update_global_vars(domain_cookie2)
-    
-    print(str(datetime.now())+"  正在更新bet_history数据")
+    print("正在更新bet_history数据",domain_cookie2,limit_page,page,page_size)
     soccersave.saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
 
 def init_file():
