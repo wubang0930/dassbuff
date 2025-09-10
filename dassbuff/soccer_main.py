@@ -85,7 +85,7 @@ class TabbedApp:
 
         def update_log_box():
             import os
-            log_file_path = "dassbuff/log/main.log"
+            log_file_path = "log/main.log"
             try:
                 # 如果日志文件不存在，则创建该文件
                 if not os.path.exists(log_file_path):
