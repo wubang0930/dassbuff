@@ -191,10 +191,10 @@ def save_soccer_data():
 
 
       
-        if values.get('c_time',0)==1 and values.get('m_type_value',0)==3:
-            print("开始bet，第1分钟，小3球，开始盘口是："+str(values))
-            time.sleep(1)
-            threading.Thread(target=soccersave.save_bet_data,args=(values,'小',72,domain_cookie)).start()
+        # if values.get('c_time',0)==1 and values.get('m_type_value',0)==3:
+        #     print("开始bet，第1分钟，小3球，开始盘口是："+str(values))
+        #     time.sleep(1)
+        #     threading.Thread(target=soccersave.save_bet_data,args=(values,'小',72,domain_cookie)).start()
 
 
 
@@ -223,7 +223,9 @@ def save_soccer_data():
 
 
 
-def updateMyBetHistoryList():
+def updateMyBetHistoryList(domain_cookie2):
+    update_global_vars(domain_cookie2)
+    
     print(str(datetime.now())+"  正在更新bet_history数据")
     soccersave.saveMyBetHistoryList(limit_page=10,page=1,page_size=10)
 

@@ -139,15 +139,23 @@ class TabbedApp:
         # 先创建一个列表保存每个text_box的引用
         self.tab0_text_boxes = []
         for i in range(3):
+            # 创建按钮，并绑定事件处理方法
+            button_title = "开始bet"
+
             # 这里将Entry替换为Text，并允许自定义宽高
             text_box = tk.Text(tab0, width=60, height=15)
             text_box.grid(row=i, column=2, sticky=tk.W, padx=30)
             self.tab0_text_boxes.append(text_box)
 
-            button = tk.Button(tab0, text="开始bet"+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
+            if i == 2:
+                button_title = "同步历史"
+                # 填充text_box的默认值
+                text_box.insert(tk.END, "10,1,2")
+
+            button = tk.Button(tab0, text=button_title+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
             button.grid(row=i, column=0, sticky=tk.W, padx=30)
 
-            button = tk.Button(tab0, text="停止bet"+str(i+1), width=15, command=lambda idx=i: tab0_button_stop(idx))
+            button = tk.Button(tab0, text=button_title+"停止"+str(i+1), width=15, command=lambda idx=i: tab0_button_stop(idx))
             button.grid(row=i, column=1, sticky=tk.W, padx=30)
 
         
@@ -164,13 +172,20 @@ class TabbedApp:
                 domain_cookie = httpUtils.parse_curl_to_params(text_box_value)
                 print(domain_cookie)
                 threading.Thread(target=soccerbenefit.receive_all_bonus_action, args=(domain_cookie,)).start()
-                print("按钮执行结束1")
+                print("按钮执行结束11")
             if idx == 1:
                 domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value)
                 print(domain_cookie2)
                 threading.Thread(target=soccerBet.startBetSoccer, args=(domain_cookie2,)).start()
                 print("按钮执行结束2")
             if idx == 2:
+                text_box_value2 = self.tab0_text_boxes[1].get("1.0", tk.END).strip()
+                domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value2)
+
+                limit_page = text_box_value.split(",")[0]
+                page = text_box_value.split(",")[1]
+                page_size = text_box_value.split(",")[2]
+                soccerBet.updateMyBetHistoryList(domain_cookie2)
                 print("按钮执行结束3")
         
         def tab0_button_stop(idx):
