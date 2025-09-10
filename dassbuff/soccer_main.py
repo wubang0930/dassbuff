@@ -185,7 +185,7 @@ class TabbedApp:
                 limit_page = text_box_value.split(",")[0]
                 page = text_box_value.split(",")[1]
                 page_size = text_box_value.split(",")[2]
-                soccerBet.updateMyBetHistoryList(domain_cookie2)
+                soccerBet.updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size)
                 print("按钮执行结束3")
         
         def tab0_button_stop(idx):
