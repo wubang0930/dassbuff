@@ -119,7 +119,6 @@ def save_soccer_data():
         # 执行插入查询
         for values in all_data:
             try:
-                # print(values)
                 inert_values = (
                     values.get('soccer_id',''),
                     values.get('race_name',''),
