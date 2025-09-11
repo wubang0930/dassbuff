@@ -223,9 +223,22 @@ def save_soccer_data():
 
 
 def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
-    update_global_vars(domain_cookie2)
-    print("正在更新bet_history数据",domain_cookie2,limit_page,page,page_size)
-    soccersave.saveMyBetHistoryList(domain_cookie2=domain_cookie2,limit_page=limit_page,page=page,page_size=page_size)
+    def run_update():
+        update_global_vars(domain_cookie2)
+        print("正在更新bet_history数据", domain_cookie2, limit_page, page, page_size)
+        soccersave.saveMyBetHistoryList(domain_cookie2=domain_cookie2, limit_page=limit_page, page=page, page_size=page_size)
+
+    def schedule_update():
+        # 立即执行一次
+        run_update()
+        # 每隔1小时执行一次
+        schedule.every(1).hours.do(run_update)
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
+
+    # 启动异步线程执行定时任务
+    threading.Thread(target=schedule_update, daemon=True).start()
 
 def init_file():
     if os.path.exists(config.log_file):

@@ -188,8 +188,22 @@ class TabbedApp:
                 limit_page = text_box_value.split(",")[0]
                 page = text_box_value.split(",")[1]
                 page_size = text_box_value.split(",")[2]
-                soccerBet.updateMyBetHistoryList(domain_cookie2,int(limit_page),int(page),int(page_size))
+                soccerBet.updateMyBetHistoryList(domain_cookie2, int(limit_page), int(page), int(page_size))
+
+                # 设置按钮为不可点击
+                # 由于按钮是动态创建的，这里需要找到对应的按钮对象
+                # 可以通过遍历tab0的所有子控件，找到text=同步历史3的按钮
+                for widget in tab0.winfo_children():
+                    if isinstance(widget, tk.Button) and widget.cget("text") == "同步历史3":
+                        widget.config(state=tk.DISABLED)
+                        break
+
+                # 填充text_box_value2为“定时执行中”
+                self.tab0_text_boxes[2].delete("1.0", tk.END)
+                self.tab0_text_boxes[2].insert(tk.END, "定时执行中")
+
                 print("按钮执行结束3")
+                
         
         def tab0_button_stop(idx):
             # 获取当前主线程

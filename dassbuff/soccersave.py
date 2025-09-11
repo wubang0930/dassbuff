@@ -656,7 +656,7 @@ def bet_history_victory(odds_amount,m_odds,odds_amount_result):
         return "胜一半"
     elif odds_amount_result < 0 and odds_amount == -odds_amount_result:
         return "负"
-    elif odds_amount_result < 0 and odds_amount == -odds_amount_result*0.5:
+    elif odds_amount_result < 0 and -odds_amount_result == odds_amount*0.5:
         return "负一半"
     elif odds_amount_result == 0:
         return "平"
@@ -684,13 +684,13 @@ def insert_if_not_exists(bet_id, soccer_id, insert_data):
             cursor.execute("select count(1) from soccer_bet_history where bet_id="+str(bet_id)+" and soccer_id="+str(soccer_id))
             exists = cursor.fetchone()[0] > 0
             if not exists:
-                print(insert_data)
+                print("开始插入")
                 insert_query = "INSERT INTO `csgo`.`soccer_bet_history`(`bet_id`, `soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `odds_amount`, `goal_home_result`, `goal_guest_result`, `odds_amount_result`, `bet_time`, `start_time`, `create_time`, `result_flag`,`bet_time_day`) VALUES\
                 (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s)"
                 cursor.execute(insert_query, insert_data)
                 conn.commit()
 
-                print(getNowTime()+"数据插入 soccer_bet_history 成功")
+                print("数据插入 soccer_bet_history 成功")
             else:
                 print("数据已存在，未进行插入操作")
     except Error as e:
