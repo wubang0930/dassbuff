@@ -17,7 +17,6 @@ import log_utils
 exchange_rate=7.10
 
 def initFile():
-    log_utils.init_logger("main")
     print("文件初始化")
     if not os.path.exists(config.data_local):
         os.makedirs(config.data_local)
@@ -916,6 +915,11 @@ def sync_data(search_content, sync_button):
 
 if __name__ == "__main__":
     initFile()
+    start_time=int(time.time())
+    log_file_name = f"dmarket-{datetime.now().strftime('%Y%m%d')}"
+    print("开始运行",log_file_name)
+    log_utils.init_logger(log_file_name)
+
     root = tk.Tk()
     root.geometry("1200x800")
     app = TabbedApp(root)

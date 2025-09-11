@@ -67,6 +67,7 @@ def getFbSoccerData(domain_cookie):
             "sportId": 1,
             "type": 1
         }
+        print("request url:",url)
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
         # print(response)
@@ -521,7 +522,6 @@ def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
     if connection.is_connected():
         cursor.close()
         connection.close()
-        print("数据库soccer_bet连接已关闭")
 
     return True
 
@@ -689,8 +689,6 @@ def insert_if_not_exists(bet_id, soccer_id, insert_data):
                 (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s)"
                 cursor.execute(insert_query, insert_data)
                 conn.commit()
-
-                print("数据插入 soccer_bet_history 成功")
             else:
                 print("数据已存在，未进行插入操作")
     except Error as e:
@@ -699,7 +697,6 @@ def insert_if_not_exists(bet_id, soccer_id, insert_data):
         if conn.is_connected():
             cursor.close()
             conn.close()
-            print("数据库 soccer_bet_history 连接已关闭")
 
     return True
 
@@ -734,7 +731,6 @@ def get_soccer_data_start(soccer_id):
         if conn.is_connected():
             cursor.close()
             conn.close()
-            print("数据库 soccer_analysis_start 连接已关闭")
 
     return None
 
@@ -759,7 +755,7 @@ def update_cr_bettime():
 
             # 查询是否存在
             cursor.execute("UPDATE soccer_bet_history his LEFT JOIN soccer_bet bet on his.soccer_id  =bet.soccer_id and his.m_type  =bet.m_type and his.m_type_value  =bet.m_type_value set his.team_cr= bet.team_cr, his.c_time= bet.c_time where his.team_cr=''  and his.c_time=0")
-            print(getNowTime()+"更新国家和时间成功")
+            print("更新soccer_bet_history成功")
             conn.commit()
     except Error as e:
        print(f"数据库 soccer_bet_history 连接错误: {e}")
@@ -767,7 +763,6 @@ def update_cr_bettime():
         if conn.is_connected():
             cursor.close()
             conn.close()
-            print("数据库 soccer_bet_history 连接已关闭")
 
     return True
 

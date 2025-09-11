@@ -76,7 +76,6 @@ def delete_today_data(version_date):
         if connection.is_connected():
             cursor.close()
             connection.close()
-            print("数据库连接已关闭")
 
 
 def getNowTime():
@@ -86,7 +85,7 @@ def getNowTime():
 
 
 def save_soccer_data():
-    print(str(datetime.now())+"  正在查询足球数据")
+    print("正在查询足球数据")
     # 保存足球数据
     soccer = soccersave.getFbSoccerData(domain_cookie)
     if soccer is None:
@@ -105,7 +104,7 @@ def save_soccer_data():
     insert_query = "INSERT INTO `csgo`.`soccer_analysis`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
     (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
 
-    print(getNowTime()+"开始插入soccer_analysis数据")
+    print("开始插入soccer_analysis数据")
     
     # 连接到 MySQL 数据库
     connection = mysql.connector.connect(

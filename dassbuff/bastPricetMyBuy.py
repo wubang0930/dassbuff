@@ -13,6 +13,7 @@ import Skin86BaseData
 import bastPricetSellSkin86
 
 import config
+from dassbuff import log_utils
 
 # change url to prod
 rootApiUrl = "https://api.dmarket.com"
@@ -487,6 +488,9 @@ def get_my_target_List(exchange_rate=7.14):
 
 if __name__ == '__main__':
     start_time=int(time.time())
+    start_time=int(time.time())
+    log_file_name = f"dmarket-{datetime.now().strftime('%Y%m%d')}"
+    log_utils.init_logger(log_file_name)
 
 
     # 下载所有的buff饰品名称
