@@ -257,7 +257,7 @@ def startBetSoccer(domain_cookie):
         log_num+=1
 
         if log_num%10==0:
-            print(str(datetime.now())+"  正在运行中,第"+str(log_num//10)+"次执行")
+            print("正在运行中,第"+str(log_num//10)+"次执行")
 
 
 

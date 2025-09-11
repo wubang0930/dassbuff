@@ -2,6 +2,8 @@ from math import e
 from re import L
 import tkinter as tk
 from tkinter import ttk
+
+from urllib3 import request
 import bastPricetSellSkin86
 import os
 import config
@@ -15,6 +17,7 @@ import time
 
 
 exchange_rate=7.10
+data_bet_request_file_path = "data_bet_request.txt"
 
 def initFile():
     print("文件初始化")
@@ -150,10 +153,18 @@ class TabbedApp:
             text_box.grid(row=i, column=2, sticky=tk.W, padx=30)
             self.tab0_text_boxes.append(text_box)
 
+            if i == 1:
+                try:
+                    with open(data_bet_request_file_path, "r", encoding="utf-8") as f:
+                        request_text = f.read()
+                except Exception as e:
+                    request_text = ""
+                text_box.insert(tk.END, request_text)
             if i == 2:
                 button_title = "同步历史"
                 # 填充text_box的默认值
                 text_box.insert(tk.END, "3,1,10")
+
 
             button = tk.Button(tab0, text=button_title+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
             button.grid(row=i, column=0, sticky=tk.W, padx=30)
@@ -170,6 +181,15 @@ class TabbedApp:
             log_msg = f"按钮{idx+1}被点击，输入框内容为：{text_box_value}\n"
             print(log_msg)
 
+            # 如果text_box_value有值，则清空并写入data_bet_request.txt
+            if text_box_value:
+                try:
+                    # 以写入模式打开文件，会自动清空原内容
+                    with open(data_bet_request_file_path, "w", encoding="utf-8") as f:
+                        f.write(text_box_value)
+                    print(f"已将输入内容写入 {data_bet_request_file_path}")
+                except Exception as e:
+                    print(f"写入 {data_bet_request_file_path} 失败: {e}")
 
             if idx == 0:
                 domain_cookie = httpUtils.parse_curl_to_params(text_box_value)
