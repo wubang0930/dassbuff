@@ -1,4 +1,5 @@
 from math import e
+from re import L
 import tkinter as tk
 from tkinter import ttk
 import bastPricetSellSkin86
@@ -9,12 +10,13 @@ import soccerbenefit
 import log_utils
 import httpUtils
 import soccerBet
+import log_utils
+import time
 
 
 exchange_rate=7.10
 
 def initFile():
-    log_utils.init_logger("main")
     print("文件初始化")
     if not os.path.exists(config.data_local):
         os.makedirs(config.data_local)
@@ -109,7 +111,8 @@ class TabbedApp:
         def update_log_box():
             import os
             base_dir = os.path.dirname(os.path.abspath(__file__))
-            log_file_path = os.path.join(base_dir, "log/main.log")
+            log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}.log"
+            log_file_path = os.path.join(base_dir, "log/"+log_file_name)
 
             try:
                 # 如果日志文件不存在，则创建该文件
@@ -150,7 +153,7 @@ class TabbedApp:
             if i == 2:
                 button_title = "同步历史"
                 # 填充text_box的默认值
-                text_box.insert(tk.END, "2,1,10")
+                text_box.insert(tk.END, "3,1,10")
 
             button = tk.Button(tab0, text=button_title+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
             button.grid(row=i, column=0, sticky=tk.W, padx=30)
@@ -185,7 +188,7 @@ class TabbedApp:
                 limit_page = text_box_value.split(",")[0]
                 page = text_box_value.split(",")[1]
                 page_size = text_box_value.split(",")[2]
-                soccerBet.updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size)
+                soccerBet.updateMyBetHistoryList(domain_cookie2,int(limit_page),int(page),int(page_size))
                 print("按钮执行结束3")
         
         def tab0_button_stop(idx):
@@ -207,6 +210,10 @@ class TabbedApp:
 
 if __name__ == "__main__":
     initFile()
+    start_time=int(time.time())
+    log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}"
+    print("开始运行",log_file_name)
+    log_utils.init_logger(log_file_name)
     root = tk.Tk()
     root.geometry("1200x800")
     app = TabbedApp(root)

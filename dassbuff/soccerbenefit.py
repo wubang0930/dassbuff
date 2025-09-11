@@ -1,6 +1,9 @@
 import json
 import requests
 import log_utils
+import datetime
+import time
+
 
 # 全局变量
 domain_cookie = None
@@ -291,7 +294,8 @@ def receive_all_bonus_action(domain_cookie):
 # 示例调用
 # process_long_term_bonus(authauthorization)
 if __name__ == '__main__':
-    log_utils.init_logger("main.log")
+    start_time=int(time.time())
+    log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}.log"
     print("类开始启动")
 
     # domain = 'https://www.ltkavor.site'

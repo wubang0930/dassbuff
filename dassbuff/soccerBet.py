@@ -3,7 +3,6 @@ from datetime import datetime
 
 import pandas as pd
 import re
-from datetime import datetime
 import time
 from zipfile import ZipFile
 
@@ -226,7 +225,7 @@ def save_soccer_data():
 def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
     update_global_vars(domain_cookie2)
     print("正在更新bet_history数据",domain_cookie2,limit_page,page,page_size)
-    soccersave.saveMyBetHistoryList(domain_cookie2=domain_cookie2,limit_page=10,page=1,page_size=10)
+    soccersave.saveMyBetHistoryList(domain_cookie2=domain_cookie2,limit_page=limit_page,page=page,page_size=page_size)
 
 def init_file():
     if os.path.exists(config.log_file):
@@ -255,7 +254,8 @@ def startBetSoccer(domain_cookie):
 if __name__ == '__main__':
 # def start():    
     start_time=int(time.time())
-    log_utils.init_logger("main.log")
+    log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}"
+    log_utils.init_logger(log_file_name)
     # # save_soccer_data()
     # print(str(datetime.now())+"  开始运行了")
     # # init_file()

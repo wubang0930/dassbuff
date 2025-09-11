@@ -576,6 +576,7 @@ def getMyBetHistoryList(page=1,page_size=10):
 
 def saveMyBetHistoryList(domain_cookie2=None,limit_page=5,page=1,page_size=10):
     update_global_vars(domain_cookie2)
+    print("limit_page,page,page_size is ",limit_page,page,page_size)
     while True:
         print("获取第"+str(page)+"页数据")
         time.sleep(2)
@@ -786,7 +787,9 @@ def extract_numbers(s):
 
     
 if __name__ == '__main__':
-    log_utils.init_logger("main.log")
+    start_time=int(time.time())
+    log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}.log"
+    log_utils.init_logger(log_file_name)
 
         # 全局变量
     domain_cookie = {
