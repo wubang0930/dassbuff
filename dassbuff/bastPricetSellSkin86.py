@@ -13,6 +13,7 @@ import Skin86BaseData
 
 import config
 import math
+from dassbuff import log_utils
 import offer_buy_product
 
 # change url to prod
@@ -796,6 +797,9 @@ def sync_data(limit_page=10,page=1,page_size=10,price_start=1,price_end=200,sell
 
 
 if __name__ == '__main__':
+    start_time=int(time.time())
+    log_file_name = f"dmarket-{datetime.now().strftime('%Y%m%d')}"
+    log_utils.init_logger(log_file_name)
 # def start():    
     start_time=int(time.time())
     

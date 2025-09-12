@@ -1,4 +1,3 @@
-from math import log
 import os
 import sys
 from datetime import datetime
@@ -59,9 +58,6 @@ def _now_str():
 
 
 def init_logger(log_filename: str | None = None):
-    print(f"init_logger: {log_filename}")
-    if "main" == log_filename:
-        log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}"
 
     global _LOGGER_INITIALIZED
     if _LOGGER_INITIALIZED:

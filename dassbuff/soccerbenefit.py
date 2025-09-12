@@ -295,7 +295,8 @@ def receive_all_bonus_action(domain_cookie):
 # process_long_term_bonus(authauthorization)
 if __name__ == '__main__':
     start_time=int(time.time())
-    log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}.log"
+    log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}"
+    log_utils.init_logger(log_file_name)
     print("类开始启动")
 
     # domain = 'https://www.ltkavor.site'

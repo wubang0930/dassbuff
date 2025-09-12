@@ -470,7 +470,7 @@ def getNowTime():
 def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
     update_global_vars(domain_cookie)
 
-    print(getNowTime()+"  正在存储下注数据")
+    print("  正在存储下注数据")
     # 这里取下注
     order_result=start_buy_itone(values.get('soccer_id',None),values.get('m_type_value',0),bet_amount,type)
 
@@ -480,7 +480,7 @@ def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
     insert_query = "INSERT INTO `csgo`.`soccer_bet`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `odds_amount`, `odds_result`, `start_time`, `create_time`,`odds_status`,`actual_type_value`,`bet_id`) VALUES\
     (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s, %s, %s, %s)"
 
-    print(getNowTime()+"开始插入 soccer_bet 数据")
+    print("开始插入 soccer_bet 数据")
     
     # 连接到 MySQL 数据库
     connection = mysql.connector.connect(
@@ -494,7 +494,6 @@ def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
         cursor = connection.cursor()
         # 执行插入查询
         try:
-            print(values)
             inert_values = (
                 values.get('soccer_id',''),
                 values.get('race_name',''),
@@ -513,12 +512,11 @@ def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
                 order_result.get('currentValue',0),
                 order_result.get('bet_id',""),
             )
-            print(inert_values)
             cursor.execute(insert_query, inert_values)
             connection.commit()  # 提交事务
         except Error as e:
             print(f"数据库soccer_bet连接错误: {e}")
-        print(getNowTime()+"数据插入soccer_bet成功")
+        print("数据插入soccer_bet成功")
     if connection.is_connected():
         cursor.close()
         connection.close()

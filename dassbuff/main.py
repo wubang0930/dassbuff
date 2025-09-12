@@ -917,7 +917,6 @@ if __name__ == "__main__":
     initFile()
     start_time=int(time.time())
     log_file_name = f"dmarket-{datetime.now().strftime('%Y%m%d')}"
-    print("开始运行",log_file_name)
     log_utils.init_logger(log_file_name)
 
     root = tk.Tk()
