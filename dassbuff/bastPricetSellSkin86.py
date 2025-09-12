@@ -13,7 +13,7 @@ import Skin86BaseData
 
 import config
 import math
-from dassbuff import log_utils
+import log_utils
 import offer_buy_product
 
 # change url to prod
