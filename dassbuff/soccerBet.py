@@ -17,6 +17,7 @@ import schedule
 import soccersave
 import os
 import log_utils
+import messagesend as messagesend
 
 
 log_num=0
@@ -34,6 +35,8 @@ domain_cookie = None
 domain = None
 cookies = None
 authorization = None
+has_notified=False
+
 
 def update_global_vars(new_domain_cookie):
     """更新全局变量"""
@@ -171,6 +174,24 @@ def save_soccer_data():
         # 下注
     log_time="当前时间是：" + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print(log_time)
+   
+
+    # 获取余额，
+    order_result = {}
+    global has_notified
+    balance_response=soccersave.getBalance(authorization)
+    if balance_response['code'] == 14010:
+        order_result['msg'] = "token失效，通知管理员"
+        order_result['orderStatus'] = True
+        messagesend.notify_email(order_result['msg'],has_notified)
+        has_notified=True
+    elif balance_response['code'] == 0:
+        print("查询成功,余额为："+str(balance_response['data']['bl']) )
+        order_result['balance'] = balance_response['data']['bl']
+    else:
+        order_result['msg'] = "余额查询失败："+str(balance_response)
+        order_result['orderStatus'] = False
+    
    
 
     for values in all_data:
