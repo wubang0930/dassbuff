@@ -181,15 +181,7 @@ class TabbedApp:
             log_msg = f"按钮{idx+1}被点击，输入框内容为：{text_box_value}\n"
             print(log_msg)
 
-            # 如果text_box_value有值，则清空并写入data_bet_request.txt
-            if text_box_value:
-                try:
-                    # 以写入模式打开文件，会自动清空原内容
-                    with open(data_bet_request_file_path, "w", encoding="utf-8") as f:
-                        f.write(text_box_value)
-                    print(f"已将输入内容写入 {data_bet_request_file_path}")
-                except Exception as e:
-                    print(f"写入 {data_bet_request_file_path} 失败: {e}")
+            
 
             if idx == 0:
                 domain_cookie = httpUtils.parse_curl_to_params(text_box_value)
@@ -197,6 +189,15 @@ class TabbedApp:
                 threading.Thread(target=soccerbenefit.receive_all_bonus_action, args=(domain_cookie,)).start()
                 print("按钮执行结束11")
             if idx == 1:
+                # 如果text_box_value有值，则清空并写入data_bet_request.txt
+                if text_box_value:
+                    try:
+                        # 以写入模式打开文件，会自动清空原内容
+                        with open(data_bet_request_file_path, "w", encoding="utf-8") as f:
+                            f.write(text_box_value)
+                        print(f"已将输入内容写入 {data_bet_request_file_path}")
+                    except Exception as e:
+                        print(f"写入 {data_bet_request_file_path} 失败: {e}")
                 domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value)
                 print(domain_cookie2)
                 threading.Thread(target=soccerBet.startBetSoccer, args=(domain_cookie2,)).start()
