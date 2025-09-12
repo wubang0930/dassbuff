@@ -103,13 +103,11 @@ class TabbedApp:
         tab0.grid_rowconfigure(2, weight=1)
 
         # 创建日志框，只创建一次，宽度设置小一些以适应1/3页面
-        scroll_box = tk.Text(tab0, width=40, height=45, wrap="word")
-        scroll_box.grid(row=0, column=3, rowspan=3, sticky=tk.NSEW, padx=30, pady=10)
+        scroll_box = tk.Text(tab0, width=80, height=45, wrap="word")
+        scroll_box.grid(row=0, column=3, rowspan=3, sticky=tk.NSEW, padx=10, pady=10)
         scroll_box.configure(state=tk.DISABLED)
         scroll_box.insert(tk.END, "日志信息\n")
         self.tab0_scroll_boxes.append(scroll_box)
-
-        import threading
 
         def update_log_box():
             import os
@@ -149,8 +147,8 @@ class TabbedApp:
             button_title = "开始bet"
 
             # 这里将Entry替换为Text，并允许自定义宽高
-            text_box = tk.Text(tab0, width=60, height=15)
-            text_box.grid(row=i, column=2, sticky=tk.W, padx=30)
+            text_box = tk.Text(tab0, width=40, height=15)
+            text_box.grid(row=i, column=2, sticky=tk.W, padx=10)
             self.tab0_text_boxes.append(text_box)
 
             if i == 1:
@@ -166,11 +164,11 @@ class TabbedApp:
                 text_box.insert(tk.END, "8,1,10")
 
 
-            button = tk.Button(tab0, text=button_title+str(i+1), width=15, command=lambda idx=i: tab0_button_command(idx))
-            button.grid(row=i, column=0, sticky=tk.W, padx=30)
+            button = tk.Button(tab0, text=button_title+str(i+1), width=10, command=lambda idx=i: tab0_button_command(idx))
+            button.grid(row=i, column=0, sticky=tk.W, padx=10)
 
-            button = tk.Button(tab0, text=button_title+"停止"+str(i+1), width=15, command=lambda idx=i: tab0_button_stop(idx))
-            button.grid(row=i, column=1, sticky=tk.W, padx=30)
+            button = tk.Button(tab0, text=button_title+"停止"+str(i+1), width=10, command=lambda idx=i: tab0_button_stop(idx))
+            button.grid(row=i, column=1, sticky=tk.W, padx=10)
 
         
             
