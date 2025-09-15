@@ -141,6 +141,11 @@ def save_soccer_data():
                     values.get('s_odds',0)
                 )
                 cursor.execute(insert_query, inert_values)
+
+                # 插入首次数据
+                insert_soccer_analysis_start_new(cursor, values)
+                
+
                 connection.commit()  # 提交事务
             except Error as e:
                 print(f"数据库soccer_analysis连接错误: {e}")
@@ -155,6 +160,8 @@ def save_soccer_data():
 # [2.25,5,0,'小',2.25,20],\
 # [3,78,3,'小',3.5,20],\
 # [3,16,0,'小',2.5,20],\
+# [3,78,1,'小',1.5,20],\ # 这个由小转为大
+
 
 [2,3,0,'大',2,50],\
 [2,20,1,'大',2.75,50],\
@@ -176,28 +183,27 @@ def save_soccer_data():
     print(log_time)
    
 
-    # 获取余额，
-    order_result = {}
-    global has_notified
-    balance_response=soccersave.getBalance(authorization)
-    if balance_response and balance_response['code'] == 14010:
-        order_result['msg'] = "token失效，通知管理员"
-        order_result['orderStatus'] = True
-        messagesend.notify_email(order_result['msg'],has_notified)
-        has_notified=True
-    elif balance_response and balance_response['code'] == 0:
-        print("查询成功,余额为："+str(balance_response['data']['bl']) )
-        order_result['balance'] = balance_response['data']['bl']
-    else:
-        order_result['msg'] = "余额查询失败："+str(balance_response)
-        order_result['orderStatus'] = False
-        messagesend.notify_email(order_result['msg'],has_notified)
-        has_notified=True
+    # # 获取余额，
+    # order_result = {}
+    # global has_notified
+    # balance_response=soccersave.getBalance(authorization)
+    # if balance_response and balance_response['code'] == 14010:
+    #     order_result['msg'] = "token失效，通知管理员"
+    #     order_result['orderStatus'] = True
+    #     messagesend.notify_email(order_result['msg'],has_notified)
+    #     has_notified=True
+    # elif balance_response and balance_response['code'] == 0:
+    #     print("查询成功,余额为："+str(balance_response['data']['bl']) )
+    #     order_result['balance'] = balance_response['data']['bl']
+    # else:
+    #     order_result['msg'] = "余额查询失败："+str(balance_response)
+    #     order_result['orderStatus'] = False
+    #     messagesend.notify_email(order_result['msg'],has_notified)
+    #     has_notified=True
     
    
 
     for values in all_data:
-        print()
         log_head=str(values.get('soccer_id',"race_name"))+","+values.get('race_name',"race_name")+"，主队是："+values.get('team_home',"team_home")+"，客队是："+values.get('team_guest',"team_guest")+\
                 "，时间："+str(values.get('c_time',''))
         log_line="大："+str(values.get('m_type_value',''))+"，赔率："+str(values.get('m_odds',''))+\
@@ -237,7 +243,45 @@ def save_soccer_data():
 
         
 
-    
+def insert_soccer_analysis_start_new(cursor, values):
+    """
+    判断soccer_analysis_start_new表中是否有该数据，如果没有则插入
+    """
+    # BUG分析：
+    # 1. SQL: SELECT * ... WHERE soccer_id = %s 只判断了soccer_id，未判断c_time，可能导致同一场比赛多条c_time=0,1,2,3,4的数据只插入一条
+    # 2. inert_values 直接用，可能与soccer_analysis_start_new表字段不完全匹配，尤其是create_time等字段
+    # 3. insert_query变量名重复，容易混淆
+    # 4. values.get('soccer_id',0)如果为0，可能插入脏数据
+    # 修正建议：增加c_time判断，且只插入c_time<5的唯一数据
+    # if values.get('c_time') is not None and values.get('c_time') < 5:
+    sql_check_start_new = "SELECT * FROM `csgo`.`soccer_analysis_start_new` WHERE `soccer_id` = %s"
+    cursor.execute(sql_check_start_new, (values.get('soccer_id',''),))
+    result = cursor.fetchone()
+    if result is None:
+        print("插入soccer_analysis_start_new数据")
+        insert_query_start_new = "INSERT INTO `csgo`.`soccer_analysis_start_new`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
+        (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
+        inert_values_start_new = (
+            values.get('soccer_id',''),
+            values.get('race_name',''),
+            values.get('team_home',''),
+            values.get('team_guest',''),
+            values.get('team_cr',''),
+            values.get('c_time',0),
+            values.get('m_type',''),
+            values.get('m_type_value',0),
+            values.get('m_odds',0),
+            values.get('goal_home',''),
+            values.get('goal_guest',''),
+            values.get('start_time',None),
+            values['create_time'],
+            values.get('s_type',''),
+            values.get('s_type_value',0),
+            values.get('s_odds',0)
+        )
+        cursor.execute(insert_query_start_new, inert_values_start_new)
+    else:
+        print("soccer_analysis_start_new数据已存在")    
 
 
 

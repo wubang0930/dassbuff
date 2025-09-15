@@ -1,7 +1,7 @@
-curl 'https://a.a5y8i.com/v1/match/getBannerMatchList' \
+curl 'https://api.737a9.com/v1/match/getMatchDetail' \
   -H 'Accept: application/json, text/plain, */*' \
   -H 'Accept-Language: zh-CN,zh;q=0.9' \
-  -H 'Authorization: tt_BLOnpF3nn6GqtTZvVRvdIQlAOiS8bGrz.ef73337b3e22af9382922131075ca880' \
+  -H 'Authorization: tt_AOwkVGx0WExLWcMDZU6CqWdDVlRLDZZ8.711a5450dc633e5c979b1e6a11091aa6' \
   -H 'Connection: keep-alive' \
   -H 'Content-Type: application/json;charset=UTF-8' \
   -H 'Origin: https://c.e70cz.com' \
@@ -13,4 +13,4 @@ curl 'https://a.a5y8i.com/v1/match/getBannerMatchList' \
   -H 'sec-ch-ua: "Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"' \
   -H 'sec-ch-ua-mobile: ?0' \
   -H 'sec-ch-ua-platform: "Windows"' \
-  --data-raw '{"languageType":"CMN","platform":1}'
+  --data-raw '{"languageType":"CMN","oddsType":1,"matchId":2963165}'
