@@ -180,17 +180,19 @@ def save_soccer_data():
     order_result = {}
     global has_notified
     balance_response=soccersave.getBalance(authorization)
-    if balance_response['code'] == 14010:
+    if balance_response and balance_response['code'] == 14010:
         order_result['msg'] = "token失效，通知管理员"
         order_result['orderStatus'] = True
         messagesend.notify_email(order_result['msg'],has_notified)
         has_notified=True
-    elif balance_response['code'] == 0:
+    elif balance_response and balance_response['code'] == 0:
         print("查询成功,余额为："+str(balance_response['data']['bl']) )
         order_result['balance'] = balance_response['data']['bl']
     else:
         order_result['msg'] = "余额查询失败："+str(balance_response)
         order_result['orderStatus'] = False
+        messagesend.notify_email(order_result['msg'],has_notified)
+        has_notified=True
     
    
 
