@@ -293,8 +293,8 @@ def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
 
     now_ts = int(time.time() * 1000)
     begin_time = now_ts - 6 * 60 * 60 * 1000
-    _end_time = now_ts
-    soccersave.get_all_match_result_page(domain_cookie2, begin_time, _end_time, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50)
+    end_time = now_ts
+    soccersave.get_all_match_result_page(domain_cookie2, begin_time, end_time, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50)
 
 
 def init_file():
