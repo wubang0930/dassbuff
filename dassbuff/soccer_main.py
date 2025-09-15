@@ -211,8 +211,8 @@ class TabbedApp:
                 def run_update_history():
                     while True:
                         soccerBet.updateMyBetHistoryList(domain_cookie2, int(limit_page), int(page), int(page_size))
-                        print("同步历史执行完成，等待2小时后再次执行")
-                        time.sleep(2 * 60 * 60)  # 每隔1小时执行一次
+                        print("同步历史执行完成，等待3小时后再次执行")
+                        time.sleep(3 * 60 * 60)  # 每隔1小时执行一次
 
                 threading.Thread(target=run_update_history, daemon=True).start()
 
