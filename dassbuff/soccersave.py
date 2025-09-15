@@ -689,6 +689,9 @@ def insert_if_not_exists(bet_id, soccer_id, insert_data):
                 conn.commit()
             else:
                 print("数据已存在，未进行插入操作")
+            
+
+
     except Error as e:
        print(f"数据库 soccer_bet_history 连接错误: {e}")
     finally:
@@ -717,14 +720,14 @@ def get_soccer_data_start(soccer_id):
             # 构建查询条件
 
             # 查询是否存在
-            cursor.execute("select m_type_value from soccer_analysis_start where c_time<80 and soccer_id ="+str(soccer_id) + " limit 1")
+            cursor.execute("select m_type_value from soccer_analysis_start_new where c_time<80 and soccer_id ="+str(soccer_id) + " limit 1")
             row = cursor.fetchone()
             if row is not None :
                 return row[0]
             else:
                 print("数据不存在")
     except Error as e:
-       print(f"数据库 soccer_analysis_start 连接错误: {e}")
+       print(f"数据库 soccer_analysis_start_new 连接错误: {e}")
     finally:
         if conn.is_connected():
             cursor.close()
@@ -774,33 +777,203 @@ def extract_numbers(s):
 
 
 
+import requests
+
+def get_all_match_result_page( begin_time, end_time, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50):
+    """
+    递归查询 https://a.a5y8i.com/v1/match/matchResultPage 接口，获取所有分页数据
+    :param domain: 域名，如 'https://a.a5y8i.com'
+    :param authorization: 授权token
+    :param begin_time: 开始时间（时间戳，毫秒）
+    :param end_time: 结束时间（时间戳，毫秒）
+    :param match_type: 比赛类型，默认2
+    :param order_by: 排序，默认0
+    :param language_type: 语言类型，默认"CMN"
+    :param sport_id: 体育类型，默认"1"
+    :param page_size: 每页数量，默认50
+    :return: 所有records的列表
+    """
+    url = f"{domain}/v1/match/matchResultPage"
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9',
+        'Authorization': authorization,
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Origin': 'https://c.e70cz.com',
+        'Referer': 'https://c.e70cz.com/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
+        'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"'
+    }
+
+    all_records = []
+    current = 1
+
+    while True:
+        payload = {
+            "sportId": sport_id,
+            "beginTime": begin_time,
+            "endTime": end_time,
+            "languageType": language_type,
+            "current": current,
+            "size": page_size,
+            "matchType": match_type,
+            "orderBy": order_by
+        }
+        try:
+            resp = requests.post(url, headers=headers, json=payload, timeout=10)
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as e:
+            print(f"请求第{current}页数据失败: {e}")
+            break
+
+        if not data.get("success", False) or "data" not in data:
+            print(f"接口返回异常: {data}")
+            break
+
+        page_data = data["data"]
+        records = page_data.get("records", [])
+
+        total = page_data.get("total", 0)
+        size = page_data.get("size", page_size)
+        cur = page_data.get("current", current)
+        # INSERT INTO `csgo`.`soccer_analysis_end_new`(`id`, `soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type_value`, `goal_home_first`, `goal_guest_first`, `goal_home_second`, `goal_guest_second`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `race_id`)
+        # 连接到 MySQL 数据库
+        connection = mysql.connector.connect(
+            host=host,
+            database=database,
+            user=user,
+            password=password
+        )
+            
+        if connection.is_connected():
+            cursor = connection.cursor()
+            for record in records:
+                # 按照要求提取数据，组装为插入数据库的字典或元组
+                try:
+                    
+                    soccer_id = record.get('id', None)
+                    lg = record.get('lg', {})
+                    race_name = lg.get('na', '')
+                    race_id = lg.get('id', '')
+                    ts = record.get('ts', [])
+                    team_home = ts[0].get('na', '') if len(ts) > 0 else ''
+                    team_guest = ts[1].get('na', '') if len(ts) > 1 else ''
+                    team_cr = ''  # 未指定来源，置空
+                    c_time = 90
+                    nsg = record.get('nsg', [])
+                    # 进球相关字段，注意判空
+                    # 优化进球相关字段提取，避免变量未定义和重复遍历
+                    goal_home = goal_guest = goal_home_first = goal_guest_first = goal_home_second = goal_guest_second = None
+                    for nsg_item in nsg:
+                        if nsg_item.get('tyg') != 5 or 'pe' not in nsg_item or 'sc' not in nsg_item:
+                            continue
+                        if nsg_item['pe'] == 1001:
+                            goal_home, goal_guest = nsg_item['sc'][0], nsg_item['sc'][1]
+                        elif nsg_item['pe'] == 1002:
+                            goal_home_first, goal_guest_first = nsg_item['sc'][0], nsg_item['sc'][1]
+                        elif nsg_item['pe'] == 1003:
+                            goal_home_second, goal_guest_second = nsg_item['sc'][0], nsg_item['sc'][1]
+
+                    m_type_value = None
+                    if goal_home is not None and goal_guest is not None:
+                        m_type_value = goal_home + goal_guest
+
+                    # 开始时间
+                    bt = record.get('bt', None)
+                    if bt is not None:
+                        start_time = datetime.datetime.fromtimestamp(bt/1000).strftime('%Y-%m-%d %H:%M:%S')
+                    else:
+                        start_time = None
+                    # 当前时间
+                    create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+                    # 修复：原代码中查询soccer_analysis_start_new时用到了未定义的values变量，应该用当前record的soccer_id
+                    # 组装插入数据
+                    row = (
+                        soccer_id,
+                        race_name,
+                        team_home,
+                        team_guest,
+                        team_cr,
+                        c_time,
+                        m_type_value,
+                        goal_home_first,
+                        goal_guest_first,
+                        goal_home_second,
+                        goal_guest_second,
+                        goal_home,
+                        goal_guest,
+                        start_time,
+                        create_time,
+                        race_id
+                    )
+                    # 将组装好的 row 插入到 csgo.soccer_analysis_end_new 表
+                    insert_sql = """
+                        INSERT INTO `csgo`.`soccer_analysis_end_new`
+                        (`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type_value`, 
+                        `goal_home_first`, `goal_guest_first`, `goal_home_second`, `goal_guest_second`, 
+                        `goal_home`, `goal_guest`, `start_time`, `create_time`, `race_id`)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """
+
+
+                    print("soccer_analysis_end_new删除后再次插入")
+                    # 刪除这一条数据
+                    delete_sql = "DELETE FROM `csgo`.`soccer_analysis_end_new` WHERE `soccer_id` = %s"
+                    cursor.execute(delete_sql, (soccer_id,))
+                    
+                    # 覆盖插入
+                    cursor.execute(insert_sql, row)
+                    connection.commit()
+                    print("插入soccer_analysis_end_new成功")
+
+                except Exception as e:
+                    print(f"插入soccer_analysis_end_new出错: {e}")
+                except Exception as e:
+                    print(f"解析record出错: {e}")
+                # print(record)
+            
+        print(f"已获取第{cur}页，共{len(records)}条，累计{len(all_records)}/{total}")
+
+        # 判断是否还有下一页
+        if cur * size >= total or len(records) == 0:
+            break
+        current += 1
+        # 暂停1秒，防止请求过快
+        time.sleep(1)
+
 
 
     
 
     
 if __name__ == '__main__':
-    start_time=int(time.time())
-    log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}.log"
+    start_time = int(time.time())
+    log_file_name = f"main-{datetime.datetime.now().strftime('%Y%m%d')}.log"
     log_utils.init_logger(log_file_name)
 
         # 全局变量
     domain_cookie = {
         "domain": "https://a.a5y8i.com",
-        "authauthorization": "tt_BLOnpF3nn6GqtTZvVRvdIQlAOiS8bGrz.ef73337b3e22af9382922131075ca880"
+        "authauthorization": "tt_zT2e8C2LF9WLSZ375DsKzFZptfVGOeS9.cfb7eec82c9d9e487697e045e821654e"
     }
 
     update_global_vars(domain_cookie)
-    # 下注
-    values={}
-    values['soccer_id']= 3675319
-    values['m_type_value']=2.75
-    values['c_time']=7
-    bet_amount=20
-    save_bet_data(values,type='大',bet_amount=bet_amount,domain_cookie=domain_cookie)
+    # # 下注
+    # values={}
+    # values['soccer_id']= 3675319
+    # values['m_type_value']=2.75
+    # values['c_time']=7
+    # bet_amount=20
+    # save_bet_data(values,type='大',bet_amount=bet_amount,domain_cookie=domain_cookie)
 # 示例字符串
     # saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
     # notify_email("测试邮件")
     # get_soccer_data_start(2846449)
+    get_all_match_result_page(1757520000000, 1757951999999, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50)
 
 

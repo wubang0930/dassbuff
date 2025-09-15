@@ -208,7 +208,13 @@ class TabbedApp:
                 limit_page = text_box_value.split(",")[0]
                 page = text_box_value.split(",")[1]
                 page_size = text_box_value.split(",")[2]
-                soccerBet.updateMyBetHistoryList(domain_cookie2, int(limit_page), int(page), int(page_size))
+                def run_update_history():
+                    while True:
+                        soccerBet.updateMyBetHistoryList(domain_cookie2, int(limit_page), int(page), int(page_size))
+                        print("同步历史执行完成，等待2小时后再次执行")
+                        time.sleep(2 * 60 * 60)  # 每隔1小时执行一次
+
+                threading.Thread(target=run_update_history, daemon=True).start()
 
                 print("按钮执行结束3")
                 

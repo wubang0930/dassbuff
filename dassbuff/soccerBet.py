@@ -291,6 +291,11 @@ def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
     print("正在更新bet_history数据", domain_cookie2, limit_page, page, page_size)
     soccersave.saveMyBetHistoryList(domain_cookie2=domain_cookie2, limit_page=limit_page, page=page, page_size=page_size)
 
+    now_ts = int(time.time() * 1000)
+    begin_time = now_ts - 3 * 60 * 60 * 1000
+    _end_time = now_ts
+    soccersave.get_all_match_result_page(domain_cookie2, begin_time, _end_time, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50)
+
 
 def init_file():
     if os.path.exists(config.log_file):
