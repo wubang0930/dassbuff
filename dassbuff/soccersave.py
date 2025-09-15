@@ -779,7 +779,8 @@ def extract_numbers(s):
 
 import requests
 
-def get_all_match_result_page( begin_time, end_time, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50):
+def get_all_match_result_page(domain_cookie2, begin_time, end_time, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50):
+    update_global_vars(domain_cookie2)
     """
     递归查询 https://a.a5y8i.com/v1/match/matchResultPage 接口，获取所有分页数据
     :param domain: 域名，如 'https://a.a5y8i.com'
@@ -974,6 +975,6 @@ if __name__ == '__main__':
     # saveMyBetHistoryList(limit_page=5,page=1,page_size=10)
     # notify_email("测试邮件")
     # get_soccer_data_start(2846449)
-    get_all_match_result_page(1757520000000, 1757951999999, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50)
+    get_all_match_result_page(domain_cookie,1757520000000, 1757951999999, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50)
 
 
