@@ -253,35 +253,35 @@ def insert_soccer_analysis_start_new(cursor, values):
     # 3. insert_query变量名重复，容易混淆
     # 4. values.get('soccer_id',0)如果为0，可能插入脏数据
     # 修正建议：增加c_time判断，且只插入c_time<5的唯一数据
-    # if values.get('c_time') is not None and values.get('c_time') < 5:
-    sql_check_start_new = "SELECT * FROM `csgo`.`soccer_analysis_start_new` WHERE `soccer_id` = %s"
-    cursor.execute(sql_check_start_new, (values.get('soccer_id',''),))
-    result = cursor.fetchone()
-    if result is None:
-        print("插入soccer_analysis_start_new数据")
-        insert_query_start_new = "INSERT INTO `csgo`.`soccer_analysis_start_new`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
-        (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
-        inert_values_start_new = (
-            values.get('soccer_id',''),
-            values.get('race_name',''),
-            values.get('team_home',''),
-            values.get('team_guest',''),
-            values.get('team_cr',''),
-            values.get('c_time',0),
-            values.get('m_type',''),
-            values.get('m_type_value',0),
-            values.get('m_odds',0),
-            values.get('goal_home',''),
-            values.get('goal_guest',''),
-            values.get('start_time',None),
-            values['create_time'],
-            values.get('s_type',''),
-            values.get('s_type_value',0),
-            values.get('s_odds',0)
-        )
-        cursor.execute(insert_query_start_new, inert_values_start_new)
-    else:
-        print("soccer_analysis_start_new数据已存在")    
+    if values.get('c_time') is not None and values.get('c_time') <= 5:
+        sql_check_start_new = "SELECT * FROM `csgo`.`soccer_analysis_start_new` WHERE `soccer_id` = %s"
+        cursor.execute(sql_check_start_new, (values.get('soccer_id',''),))
+        result = cursor.fetchone()
+        if result is None:
+            print("插入soccer_analysis_start_new数据")
+            insert_query_start_new = "INSERT INTO `csgo`.`soccer_analysis_start_new`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
+            (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
+            inert_values_start_new = (
+                values.get('soccer_id',''),
+                values.get('race_name',''),
+                values.get('team_home',''),
+                values.get('team_guest',''),
+                values.get('team_cr',''),
+                values.get('c_time',0),
+                values.get('m_type',''),
+                values.get('m_type_value',0),
+                values.get('m_odds',0),
+                values.get('goal_home',''),
+                values.get('goal_guest',''),
+                values.get('start_time',None),
+                values['create_time'],
+                values.get('s_type',''),
+                values.get('s_type_value',0),
+                values.get('s_odds',0)
+            )
+            cursor.execute(insert_query_start_new, inert_values_start_new)
+        else:
+            print("soccer_analysis_start_new数据已存在")    
 
 
 
