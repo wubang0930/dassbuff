@@ -85,7 +85,7 @@ def getFbSoccerData(domain_cookie):
 
 def tarnMySoccerData(soccer):
     all_data=[]
-    if soccer is None or len(soccer['records'])==0:
+    if soccer is None or 'records' not in soccer or len(soccer['records']) == 0:
         return None
     
     for item in soccer['records']:
