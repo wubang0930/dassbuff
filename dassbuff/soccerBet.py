@@ -107,7 +107,7 @@ def save_soccer_data():
     insert_query = "INSERT INTO `csgo`.`soccer_analysis`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
     (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
 
-    print("开始插入soccer_analysis数据")
+    # print("开始插入soccer_analysis数据")
     
     # 连接到 MySQL 数据库
     connection = mysql.connector.connect(
@@ -188,6 +188,7 @@ def save_soccer_data():
     bet_new_data_two=[\
 #  这3个胜率比较大
 [2,40,0,'大',60],\
+[2.25,24,1,'小',60],\
 [2.25,56,0,'大',60],\
 [2.5,37,1,'大',60],\
 [2.75,20,0,'大',60],\
@@ -195,9 +196,6 @@ def save_soccer_data():
 
                     ]
         # 下注
-    log_time="当前时间是：" + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    print(log_time)
-   
 
     # 获取余额，
     order_result = {}

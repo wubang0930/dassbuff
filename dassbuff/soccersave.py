@@ -309,7 +309,6 @@ def getBalance(authorization):
         }
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        print(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             # if reponse_json['code'] == 14010:
