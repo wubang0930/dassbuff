@@ -161,22 +161,37 @@ def save_soccer_data():
 # [3,78,3,'小',3.5,20],\
 # [3,16,0,'小',2.5,20],\
 # [3,78,1,'小',1.5,20],\ # 这个由小转为大
+# [2,3,0,'大',2,50],\
+# [2,35,0,'小',1.25,50],\
+# [2.5,59,3,'小',4,50],\
+# [2.5,64,1,'大',1.75,50],\
+# [2.75,52,0,'小',1.25,50],\
+# [3,78,1,'大',1.5,50],\
+# [3.25,12,0,'小',3,50],\
 
 
-[2,3,0,'大',2,50],\
+
+#  这3个胜率比较大
+[1.75,3,0,'小',1.75,50],\
+[1.5,1,0,'小',1.5,90],\
 [2,20,1,'大',2.75,50],\
-[2,35,0,'小',1.25,50],\
 [2,63,2,'大',2.75,50],\
 [2.25,1,0,'小',2.25,90],\
 [2.5,30,1,'大',2.75,50],\
 [2.5,59,3,'小',4,50],\
-[2.5,64,1,'大',1.75,50],\
-[2.75,52,0,'小',1.25,50],\
-[2.75,56,2,'小',3.25,50],\
 [2.75,67,2,'大',2.75,50],\
+[2.75,56,2,'小',3.25,50],\
 [3,1,0,'小',3,90],\
-[3,78,1,'大',1.5,50],\
-[3.25,12,0,'小',3,50],\
+
+                    ]
+    # 初盘、时间、总进球（没有盘口参数）
+    bet_new_data_two=[\
+#  这3个胜率比较大
+[2,40,0,'大',60],\
+[2.25,56,0,'大',60],\
+[2.5,37,1,'大',60],\
+[2.75,20,0,'大',60],\
+[2.75,60,1,'大',60],\
 
                     ]
         # 下注
@@ -231,7 +246,7 @@ def save_soccer_data():
             print("获取初盘数据失败")
             continue
 
-        # 14,16,20,22,24,30
+        # [2.75,56,2,'小',3.25,50]
         for bet in bet_new_data:
             if st_value==bet[0] and values.get('c_time',0)==bet[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet[2]\
                   and bet[4]==values.get('m_type_value',0) :
@@ -240,7 +255,14 @@ def save_soccer_data():
                 threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],bet[5],domain_cookie)).start()
 
                 continue
+        # [2.75,60,1,'大',50]            
+        for bet_two in bet_new_data_two:
+            if st_value==bet_two[0] and values.get('c_time',0)==bet_two[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet_two[2] :
+                print("开始bet第2类型，开始盘口是："+str(st_value))
+                time.sleep(2)
+                threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],bet[4],domain_cookie)).start()
 
+                continue
 
         
 
