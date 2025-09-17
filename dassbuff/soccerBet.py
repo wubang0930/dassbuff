@@ -96,6 +96,7 @@ def save_soccer_data():
         return
     
     all_data=soccersave.tarnMySoccerData(soccer)
+    print("获取足球数据成功,开始插入")
 
     if all_data is None or len(all_data)==0:
         print("获取足球数据为空")
@@ -218,14 +219,14 @@ def save_soccer_data():
    
 
     for values in all_data:
-        log_head=str(values.get('soccer_id',"race_name"))+","+values.get('race_name',"race_name")+"，主队是："+values.get('team_home',"team_home")+"，客队是："+values.get('team_guest',"team_guest")+\
-                "，时间："+str(values.get('c_time',''))
-        log_line="大："+str(values.get('m_type_value',''))+"，赔率："+str(values.get('m_odds',''))+\
-                "----小："+str(values.get('s_type_value',''))+",赔率："+str(values.get('s_odds',0))+\
-                "----主队进球："+str(values.get('goal_home',''))+",客队进球："+str(values.get('goal_guest',''))
+        # log_head=str(values.get('soccer_id',"race_name"))+","+values.get('race_name',"race_name")+"，主队是："+values.get('team_home',"team_home")+"，客队是："+values.get('team_guest',"team_guest")+\
+        #         "，时间："+str(values.get('c_time',''))
+        # log_line="大："+str(values.get('m_type_value',''))+"，赔率："+str(values.get('m_odds',''))+\
+        #         "----小："+str(values.get('s_type_value',''))+",赔率："+str(values.get('s_odds',0))+\
+        #         "----主队进球："+str(values.get('goal_home',''))+",客队进球："+str(values.get('goal_guest',''))
         
-        print(log_head)
-        print(log_line)
+        # print(log_head)
+        # print(log_line)
 
 
 
@@ -238,7 +239,7 @@ def save_soccer_data():
 
 
         st_value= soccersave.get_soccer_data_start(values.get('soccer_id',0))
-        print("初盘:"+str(st_value)+",当前时间："+str(values.get('c_time',0))+",当前总进球："+str(values.get('goal_home',0) +values.get('goal_guest',0))+ ',当前盘口：'+str(values.get('m_type_value',0)))
+        # print("初盘:"+str(st_value)+",当前时间："+str(values.get('c_time',0))+",当前总进球："+str(values.get('goal_home',0) +values.get('goal_guest',0))+ ',当前盘口：'+str(values.get('m_type_value',0)))
 
         if st_value is None:
             print("获取初盘数据失败")
