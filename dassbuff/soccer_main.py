@@ -162,7 +162,7 @@ class TabbedApp:
             if i == 2:
                 button_title = "同步历史"
                 # 填充text_box的默认值
-                text_box.insert(tk.END, "3,1,10")
+                text_box.insert(tk.END, "6,1,10")
 
 
             button = tk.Button(tab0, text=button_title+str(i+1), width=10, command=lambda idx=i: tab0_button_command(idx))

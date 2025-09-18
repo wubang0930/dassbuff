@@ -413,7 +413,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
 
     deatail = getMatchDetail(matchId,1)
     singleBetList=getMatchList(deatail,bet_amount,type)
-    print(singleBetList)
+    # print(singleBetList)
 
     if singleBetList is None or len(singleBetList)==0:
         order_result['msg'] = "没有找到大盘数据,等几分钟在尝试"
@@ -442,7 +442,8 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
         for item in singlePassDetail:
             orderIds.append(item['id'])
 
-    
+    # 这里暂停3秒后再次查询
+    time.sleep(3)
     status_result=getStakeOrderStatus(orderIds)
     if status_result['orderStatus']:
         order_result['msg'] = status_result['msg']
@@ -451,12 +452,13 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     return order_result
 
 def start_buy_itone(matchId,currentNum,bet_amount,type):
-    for i in range(1,3):
+    for i in range(1,2):
         order_result=gobuyitone(matchId,currentNum,bet_amount,type)
         if order_result['orderStatus']:
             return order_result
         # 失败，则等待x秒后再试
-        time.sleep(15)
+        print("第"+str(i)+"次尝试失败，等待15秒后再试")
+        time.sleep(10)
     
     return order_result
 
