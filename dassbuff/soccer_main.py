@@ -143,6 +143,7 @@ class TabbedApp:
         # 创建三行，每行一个按钮和一个可自定义长宽高的文本框
         # 先创建一个列表保存每个text_box的引用
         self.tab0_text_boxes = []
+        self.tab0_buttons = []  # 新增：保存每个按钮的引用
         for i in range(3):
             # 创建按钮，并绑定事件处理方法
             button_title = "开始bet"
@@ -164,16 +165,15 @@ class TabbedApp:
                 # 填充text_box的默认值
                 text_box.insert(tk.END, "6,1,10")
 
-
-            button = tk.Button(tab0, text=button_title+str(i+1), width=10, command=lambda idx=i: tab0_button_command(idx))
-            button.grid(row=i, column=0, sticky=tk.W, padx=10)
+            # 创建主按钮，并保存引用
+            btn = tk.Button(tab0, text=button_title+str(i+1), width=10, command=lambda idx=i: tab0_button_command(idx))
+            btn.grid(row=i, column=0, sticky=tk.W, padx=10)
+            self.tab0_buttons.append(btn)
 
             button = tk.Button(tab0, text=button_title+"停止"+str(i+1), width=10, command=lambda idx=i: tab0_button_stop(idx))
             button.grid(row=i, column=1, sticky=tk.W, padx=10)
 
-        
-            
-# 单独定义按钮点击事件方法
+        # 单独定义按钮点击事件方法
         def tab0_button_command(idx):
             # 获取对应text_box的内容
             text_box_value = self.tab0_text_boxes[idx].get("1.0", tk.END).strip()
@@ -185,6 +185,8 @@ class TabbedApp:
                 threading.Thread(target=soccerbenefit.receive_all_bonus_action, args=(domain_cookie,)).start()
                 logger.debug("按钮1执行结束")
             if idx == 1:
+                self.tab0_buttons[1]['state'] = tk.DISABLED
+                self.tab0_buttons[1]['text'] = "正在bet中..."
                 # 如果text_box_value有值，则清空并写入data_bet_request.txt
                 if text_box_value:
                     try:
@@ -200,6 +202,10 @@ class TabbedApp:
                 logger.error("开始bet定时执行")
                 logger.info("开始bet定时执行")
             if idx == 2:
+                # 置灰“同步历史”按钮
+                self.tab0_buttons[2]['state'] = tk.DISABLED
+                self.tab0_buttons[2]['text'] = "正在同步中..."
+
                 text_box_value2 = self.tab0_text_boxes[1].get("1.0", tk.END).strip()
                 domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value2)
 
@@ -214,7 +220,7 @@ class TabbedApp:
                         time.sleep(3 * 60 * 60)  # 每隔3小时执行一次
 
                 threading.Thread(target=run_update_history, daemon=True).start()
-
+                
                 logger.debug("按钮3执行结束")
                 
         
