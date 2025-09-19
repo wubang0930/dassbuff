@@ -321,7 +321,10 @@ def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
     now_ts = int(time.time() * 1000)
     begin_time = now_ts - 6 * 60 * 60 * 1000
     end_time = now_ts
-    logger.error("开始时间: %s, 结束时间: %s", str(begin_time), str(end_time))
+    # 将时间戳转换为年月日时分秒格式
+    begin_time_str = datetime.fromtimestamp(begin_time / 1000).strftime('%Y-%m-%d %H:%M:%S')
+    end_time_str = datetime.fromtimestamp(end_time / 1000).strftime('%Y-%m-%d %H:%M:%S')
+    logger.error("开始时间: %s, 结束时间: %s", begin_time_str, end_time_str)
     soccersave.get_all_match_result_page(domain_cookie2, begin_time, end_time, 2, 0, "CMN", "1", 50)
 
 
