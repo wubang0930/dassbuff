@@ -24,7 +24,7 @@ exchange_rate=7.10
 data_bet_request_file_path = "data_bet_request.txt"
 
 def initFile():
-    logger.debug("文件初始化")
+    logger.debug("开始初始化文件夹")
     if not os.path.exists(config.data_local):
         os.makedirs(config.data_local)
 
@@ -39,8 +39,8 @@ def initFile():
     #     os.makedirs(config.log_file)
 
     global  exchange_rate
-    exchange_rate=bastPricetSellSkin86.find_us_exchange()
-    logger.debug("当前的美元汇率是："+str(exchange_rate))
+    exchange_rate = bastPricetSellSkin86.find_us_exchange()
+    logger.debug(f"当前的美元汇率是：{exchange_rate}")
 
 
  
@@ -114,7 +114,7 @@ class TabbedApp:
         def update_log_box():
             base_dir = os.path.dirname(os.path.abspath(__file__))
             log_file_name = "error.log"
-            log_file_path = os.path.join(base_dir, "log/"+log_file_name)
+            log_file_path = os.path.join(base_dir, "log", log_file_name)
 
             try:
                 # 如果日志文件不存在，则创建该文件
@@ -177,16 +177,13 @@ class TabbedApp:
         def tab0_button_command(idx):
             # 获取对应text_box的内容
             text_box_value = self.tab0_text_boxes[idx].get("1.0", tk.END).strip()
-            log_msg = f"按钮{idx+1}被点击，输入框内容为：{text_box_value}\n"
-            logger.debug(log_msg)
-
-            
+            logger.debug(f"按钮{idx+1}被点击，输入框内容为：{text_box_value}")
 
             if idx == 0:
                 domain_cookie = httpUtils.parse_curl_to_params(text_box_value)
-                logger.debug(domain_cookie)
+                logger.debug(f"解析到的domain_cookie: {domain_cookie}")
                 threading.Thread(target=soccerbenefit.receive_all_bonus_action, args=(domain_cookie,)).start()
-                logger.debug("按钮执行结束11")
+                logger.debug("按钮1执行结束")
             if idx == 1:
                 # 如果text_box_value有值，则清空并写入data_bet_request.txt
                 if text_box_value:
@@ -196,9 +193,9 @@ class TabbedApp:
                             f.write(text_box_value)
                         logger.debug(f"已将输入内容写入 {data_bet_request_file_path}")
                     except Exception as e:
-                        logger.debug(f"写入 {data_bet_request_file_path} 失败: {e}")
+                        logger.error(f"写入 {data_bet_request_file_path} 失败: {e}")
                 domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value)
-                logger.debug(domain_cookie2)
+                logger.debug(f"解析到的domain_cookie2: {domain_cookie2}")
                 threading.Thread(target=soccerBet.startBetSoccer, args=(domain_cookie2,)).start()
                 logger.info("开始bet定时执行")
             if idx == 2:
@@ -211,12 +208,12 @@ class TabbedApp:
                 def run_update_history():
                     while True:
                         soccerBet.updateMyBetHistoryList(domain_cookie2, int(limit_page), int(page), int(page_size))
-                        logger.debug("同步历史执行完成，等待3小时后再次执行")
-                        time.sleep(3 * 60 * 60)  # 每隔1小时执行一次
+                        logger.info("同步历史执行完成，等待3小时后再次执行")
+                        time.sleep(3 * 60 * 60)  # 每隔3小时执行一次
 
                 threading.Thread(target=run_update_history, daemon=True).start()
 
-                logger.debug("按钮执行结束3")
+                logger.debug("按钮3执行结束")
                 
         
         def tab0_button_stop(idx):
@@ -233,7 +230,7 @@ class TabbedApp:
                     logger.debug(f"中断线程: {t.name}")
                     os._exit(0)
                 except Exception as e:
-                    logger.debug(f"中断线程失败: {e}")
+                    logger.error(f"中断线程失败: {e}")
 
 
 if __name__ == "__main__":
@@ -243,7 +240,7 @@ if __name__ == "__main__":
     # logger.debug("开始运行1")
     # log_utils.init_logger(log_file_name)
 
-    logger.debug("开始运行2")
+    logger.info("主程序开始运行")
     # logger.debug("mian这是一条信息日志")
     # logger.warning("这是一条警告日志")
     # logger.error("这是一条错误日志")

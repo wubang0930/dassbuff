@@ -52,7 +52,7 @@ def update_global_vars(new_domain_cookie):
 
 
 def delete_today_data(version_date):
-    logger.debug(getNowTime()+"开始删除数据")
+    logger.debug("开始删除数据")
     try:
         # 连接到 MySQL 数据库
         connection = mysql.connector.connect(
@@ -72,10 +72,10 @@ def delete_today_data(version_date):
             cursor.execute(sql_cs_db_deal, values)
             cursor.execute(sql_goods, values)
             connection.commit()  # 提交事务
-            logger.debug(getNowTime()+"数据删除成功")
+            logger.debug("数据删除成功")
     
     except Error as e:
-        logger.debug(f"数据库连接错误: {e}")
+        logger.debug("数据库连接错误: %s", e)
     
     finally:
         if connection.is_connected():
@@ -148,10 +148,11 @@ def save_soccer_data():
                 # 插入首次数据
                 insert_soccer_analysis_start_new(cursor, values)
                 
-
+                
                 connection.commit()  # 提交事务
             except Error as e:
-                logger.debug(f"数据库soccer_analysis连接错误: {e}")
+                logger.debug("数据库soccer_analysis连接错误: %s", e)
+    logger.info("实时数据插入成功")
     if connection.is_connected():
         cursor.close()
         connection.close()
@@ -208,16 +209,16 @@ def save_soccer_data():
     if balance_response and balance_response['code'] == 14010:
         order_result['msg'] = "token失效，通知管理员"
         order_result['orderStatus'] = True
-        logger.error(order_result['msg'])
+        logger.error("%s", order_result['msg'])
         messagesend.notify_email(order_result['msg'],has_notified)
         has_notified=True
     elif balance_response and balance_response['code'] == 0:
-        logger.debug("查询成功,余额为："+str(balance_response['data']['bl']) )
+        logger.debug("查询成功,余额为: %s", str(balance_response['data']['bl']))
         order_result['balance'] = balance_response['data']['bl']
     else:
-        order_result['msg'] = "余额查询失败："+str(balance_response)
+        order_result['msg'] = "余额查询失败: %s" % str(balance_response)
         order_result['orderStatus'] = False
-        logger.error(order_result['msg'])
+        logger.error("%s", order_result['msg'])
         messagesend.notify_email(order_result['msg'],has_notified)
         has_notified=True
     
@@ -253,7 +254,7 @@ def save_soccer_data():
         for bet in bet_new_data:
             if st_value==bet[0] and values.get('c_time',0)==bet[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet[2]\
                   and bet[4]==values.get('m_type_value',0) :
-                logger.debug("开始bet，开始盘口是："+str(st_value))
+                logger.debug("开始bet，开始盘口是: %s", str(st_value))
                 time.sleep(2)
                 threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],bet[5],domain_cookie)).start()
 
@@ -261,7 +262,7 @@ def save_soccer_data():
         # [2.75,60,1,'大',50]            
         for bet_two in bet_new_data_two:
             if st_value==bet_two[0] and values.get('c_time',0)==bet_two[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet_two[2] :
-                logger.debug("开始bet第2类型，开始盘口是："+str(st_value))
+                logger.debug("开始bet第2类型，开始盘口是: %s", str(st_value))
                 time.sleep(2)
                 threading.Thread(target=soccersave.save_bet_data,args=(values,bet_two[3],bet_two[4],domain_cookie)).start()
 
@@ -314,13 +315,13 @@ def insert_soccer_analysis_start_new(cursor, values):
 
 def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
     update_global_vars(domain_cookie2)
-    logger.debug("正在更新bet_history数据", domain_cookie2, limit_page, page, page_size)
+    logger.debug("正在更新bet_history数据, domain_cookie2: %s, limit_page: %s, page: %s, page_size: %s", str(domain_cookie2), str(limit_page), str(page), str(page_size))
     soccersave.saveMyBetHistoryList(domain_cookie2=domain_cookie2, limit_page=limit_page, page=page, page_size=page_size)
 
     now_ts = int(time.time() * 1000)
     begin_time = now_ts - 6 * 60 * 60 * 1000
     end_time = now_ts
-    logger.debug("开始时间："+str(begin_time)+"结束时间："+str(end_time))
+    logger.debug("开始时间: %s, 结束时间: %s", str(begin_time), str(end_time))
     soccersave.get_all_match_result_page(domain_cookie2, begin_time, end_time, 2, 0, "CMN", "1", 50)
 
 
@@ -340,10 +341,10 @@ def startBetSoccer(domain_cookie):
     while True:
         schedule.run_pending()
         time.sleep(1)
-        log_num+=1
+        log_num += 1
 
-        if log_num%10==0:
-            logger.info("正在运行中,第"+str(log_num//10)+"次执行")
+        if log_num % 30 == 0:
+            logger.info("正在运行中,第%s次执行", str(log_num // 30))
 
 
 
@@ -379,7 +380,6 @@ if __name__ == '__main__':
 
     # end_time=int(time.time())
     # logger.debug("运行时间："+str(end_time-start_time))
-
 
 
 

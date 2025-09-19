@@ -45,7 +45,7 @@ def getFbSoccerData(domain_cookie):
     try:
         # 设置请求的URL
         url = f'{domain}/v1/match/getList'
-        logger.debug(url)
+        logger.debug(f"请求URL: {url}")
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -72,14 +72,14 @@ def getFbSoccerData(domain_cookie):
         }
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        logger.debug(response)
+        logger.debug(f"请求响应: {response.status_code} {response.text[:200]}")
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             soccer=reponse_json['data']
             return soccer
         return None
     except Exception as e:
-        logger.error(e)
+        logger.error(f"getFbSoccerData异常: {e}")
         return None
 
 
@@ -140,7 +140,7 @@ def getMatchDetail(matchId,oddsType):
     try:
         # 设置请求的URL
         url = f'{domain}/v1/match/getMatchDetail'
-        logger.debug(url)
+        logger.debug(f"请求URL: {url}")
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -163,28 +163,28 @@ def getMatchDetail(matchId,oddsType):
         }
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        logger.debug(response)
+        logger.debug(f"请求响应: {response.status_code} {response.text[:200]}")
         # logger.debug(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
-            logger.debug(reponse_json)
+            logger.debug(f"返回数据: {reponse_json}")
             detail=reponse_json['data']
             # 过滤平均销量大于30的列表
             return detail
         return None
     except Exception as e:
-        logger.error(e)
+        logger.error(f"getMatchDetail异常: {e}")
         return None
 
 
 
-# 下注
+# bet
 def singlePass(singleBetList):
     # orderIds=[]
     try:
         # 设置请求的URL
         url = f'{domain}/v1/order/bet/singlePass'
-        logger.debug(url)
+        logger.debug(f"请求URL: {url}")
         # 设置请求头
         headers = {
             "Connection":"keep-alive",
@@ -221,25 +221,25 @@ def singlePass(singleBetList):
             "currencyId": 1,
 
         }
-        logger.debug(params)
+        logger.debug(f"bet参数: {params}")
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        logger.debug(response)
+        logger.debug(f"bet响应: {response.status_code} {response.text[:200]}")
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             if reponse_json['code'] == 0:
                 detail=reponse_json['data']
                 return detail
             else:
-                logger.debug(reponse_json['message'])
+                logger.debug(f"bet失败: {reponse_json.get('message', '')}")
         return None
     except Exception as e:
-        logger.error(e)
+        logger.error(f"singlePass异常: {e}")
         return None
 
 
 
-# 下注
+# bet
 def getStakeOrderStatus(orderIds):
     status_result={}
     status_result['msg'] = ""
@@ -251,7 +251,7 @@ def getStakeOrderStatus(orderIds):
     try:
         # 设置请求的URL
         url = 'https://api.xyz2277.com/v1/order/getStakeOrderStatus'
-        logger.debug(url)
+        logger.debug(f"请求URL: {url}")
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -275,16 +275,16 @@ def getStakeOrderStatus(orderIds):
 
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        logger.debug(response)
+        logger.debug(f"订单状态响应: {response.status_code} {response.text[:200]}")
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
-            logger.info("查询订单状态为："+str(reponse_json))
+            logger.info(f"查询订单状态为: {reponse_json}")
             if reponse_json['code'] == 0 and reponse_json['data'][0].get('rjs',None) is None:
                 status_result['msg'] = reponse_json['data'][0].get('rjs',"成功")
                 status_result['orderStatus'] = True
 
     except Exception as e:
-        logger.error(e)
+        logger.error(f"getStakeOrderStatus异常: {e}")
 
     return status_result
 
@@ -294,7 +294,7 @@ def getBalance(authorization):
     try:
         # 设置请求的URL
         url = 'https://api.xyz2277.com/v1/user/base'
-        logger.debug(url)
+        logger.debug(f"请求URL: {url}")
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -316,7 +316,7 @@ def getBalance(authorization):
         }
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        logger.debug(response)
+        logger.debug(f"余额查询响应: {response.status_code} {response.text[:200]}")
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             # if reponse_json['code'] == 14010:
@@ -329,7 +329,7 @@ def getBalance(authorization):
             #     return balance
         return reponse_json
     except Exception as e:
-        logger.error(e)
+        logger.error(f"getBalance异常: {e}")
         return None
 
 
@@ -395,7 +395,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     
 
     global has_notified
-    # 获取余额，查询比赛，封装下注，下注，查询订单状态
+    # 获取余额，查询比赛，封装bet，bet，查询订单状态
     balance_response=getBalance(authorization)
     if balance_response['code'] == 14010:
         order_result['msg'] = "token失效，通知管理员"
@@ -406,16 +406,16 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
         return order_result
     
     elif balance_response['code'] == 0:
-        logger.info("查询成功,余额为："+str(balance_response['data']['bl']) )
+        logger.info(f"查询成功,余额为：{balance_response['data']['bl']}")
         order_result['balance'] = balance_response['data']['bl']
     else:
-        order_result['msg'] = "余额查询失败："+str(balance_response)
+        order_result['msg'] = f"余额查询失败：{balance_response}"
         order_result['orderStatus'] = False
         logger.info(order_result['msg'])
         return order_result
     
     if float(order_result.get('balance',0)) < float(bet_amount):
-        order_result['msg'] = "余额不足，当前余额是："+str(order_result['balance'])
+        order_result['msg'] = f"余额不足，当前余额是：{order_result['balance']}"
         order_result['orderStatus'] = True
         logger.info(order_result['msg'])
         messagesend.notify_email(order_result['msg'],has_notified)
@@ -433,16 +433,16 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
         return order_result
 # 
     # order_result['currentValue'] = singleBetList[0].get('currentValue',0) 
-    # logger.debug("当前比赛盘口已变化，无需重复下注,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，下注盘口为："+ str(currentNum))
+    # logger.debug("当前比赛盘口已变化，无需重复bet,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，bet盘口为："+ str(currentNum))
     order_result['currentValue']=singleBetList[0].get('currentValue',0)
 
 
     if singleBetList[0].get('currentValue',0) != currentNum:
-        logger.debug("当前比赛盘口已变化，无需重复下注,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，下注盘口为："+ str(currentNum))
+        logger.debug(f"当前比赛盘口已变化，无需重复bet,当前盘口为：{singleBetList[0].get('currentValue',0)}，bet盘口为：{currentNum}")
         order_result['msg'] = "当前比赛盘口已变化"
         return order_result
 
-    #判断要下注的比赛大小，是否和当前比赛的大小一致
+    #判断要bet的比赛大小，是否和当前比赛的大小一致
 
     # 太快会导致失败
     singlePassDetail=singlePass(singleBetList)
@@ -460,7 +460,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     if status_result['orderStatus']:
         order_result['msg'] = status_result['msg']
         order_result['orderStatus'] = status_result['orderStatus']
-        logger.debug(order_result['msg'])
+        logger.debug(f"bet结果: {order_result['msg']}")
     
     return order_result
 
@@ -470,7 +470,7 @@ def start_buy_itone(matchId,currentNum,bet_amount,type):
         if order_result['orderStatus']:
             return order_result
         # 失败，则等待x秒后再试
-        logger.info("第"+str(i)+"次尝试失败，等待15秒后再试")
+        logger.info(f"第{i}次尝试失败，等待15秒后再试")
         time.sleep(10)
     
     return order_result
@@ -484,12 +484,12 @@ def getNowTime():
 def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
     update_global_vars(domain_cookie)
 
-    logger.debug("  正在存储下注数据")
-    # 这里取下注
+    logger.debug("正在存储bet数据")
+    # 这里取bet
     order_result=start_buy_itone(values.get('soccer_id',None),values.get('m_type_value',0),bet_amount,type)
 
     # order_result = start_buy_itone(2775624,0.75,bet_amount)
-    logger.debug(order_result)
+    logger.debug(f"bet结果: {order_result}")
     
     insert_query = "INSERT INTO `csgo`.`soccer_bet`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `odds_amount`, `odds_result`, `start_time`, `create_time`,`odds_status`,`actual_type_value`,`bet_id`) VALUES\
     (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s, %s, %s, %s)"
@@ -547,7 +547,7 @@ def getMyBetHistoryList(page=1,page_size=10):
     try:
         # 设置请求的URL
         url = f'{domain}/v1/order/new/bet/list'
-        logger.debug(url)
+        logger.debug(f"请求URL: {url}")
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -572,7 +572,7 @@ def getMyBetHistoryList(page=1,page_size=10):
         }
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        logger.debug(response)
+        logger.debug(f"请求响应: {response.status_code} {response.text[:200]}")
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             if reponse_json['code'] == 14010:
@@ -581,16 +581,16 @@ def getMyBetHistoryList(page=1,page_size=10):
             
         return reponse_json
     except Exception as e:
-        logger.error(e)
+        logger.error(f"getMyBetHistoryList异常: {e}")
         return None
 
 
 
 def saveMyBetHistoryList(domain_cookie2=None,limit_page=5,page=1,page_size=10):
     update_global_vars(domain_cookie2)
-    logger.debug("limit_page,page,page_size is ",limit_page,page,page_size)
+    logger.debug(f"limit_page={limit_page}, page={page}, page_size={page_size}")
     while True:
-        logger.debug("获取第"+str(page)+"页数据")
+        logger.debug(f"获取第{page}页数据")
         time.sleep(2)
         if limit_page<page:
             logger.debug("获取数据结束了，退出")
@@ -651,7 +651,7 @@ def saveMyBetHistoryList(domain_cookie2=None,limit_page=5,page=1,page_size=10):
                 insert_if_not_exists(item['id'], item['ops'][0]['mid'], bet_history_data)
             except Exception as e:
                 logger.error("解析数据失败")
-                logger.error(e)
+                logger.error(f"{e}")
 
 
         page+=1
@@ -661,7 +661,7 @@ def saveMyBetHistoryList(domain_cookie2=None,limit_page=5,page=1,page_size=10):
 
 
 def bet_history_victory(odds_amount,m_odds,odds_amount_result):
-    logger.debug(odds_amount,m_odds,odds_amount_result)
+    logger.debug(f"odds_amount={odds_amount}, m_odds={m_odds}, odds_amount_result={odds_amount_result}")
     if odds_amount_result > 0 and odds_amount_result > odds_amount*(m_odds-1)*0.9:
         return "胜"
     elif odds_amount_result > 0 and odds_amount_result < odds_amount*(m_odds-1)*0.9:
@@ -809,7 +809,7 @@ def get_all_match_result_page(domain_cookie2, begin_time, end_time, match_type=2
     :return: 所有records的列表
     """
     url = f"{domain}/v1/match/matchResultPage"
-    logger.debug(url)
+    logger.debug(f"请求URL: {url}")
     headers = {
         'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'zh-CN,zh;q=0.9',
@@ -975,7 +975,7 @@ if __name__ == '__main__':
     }
 
     update_global_vars(domain_cookie)
-    # # 下注
+    # # bet
     # values={}
     # values['soccer_id']= 3675319
     # values['m_type_value']=2.75
@@ -987,5 +987,4 @@ if __name__ == '__main__':
     # notify_email("测试邮件")
     # get_soccer_data_start(2846449)
     get_all_match_result_page(domain_cookie,1757520000000, 1757951999999, match_type=2, order_by=0, language_type="CMN", sport_id="1", page_size=50)
-
 
