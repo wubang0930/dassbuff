@@ -9,8 +9,10 @@ import mysql.connector
 from mysql.connector import Error
 import re
 import messagesend as messagesend
-import log_utils
+from logger_config import setup_loggers
 
+
+logger = setup_loggers()
 
 # 数据库连接参数
 host = '127.0.0.1'
@@ -43,6 +45,7 @@ def getFbSoccerData(domain_cookie):
     try:
         # 设置请求的URL
         url = f'{domain}/v1/match/getList'
+        logger.debug(url)
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -67,17 +70,16 @@ def getFbSoccerData(domain_cookie):
             "sportId": 1,
             "type": 1
         }
-        print("request url:",url)
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        # print(response)
+        logger.debug(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             soccer=reponse_json['data']
             return soccer
         return None
     except Exception as e:
-        print(e)
+        logger.error(e)
         return None
 
 
@@ -89,7 +91,7 @@ def tarnMySoccerData(soccer):
         return None
     
     for item in soccer['records']:
-        # print(item)
+        # logger.debug(item)
         single_data={}
         single_data['soccer_id'] = item['id']
         single_data['team_cr'] = item['lg']['rnm']
@@ -138,6 +140,7 @@ def getMatchDetail(matchId,oddsType):
     try:
         # 设置请求的URL
         url = f'{domain}/v1/match/getMatchDetail'
+        logger.debug(url)
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -160,16 +163,17 @@ def getMatchDetail(matchId,oddsType):
         }
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        # print(response)
+        logger.debug(response)
+        # logger.debug(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
-            print(reponse_json)
+            logger.debug(reponse_json)
             detail=reponse_json['data']
             # 过滤平均销量大于30的列表
             return detail
         return None
     except Exception as e:
-        print(e)
+        logger.error(e)
         return None
 
 
@@ -180,6 +184,7 @@ def singlePass(singleBetList):
     try:
         # 设置请求的URL
         url = f'{domain}/v1/order/bet/singlePass'
+        logger.debug(url)
         # 设置请求头
         headers = {
             "Connection":"keep-alive",
@@ -216,20 +221,20 @@ def singlePass(singleBetList):
             "currencyId": 1,
 
         }
-        print(params)
+        logger.debug(params)
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
+        logger.debug(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
-            print(reponse_json)
             if reponse_json['code'] == 0:
                 detail=reponse_json['data']
                 return detail
             else:
-                print(reponse_json['message'])
+                logger.debug(reponse_json['message'])
         return None
     except Exception as e:
-        print(e)
+        logger.error(e)
         return None
 
 
@@ -246,6 +251,7 @@ def getStakeOrderStatus(orderIds):
     try:
         # 设置请求的URL
         url = 'https://api.xyz2277.com/v1/order/getStakeOrderStatus'
+        logger.debug(url)
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -269,16 +275,16 @@ def getStakeOrderStatus(orderIds):
 
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        print(response)
+        logger.debug(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
-            print("查询订单状态为："+str(reponse_json))
+            logger.info("查询订单状态为："+str(reponse_json))
             if reponse_json['code'] == 0 and reponse_json['data'][0].get('rjs',None) is None:
                 status_result['msg'] = reponse_json['data'][0].get('rjs',"成功")
                 status_result['orderStatus'] = True
 
     except Exception as e:
-        print(e)
+        logger.error(e)
 
     return status_result
 
@@ -288,6 +294,7 @@ def getBalance(authorization):
     try:
         # 设置请求的URL
         url = 'https://api.xyz2277.com/v1/user/base'
+        logger.debug(url)
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -309,19 +316,20 @@ def getBalance(authorization):
         }
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
+        logger.debug(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             # if reponse_json['code'] == 14010:
-            #     print("token失效")
+            #     logger.debug("token失效")
             #     return None
                 
             # if reponse_json['code'] == 0:
-            #     print("查询成功："+reponse_json)
+            #     logger.debug("查询成功："+reponse_json)
             #     balance=reponse_json['data']
             #     return balance
         return reponse_json
     except Exception as e:
-        print(e)
+        logger.error(e)
         return None
 
 
@@ -333,7 +341,7 @@ def tranTypeValue(typeValue):
 
 def getMatchList(deatail,bet_amount=10,type='大'):
     # if balance is None or balance['bl']<bet_amount:
-    #     print("余额不足,当前余额是："+str(balance['bl']))
+    #     logger.debug("余额不足,当前余额是："+str(balance['bl']))
     #     return None
     hashFalg=False
     for mg in deatail['mg']:
@@ -356,7 +364,7 @@ def getMatchList(deatail,bet_amount=10,type='大'):
                     break
 
     if not hashFalg:
-        print("没有找到大盘数据")
+        logger.debug("没有找到大盘数据")
         return None
     
     singleBetList=[]
@@ -392,41 +400,45 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     if balance_response['code'] == 14010:
         order_result['msg'] = "token失效，通知管理员"
         order_result['orderStatus'] = True
+        logger.info(order_result['msg'])
         messagesend.notify_email(order_result['msg'],has_notified)
         has_notified=True
         return order_result
     
     elif balance_response['code'] == 0:
-        print("查询成功,余额为："+str(balance_response['data']['bl']) )
+        logger.info("查询成功,余额为："+str(balance_response['data']['bl']) )
         order_result['balance'] = balance_response['data']['bl']
     else:
         order_result['msg'] = "余额查询失败："+str(balance_response)
         order_result['orderStatus'] = False
+        logger.info(order_result['msg'])
         return order_result
     
     if float(order_result.get('balance',0)) < float(bet_amount):
         order_result['msg'] = "余额不足，当前余额是："+str(order_result['balance'])
         order_result['orderStatus'] = True
+        logger.info(order_result['msg'])
         messagesend.notify_email(order_result['msg'],has_notified)
         has_notified=True
         return order_result
 
     deatail = getMatchDetail(matchId,1)
     singleBetList=getMatchList(deatail,bet_amount,type)
-    # print(singleBetList)
+    # logger.debug(singleBetList)
 
     if singleBetList is None or len(singleBetList)==0:
         order_result['msg'] = "没有找到大盘数据,等几分钟在尝试"
         order_result['orderStatus'] = False
+        logger.info(order_result['msg'])
         return order_result
 # 
     # order_result['currentValue'] = singleBetList[0].get('currentValue',0) 
-    # print("当前比赛盘口已变化，无需重复下注,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，下注盘口为："+ str(currentNum))
+    # logger.debug("当前比赛盘口已变化，无需重复下注,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，下注盘口为："+ str(currentNum))
     order_result['currentValue']=singleBetList[0].get('currentValue',0)
 
 
     if singleBetList[0].get('currentValue',0) != currentNum:
-        print("当前比赛盘口已变化，无需重复下注,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，下注盘口为："+ str(currentNum))
+        logger.debug("当前比赛盘口已变化，无需重复下注,当前盘口为："+str(singleBetList[0].get('currentValue',0) )+"，下注盘口为："+ str(currentNum))
         order_result['msg'] = "当前比赛盘口已变化"
         return order_result
 
@@ -448,6 +460,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     if status_result['orderStatus']:
         order_result['msg'] = status_result['msg']
         order_result['orderStatus'] = status_result['orderStatus']
+        logger.debug(order_result['msg'])
     
     return order_result
 
@@ -457,7 +470,7 @@ def start_buy_itone(matchId,currentNum,bet_amount,type):
         if order_result['orderStatus']:
             return order_result
         # 失败，则等待x秒后再试
-        print("第"+str(i)+"次尝试失败，等待15秒后再试")
+        logger.info("第"+str(i)+"次尝试失败，等待15秒后再试")
         time.sleep(10)
     
     return order_result
@@ -471,17 +484,17 @@ def getNowTime():
 def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
     update_global_vars(domain_cookie)
 
-    print("  正在存储下注数据")
+    logger.debug("  正在存储下注数据")
     # 这里取下注
     order_result=start_buy_itone(values.get('soccer_id',None),values.get('m_type_value',0),bet_amount,type)
 
     # order_result = start_buy_itone(2775624,0.75,bet_amount)
-    print(order_result)
+    logger.debug(order_result)
     
     insert_query = "INSERT INTO `csgo`.`soccer_bet`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `odds_amount`, `odds_result`, `start_time`, `create_time`,`odds_status`,`actual_type_value`,`bet_id`) VALUES\
     (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s, %s, %s, %s)"
 
-    print("开始插入 soccer_bet 数据")
+    logger.debug("开始插入 soccer_bet 数据")
     
     # 连接到 MySQL 数据库
     connection = mysql.connector.connect(
@@ -516,8 +529,8 @@ def save_bet_data(values,type='大',bet_amount=10,domain_cookie=None):
             cursor.execute(insert_query, inert_values)
             connection.commit()  # 提交事务
         except Error as e:
-            print(f"数据库soccer_bet连接错误: {e}")
-        print("数据插入soccer_bet成功")
+            logger.error(f"数据库soccer_bet连接错误: {e}")
+        logger.debug("数据插入soccer_bet成功")
     if connection.is_connected():
         cursor.close()
         connection.close()
@@ -534,6 +547,7 @@ def getMyBetHistoryList(page=1,page_size=10):
     try:
         # 设置请求的URL
         url = f'{domain}/v1/order/new/bet/list'
+        logger.debug(url)
         # 设置请求头
         headers = {
             'accept': 'application/json, text/plain, */*',
@@ -556,51 +570,50 @@ def getMyBetHistoryList(page=1,page_size=10):
             "current": page,
             "size": page_size,
         }
-        print(url)
         # 发送POST请求
         response = requests.post(url,headers=headers,json=params)
-        print(response)
+        logger.debug(response)
         if response.status_code == 200:
             reponse_json = json.loads(response.text)
             if reponse_json['code'] == 14010:
-                print("token失效")
+                logger.debug("token失效")
                 return None
             
         return reponse_json
     except Exception as e:
-        print(e)
+        logger.error(e)
         return None
 
 
 
 def saveMyBetHistoryList(domain_cookie2=None,limit_page=5,page=1,page_size=10):
     update_global_vars(domain_cookie2)
-    print("limit_page,page,page_size is ",limit_page,page,page_size)
+    logger.debug("limit_page,page,page_size is ",limit_page,page,page_size)
     while True:
-        print("获取第"+str(page)+"页数据")
+        logger.debug("获取第"+str(page)+"页数据")
         time.sleep(2)
         if limit_page<page:
-            print("获取数据结束了，退出")
+            logger.debug("获取数据结束了，退出")
             break
         
         # 睡眠1秒，防止频繁请求
         page_data=getMyBetHistoryList(page,page_size)
         if page_data is None:
-            print("获取数据失败，退出")
+            logger.debug("获取数据失败，退出")
             break
         
         if page_data['code']!= 0:
-            print("获取数据失败，退出")
+            logger.debug("获取数据失败，退出")
             break
         
         if 'data' not in page_data or len(page_data['data']['records'])==0 :
-            print("没有数据了，退出")
+            logger.debug("没有数据了，退出")
             break
         
         
         for item in page_data['data']['records']:
             try:
-                # print(item)
+                # logger.debug(item)
                 # save_bet_data(item)
                 if 'bsc' in item['ops'][0]:
                     goal=extract_numbers(item['ops'][0]['bsc'])
@@ -634,21 +647,21 @@ def saveMyBetHistoryList(domain_cookie2=None,limit_page=5,page=1,page_size=10):
                     bet_history_victory(float(item['sat']),float(item['ops'][0]['bo']),float(item['uwl'])),
                     datetime.datetime.now().strftime('%Y-%m-%d'),
                 )
-                # print(bet_history_data)
+                # logger.debug(bet_history_data)
                 insert_if_not_exists(item['id'], item['ops'][0]['mid'], bet_history_data)
             except Exception as e:
-                print("解析数据失败")
-                print(e)
+                logger.error("解析数据失败")
+                logger.error(e)
 
 
         page+=1
-    print("获取数据结束,开始更新历史数据")
+    logger.debug("获取数据结束,开始更新历史数据")
     update_cr_bettime()
 
 
 
 def bet_history_victory(odds_amount,m_odds,odds_amount_result):
-    print(odds_amount,m_odds,odds_amount_result)
+    logger.debug(odds_amount,m_odds,odds_amount_result)
     if odds_amount_result > 0 and odds_amount_result > odds_amount*(m_odds-1)*0.9:
         return "胜"
     elif odds_amount_result > 0 and odds_amount_result < odds_amount*(m_odds-1)*0.9:
@@ -683,18 +696,18 @@ def insert_if_not_exists(bet_id, soccer_id, insert_data):
             cursor.execute("select count(1) from soccer_bet_history where bet_id="+str(bet_id)+" and soccer_id="+str(soccer_id))
             exists = cursor.fetchone()[0] > 0
             if not exists:
-                print("开始插入")
+                logger.debug("开始插入")
                 insert_query = "INSERT INTO `csgo`.`soccer_bet_history`(`bet_id`, `soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `odds_amount`, `goal_home_result`, `goal_guest_result`, `odds_amount_result`, `bet_time`, `start_time`, `create_time`, `result_flag`,`bet_time_day`) VALUES\
                 (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s)"
                 cursor.execute(insert_query, insert_data)
                 conn.commit()
             else:
-                print("数据已存在，未进行插入操作")
+                logger.debug("数据已存在，未进行插入操作")
             
 
 
     except Error as e:
-       print(f"数据库 soccer_bet_history 连接错误: {e}")
+       logger.error(f"数据库 soccer_bet_history 连接错误: {e}")
     finally:
         if conn.is_connected():
             cursor.close()
@@ -726,9 +739,9 @@ def get_soccer_data_start(soccer_id):
             if row is not None :
                 return row[0]
             else:
-                print("数据不存在")
+                logger.debug("初盘数据不存在")
     except Error as e:
-       print(f"数据库 soccer_analysis_start_new 连接错误: {e}")
+       logger.error(f"数据库 soccer_analysis_start_new 连接错误: {e}")
     finally:
         if conn.is_connected():
             cursor.close()
@@ -757,10 +770,10 @@ def update_cr_bettime():
 
             # 查询是否存在
             cursor.execute("UPDATE soccer_bet_history his LEFT JOIN soccer_bet bet on his.soccer_id  =bet.soccer_id and his.m_type  =bet.m_type and his.m_type_value  =bet.m_type_value set his.team_cr= bet.team_cr, his.c_time= bet.c_time where his.team_cr=''  and his.c_time=0")
-            print("更新soccer_bet_history成功")
+            logger.debug("更新soccer_bet_history成功")
             conn.commit()
     except Error as e:
-       print(f"数据库 soccer_bet_history 连接错误: {e}")
+       logger.error(f"数据库 soccer_bet_history 连接错误: {e}")
     finally:
         if conn.is_connected():
             cursor.close()
@@ -796,6 +809,7 @@ def get_all_match_result_page(domain_cookie2, begin_time, end_time, match_type=2
     :return: 所有records的列表
     """
     url = f"{domain}/v1/match/matchResultPage"
+    logger.debug(url)
     headers = {
         'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'zh-CN,zh;q=0.9',
@@ -829,11 +843,11 @@ def get_all_match_result_page(domain_cookie2, begin_time, end_time, match_type=2
             resp.raise_for_status()
             data = resp.json()
         except Exception as e:
-            print(f"请求第{current}页数据失败: {e}")
+            logger.error(f"请求第{current}页数据失败: {e}")
             break
 
         if not data.get("success", False) or "data" not in data:
-            print(f"接口返回异常: {data}")
+            logger.error(f"接口返回异常: {data}")
             break
 
         page_data = data["data"]
@@ -923,7 +937,7 @@ def get_all_match_result_page(domain_cookie2, begin_time, end_time, match_type=2
                     """
 
 
-                    print("soccer_analysis_end_new删除后再次插入")
+                    logger.debug("soccer_analysis_end_new删除后再次插入")
                     # 刪除这一条数据
                     delete_sql = "DELETE FROM `csgo`.`soccer_analysis_end_new` WHERE `soccer_id` = %s"
                     cursor.execute(delete_sql, (soccer_id,))
@@ -931,15 +945,15 @@ def get_all_match_result_page(domain_cookie2, begin_time, end_time, match_type=2
                     # 覆盖插入
                     cursor.execute(insert_sql, row)
                     connection.commit()
-                    print("插入soccer_analysis_end_new成功")
+                    logger.debug("插入soccer_analysis_end_new成功")
 
                 except Exception as e:
-                    print(f"插入soccer_analysis_end_new出错: {e}")
+                    logger.error(f"插入soccer_analysis_end_new出错: {e}")
                 except Exception as e:
-                    print(f"解析record出错: {e}")
-                # print(record)
+                    logger.error(f"解析record出错: {e}")
+                # logger.debug(record)
             
-        print(f"已获取第{cur}页，共{len(records)}条，累计{len(all_records)}/{total}")
+        logger.debug(f"已获取第{cur}页，共{len(records)}条，累计{len(all_records)}/{total}")
 
         # 判断是否还有下一页
         if cur * size >= total or len(records) == 0:
@@ -954,10 +968,6 @@ def get_all_match_result_page(domain_cookie2, begin_time, end_time, match_type=2
 
     
 if __name__ == '__main__':
-    start_time = int(time.time())
-    log_file_name = f"main-{datetime.datetime.now().strftime('%Y%m%d')}.log"
-    log_utils.init_logger(log_file_name)
-
         # 全局变量
     domain_cookie = {
         "domain": "https://a.a5y8i.com",

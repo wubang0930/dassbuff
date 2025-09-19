@@ -3,6 +3,7 @@ from re import L
 import tkinter as tk
 from tkinter import ttk
 
+from schedule import logger
 from urllib3 import request
 import bastPricetSellSkin86
 import os
@@ -14,14 +15,16 @@ import httpUtils
 import soccerBet
 import time
 import threading
+from logger_config import setup_loggers
 
 
+logger = setup_loggers()
 
 exchange_rate=7.10
 data_bet_request_file_path = "data_bet_request.txt"
 
 def initFile():
-    print("文件初始化")
+    logger.debug("文件初始化")
     if not os.path.exists(config.data_local):
         os.makedirs(config.data_local)
 
@@ -37,7 +40,7 @@ def initFile():
 
     global  exchange_rate
     exchange_rate=bastPricetSellSkin86.find_us_exchange()
-    print("当前的美元汇率是："+str(exchange_rate))
+    logger.debug("当前的美元汇率是："+str(exchange_rate))
 
 
  
@@ -65,24 +68,22 @@ class TabbedApp:
         import threading
         import sys
 
-        print("正在关闭程序，尝试关闭所有线程...")
+        logger.debug("正在关闭程序，尝试关闭所有线程...")
 
-        # 获取当前所有活动线程
-        threads = threading.enumerate()
-        main_thread = threading.current_thread()
-
-        # 通知所有非主线程退出（如果有自定义线程可加退出标志）
-        for t in threads:
-            if t is not main_thread:
-                try:
-                    # 如果线程有自定义的stop/exit方法，可以调用
-                    if hasattr(t, "stop"):
-                        t.stop()
-                    elif hasattr(t, "terminate"):
-                        t.terminate()
-                except Exception as e:
-                    print(f"关闭线程{t.name}时出错: {e}")
-
+# 获取当前主线程
+        main_thread = threading.main_thread()
+        # 遍历所有活动线程
+        for t in threading.enumerate():
+            # 跳过主线程
+            if t is main_thread:
+                continue
+            try:
+                # 线程对象没有直接的终止方法，这里采用强制退出进程的方式
+                # 只要有非主线程存在就强制退出整个进程
+                logger.debug(f"中断线程: {t.name}")
+                os._exit(0)
+            except Exception as e:
+                logger.debug(f"中断线程失败: {e}")
         # 强制退出程序
         self.root.destroy()
         sys.exit(0)
@@ -111,9 +112,8 @@ class TabbedApp:
         self.tab0_scroll_boxes.append(scroll_box)
 
         def update_log_box():
-            import os
             base_dir = os.path.dirname(os.path.abspath(__file__))
-            log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}.log"
+            log_file_name = "error.log"
             log_file_path = os.path.join(base_dir, "log/"+log_file_name)
 
             try:
@@ -178,15 +178,15 @@ class TabbedApp:
             # 获取对应text_box的内容
             text_box_value = self.tab0_text_boxes[idx].get("1.0", tk.END).strip()
             log_msg = f"按钮{idx+1}被点击，输入框内容为：{text_box_value}\n"
-            print(log_msg)
+            logger.debug(log_msg)
 
             
 
             if idx == 0:
                 domain_cookie = httpUtils.parse_curl_to_params(text_box_value)
-                print(domain_cookie)
+                logger.debug(domain_cookie)
                 threading.Thread(target=soccerbenefit.receive_all_bonus_action, args=(domain_cookie,)).start()
-                print("按钮执行结束11")
+                logger.debug("按钮执行结束11")
             if idx == 1:
                 # 如果text_box_value有值，则清空并写入data_bet_request.txt
                 if text_box_value:
@@ -194,13 +194,13 @@ class TabbedApp:
                         # 以写入模式打开文件，会自动清空原内容
                         with open(data_bet_request_file_path, "w", encoding="utf-8") as f:
                             f.write(text_box_value)
-                        print(f"已将输入内容写入 {data_bet_request_file_path}")
+                        logger.debug(f"已将输入内容写入 {data_bet_request_file_path}")
                     except Exception as e:
-                        print(f"写入 {data_bet_request_file_path} 失败: {e}")
+                        logger.debug(f"写入 {data_bet_request_file_path} 失败: {e}")
                 domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value)
-                print(domain_cookie2)
+                logger.debug(domain_cookie2)
                 threading.Thread(target=soccerBet.startBetSoccer, args=(domain_cookie2,)).start()
-                print("按钮执行结束2")
+                logger.info("开始bet定时执行")
             if idx == 2:
                 text_box_value2 = self.tab0_text_boxes[1].get("1.0", tk.END).strip()
                 domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value2)
@@ -211,12 +211,12 @@ class TabbedApp:
                 def run_update_history():
                     while True:
                         soccerBet.updateMyBetHistoryList(domain_cookie2, int(limit_page), int(page), int(page_size))
-                        print("同步历史执行完成，等待3小时后再次执行")
+                        logger.debug("同步历史执行完成，等待3小时后再次执行")
                         time.sleep(3 * 60 * 60)  # 每隔1小时执行一次
 
                 threading.Thread(target=run_update_history, daemon=True).start()
 
-                print("按钮执行结束3")
+                logger.debug("按钮执行结束3")
                 
         
         def tab0_button_stop(idx):
@@ -230,18 +230,23 @@ class TabbedApp:
                 try:
                     # 线程对象没有直接的终止方法，这里采用强制退出进程的方式
                     # 只要有非主线程存在就强制退出整个进程
-                    print(f"中断线程: {t.name}")
+                    logger.debug(f"中断线程: {t.name}")
                     os._exit(0)
                 except Exception as e:
-                    print(f"中断线程失败: {e}")
+                    logger.debug(f"中断线程失败: {e}")
 
 
 if __name__ == "__main__":
     initFile()
-    start_time=int(time.time())
-    log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}"
-    print("开始运行",log_file_name)
-    log_utils.init_logger(log_file_name)
+    # start_time=int(time.time())
+    # log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}"
+    # logger.debug("开始运行1")
+    # log_utils.init_logger(log_file_name)
+
+    logger.debug("开始运行2")
+    # logger.debug("mian这是一条信息日志")
+    # logger.warning("这是一条警告日志")
+    # logger.error("这是一条错误日志")
     root = tk.Tk()
     root.geometry("1200x800")
     app = TabbedApp(root)

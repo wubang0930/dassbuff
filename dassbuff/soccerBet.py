@@ -16,9 +16,11 @@ import threading
 import schedule
 import soccersave
 import os
-import log_utils
 import messagesend as messagesend
+from logger_config import setup_loggers
 
+
+logger = setup_loggers()
 
 log_num=0
 
@@ -50,7 +52,7 @@ def update_global_vars(new_domain_cookie):
 
 
 def delete_today_data(version_date):
-    print(getNowTime()+"开始删除数据")
+    logger.debug(getNowTime()+"开始删除数据")
     try:
         # 连接到 MySQL 数据库
         connection = mysql.connector.connect(
@@ -70,10 +72,10 @@ def delete_today_data(version_date):
             cursor.execute(sql_cs_db_deal, values)
             cursor.execute(sql_goods, values)
             connection.commit()  # 提交事务
-            print(getNowTime()+"数据删除成功")
+            logger.debug(getNowTime()+"数据删除成功")
     
     except Error as e:
-        print(f"数据库连接错误: {e}")
+        logger.debug(f"数据库连接错误: {e}")
     
     finally:
         if connection.is_connected():
@@ -88,18 +90,18 @@ def getNowTime():
 
 
 def save_soccer_data():
-    print("正在查询足球数据")
+    logger.debug("正在查询足球数据")
     # 保存足球数据
     soccer = soccersave.getFbSoccerData(domain_cookie)
     if soccer is None:
-        print("获取足球数据失败")
+        logger.debug("获取足球数据失败")
         return
     
     all_data=soccersave.tarnMySoccerData(soccer)
-    print("获取足球数据成功,开始插入")
+    logger.debug("获取足球数据成功,开始插入")
 
     if all_data is None or len(all_data)==0:
-        print("获取足球数据为空")
+        logger.debug("获取足球数据为空")
         return
     
 
@@ -108,7 +110,7 @@ def save_soccer_data():
     insert_query = "INSERT INTO `csgo`.`soccer_analysis`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
     (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
 
-    # print("开始插入soccer_analysis数据")
+    # logger.debug("开始插入soccer_analysis数据")
     
     # 连接到 MySQL 数据库
     connection = mysql.connector.connect(
@@ -149,11 +151,11 @@ def save_soccer_data():
 
                 connection.commit()  # 提交事务
             except Error as e:
-                print(f"数据库soccer_analysis连接错误: {e}")
+                logger.debug(f"数据库soccer_analysis连接错误: {e}")
     if connection.is_connected():
         cursor.close()
         connection.close()
-        # print("数据库soccer_analysis连接已关闭")
+        # logger.debug("数据库soccer_analysis连接已关闭")
 
 
     bet_new_data=[\
@@ -206,14 +208,16 @@ def save_soccer_data():
     if balance_response and balance_response['code'] == 14010:
         order_result['msg'] = "token失效，通知管理员"
         order_result['orderStatus'] = True
+        logger.error(order_result['msg'])
         messagesend.notify_email(order_result['msg'],has_notified)
         has_notified=True
     elif balance_response and balance_response['code'] == 0:
-        print("查询成功,余额为："+str(balance_response['data']['bl']) )
+        logger.debug("查询成功,余额为："+str(balance_response['data']['bl']) )
         order_result['balance'] = balance_response['data']['bl']
     else:
         order_result['msg'] = "余额查询失败："+str(balance_response)
         order_result['orderStatus'] = False
+        logger.error(order_result['msg'])
         messagesend.notify_email(order_result['msg'],has_notified)
         has_notified=True
     
@@ -226,21 +230,21 @@ def save_soccer_data():
         #         "----小："+str(values.get('s_type_value',''))+",赔率："+str(values.get('s_odds',0))+\
         #         "----主队进球："+str(values.get('goal_home',''))+",客队进球："+str(values.get('goal_guest',''))
         
-        # print(log_head)
-        # print(log_line)
+        # logger.debug(log_head)
+        # logger.debug(log_line)
 
 
 
       
         # if values.get('c_time',0)==1 and values.get('m_type_value',0)==3:
-        #     print("开始bet，第1分钟，小3球，开始盘口是："+str(values))
+        #     logger.debug("开始bet，第1分钟，小3球，开始盘口是："+str(values))
         #     time.sleep(1)
         #     threading.Thread(target=soccersave.save_bet_data,args=(values,'小',72,domain_cookie)).start()
 
 
 
         st_value= soccersave.get_soccer_data_start(values.get('soccer_id',0))
-        # print("初盘:"+str(st_value)+",当前时间："+str(values.get('c_time',0))+",当前总进球："+str(values.get('goal_home',0) +values.get('goal_guest',0))+ ',当前盘口：'+str(values.get('m_type_value',0)))
+        # logger.debug("初盘:"+str(st_value)+",当前时间："+str(values.get('c_time',0))+",当前总进球："+str(values.get('goal_home',0) +values.get('goal_guest',0))+ ',当前盘口：'+str(values.get('m_type_value',0)))
 
         if st_value is None:
             continue
@@ -249,7 +253,7 @@ def save_soccer_data():
         for bet in bet_new_data:
             if st_value==bet[0] and values.get('c_time',0)==bet[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet[2]\
                   and bet[4]==values.get('m_type_value',0) :
-                print("开始bet，开始盘口是："+str(st_value))
+                logger.debug("开始bet，开始盘口是："+str(st_value))
                 time.sleep(2)
                 threading.Thread(target=soccersave.save_bet_data,args=(values,bet[3],bet[5],domain_cookie)).start()
 
@@ -257,7 +261,7 @@ def save_soccer_data():
         # [2.75,60,1,'大',50]            
         for bet_two in bet_new_data_two:
             if st_value==bet_two[0] and values.get('c_time',0)==bet_two[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet_two[2] :
-                print("开始bet第2类型，开始盘口是："+str(st_value))
+                logger.debug("开始bet第2类型，开始盘口是："+str(st_value))
                 time.sleep(2)
                 threading.Thread(target=soccersave.save_bet_data,args=(values,bet_two[3],bet_two[4],domain_cookie)).start()
 
@@ -280,7 +284,7 @@ def insert_soccer_analysis_start_new(cursor, values):
         cursor.execute(sql_check_start_new, (values.get('soccer_id',''),))
         result = cursor.fetchone()
         if result is None:
-            print("插入soccer_analysis_start_new数据")
+            logger.debug("插入soccer_analysis_start_new数据")
             insert_query_start_new = "INSERT INTO `csgo`.`soccer_analysis_start_new`(`soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `start_time`, `create_time`, `s_type`, `s_type_value`, `s_odds`) VALUES\
             (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s,%s, %s,%s, %s,%s)"
             inert_values_start_new = (
@@ -303,20 +307,20 @@ def insert_soccer_analysis_start_new(cursor, values):
             )
             cursor.execute(insert_query_start_new, inert_values_start_new)
         else:
-            print("soccer_analysis_start_new数据已存在")    
+            logger.debug("soccer_analysis_start_new数据已存在")    
 
 
 
 
 def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
     update_global_vars(domain_cookie2)
-    print("正在更新bet_history数据", domain_cookie2, limit_page, page, page_size)
+    logger.debug("正在更新bet_history数据", domain_cookie2, limit_page, page, page_size)
     soccersave.saveMyBetHistoryList(domain_cookie2=domain_cookie2, limit_page=limit_page, page=page, page_size=page_size)
 
     now_ts = int(time.time() * 1000)
     begin_time = now_ts - 6 * 60 * 60 * 1000
     end_time = now_ts
-    print("开始时间："+str(begin_time)+"结束时间："+str(end_time))
+    logger.debug("开始时间："+str(begin_time)+"结束时间："+str(end_time))
     soccersave.get_all_match_result_page(domain_cookie2, begin_time, end_time, 2, 0, "CMN", "1", 50)
 
 
@@ -339,7 +343,7 @@ def startBetSoccer(domain_cookie):
         log_num+=1
 
         if log_num%10==0:
-            print("正在运行中,第"+str(log_num//10)+"次执行")
+            logger.info("正在运行中,第"+str(log_num//10)+"次执行")
 
 
 
@@ -347,10 +351,9 @@ def startBetSoccer(domain_cookie):
 if __name__ == '__main__':
 # def start():    
     start_time=int(time.time())
-    log_file_name = f"main-{datetime.now().strftime('%Y%m%d')}"
-    log_utils.init_logger(log_file_name)
+
     # # save_soccer_data()
-    # print(str(datetime.now())+"  开始运行了")
+    # logger.debug(str(datetime.now())+"  开始运行了")
     # # init_file()
 
     # # 每天晚上11点执行
@@ -368,14 +371,14 @@ if __name__ == '__main__':
     #     log_num+=1
 
     #     if log_num%10==0:
-    #         print(str(datetime.now())+"  正在运行中,第"+str(log_num//10)+"次执行")
+    #         logger.debug(str(datetime.now())+"  正在运行中,第"+str(log_num//10)+"次执行")
 
 
 
     # # save_data_mysql()
 
     # end_time=int(time.time())
-    # print("运行时间："+str(end_time-start_time))
+    # logger.debug("运行时间："+str(end_time-start_time))
 
 
 
