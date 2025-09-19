@@ -20,8 +20,10 @@ def setup_loggers():
     os.makedirs(log_dir, exist_ok=True)
 
     # 创建一个格式化器，包含详细的日志信息
+    # '%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
+
     formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
 
     # 定义日志文件的命名格式和处理器配置
