@@ -465,14 +465,15 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     return order_result
 
 def start_buy_itone(matchId,currentNum,bet_amount,type):
-    for i in range(1,2):
-        order_result=gobuyitone(matchId,currentNum,bet_amount,type)
+    for i in range(1, 2):
+        logger.info(f"开始第{i}次尝试下单")
+        order_result = gobuyitone(matchId, currentNum, bet_amount, type)
         if order_result['orderStatus']:
+            logger.info(f"第{i}次尝试成功")
             return order_result
         # 失败，则等待x秒后再试
-        logger.info(f"第{i}次尝试失败，等待15秒后再试")
+        logger.info(f"第{i}次尝试失败，等待10秒后再试")
         time.sleep(10)
-    
     return order_result
 
 
