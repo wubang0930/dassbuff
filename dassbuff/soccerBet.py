@@ -321,7 +321,7 @@ def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
     now_ts = int(time.time() * 1000)
     begin_time = now_ts - 6 * 60 * 60 * 1000
     end_time = now_ts
-    logger.debug("开始时间: %s, 结束时间: %s", str(begin_time), str(end_time))
+    logger.error("开始时间: %s, 结束时间: %s", str(begin_time), str(end_time))
     soccersave.get_all_match_result_page(domain_cookie2, begin_time, end_time, 2, 0, "CMN", "1", 50)
 
 

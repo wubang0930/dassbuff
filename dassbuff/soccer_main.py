@@ -197,6 +197,7 @@ class TabbedApp:
                 domain_cookie2 = httpUtils.parse_curl_to_params_bet(text_box_value)
                 logger.debug(f"解析到的domain_cookie2: {domain_cookie2}")
                 threading.Thread(target=soccerBet.startBetSoccer, args=(domain_cookie2,)).start()
+                logger.error("开始bet定时执行")
                 logger.info("开始bet定时执行")
             if idx == 2:
                 text_box_value2 = self.tab0_text_boxes[1].get("1.0", tk.END).strip()
@@ -208,6 +209,7 @@ class TabbedApp:
                 def run_update_history():
                     while True:
                         soccerBet.updateMyBetHistoryList(domain_cookie2, int(limit_page), int(page), int(page_size))
+                        logger.error("同步历史执行完成，等待3小时后再次执行")
                         logger.info("同步历史执行完成，等待3小时后再次执行")
                         time.sleep(3 * 60 * 60)  # 每隔3小时执行一次
 
@@ -241,6 +243,7 @@ if __name__ == "__main__":
     # log_utils.init_logger(log_file_name)
 
     logger.info("主程序开始运行")
+    logger.error("主程序开始运行")
     # logger.debug("mian这是一条信息日志")
     # logger.warning("这是一条警告日志")
     # logger.error("这是一条错误日志")
