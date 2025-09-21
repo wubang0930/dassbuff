@@ -465,7 +465,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     return order_result
 
 def start_buy_itone(matchId,currentNum,bet_amount,type):
-    for i in range(1, 2):
+    for i in range(1, 3):
         logger.info(f"开始第{i}次尝试下单")
         order_result = gobuyitone(matchId, currentNum, bet_amount, type)
         if order_result['orderStatus']:
