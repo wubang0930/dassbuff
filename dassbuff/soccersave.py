@@ -1,3 +1,4 @@
+from this import d
 from turtle import up
 import requests
 import json
@@ -28,6 +29,8 @@ domain_cookie = None
 domain = None
 cookies = None
 authorization = None
+domainOrigin = None
+domainReferer = None
 
 def update_global_vars(new_domain_cookie):
     """更新全局变量"""
@@ -36,6 +39,8 @@ def update_global_vars(new_domain_cookie):
     domain = domain_cookie.get("domain")
     cookies = domain_cookie.get("cookies")
     authorization = domain_cookie.get("authauthorization")
+    domainOrigin = domain_cookie.get("domainOrigin")
+    domainReferer = domain_cookie.get("domainReferer")
 
 
 # 数据
@@ -446,7 +451,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
 
     # 太快会导致失败
     singlePassDetail=singlePass(singleBetList)
-
+    logger.info("bet结果: "+str(singlePassDetail))
 
     orderIds=[]
     if singlePassDetail is not None:
@@ -465,6 +470,7 @@ def gobuyitone(matchId,currentNum,bet_amount,type):
     return order_result
 
 def start_buy_itone(matchId,currentNum,bet_amount,type):
+    # 这里会循环2次
     for i in range(1, 3):
         logger.info(f"开始第{i}次尝试下单")
         order_result = gobuyitone(matchId, currentNum, bet_amount, type)

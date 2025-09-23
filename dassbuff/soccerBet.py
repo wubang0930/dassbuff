@@ -38,6 +38,8 @@ domain = None
 cookies = None
 authorization = None
 has_notified=False
+domainOrigin = None
+domainReferer = None
 
 
 def update_global_vars(new_domain_cookie):
@@ -47,7 +49,8 @@ def update_global_vars(new_domain_cookie):
     domain = domain_cookie.get("domain")
     cookies = domain_cookie.get("cookies")
     authorization = domain_cookie.get("authauthorization")
-
+    domainOrigin = domain_cookie.get("domainOrigin")
+    domainReferer = domain_cookie.get("domainReferer")
 
 
 

@@ -4,9 +4,9 @@ import re
 
 def parse_curl_to_params(curl_str):
     """
-    解析curl命令字符串，返回包含domain、authauthorization、cookies的对象
+    解析curl命令字符串，返回包含domain、authauthorization、cookies、Origin、Referer的对象
     :param curl_str: 选中的curl命令字符串
-    :return: dict，包含domain, authauthorization, cookies
+    :return: dict，包含domain, authauthorization, cookies, Origin, Referer
     """
 
     # 1. 解析domain
@@ -14,7 +14,7 @@ def parse_curl_to_params(curl_str):
     domain = domain_match.group(1) if domain_match else ""
 
     # 2. 解析authorization
-    auth_match = re.search(r"-H\s+'authorization:\s*([^']+)'", curl_str)
+    auth_match = re.search(r"-H\s+'authorization:\s*([^']+)'", curl_str, re.IGNORECASE)
     authauthorization = auth_match.group(1) if auth_match else ""
 
     # 3. 解析cookies
@@ -27,10 +27,20 @@ def parse_curl_to_params(curl_str):
                 k, v = item.strip().split("=", 1)
                 cookies[k.strip()] = v.strip()
 
+    # 4. 解析Origin
+    origin_match = re.search(r"-H\s+'Origin:\s*([^']+)'", curl_str, re.IGNORECASE)
+    domainOrigin = origin_match.group(1) if origin_match else ""
+
+    # 5. 解析Referer
+    referer_match = re.search(r"-H\s+'Referer:\s*([^']+)'", curl_str, re.IGNORECASE)
+    domainReferer = referer_match.group(1) if referer_match else ""
+
     return {
         "domain": domain,
         "authauthorization": authauthorization,
-        "cookies": cookies
+        "cookies": cookies,
+        "Origin": domainOrigin,
+        "Referer": domainReferer
     }
 
 # 示例用法
@@ -61,9 +71,9 @@ curl_str = """curl 'https://www.lt100.xyz/v2/asset/bonus/longtermbonusdetail' \
 
 def parse_curl_to_params_bet(curl_str):
     """
-    解析a5y8i.com专用curl字符串，返回domain和authauthorization
+    解析a5y8i.com专用curl字符串，返回domain、authauthorization、Origin、Referer
     :param curl_str: curl命令字符串
-    :return: dict，包含domain和authauthorization
+    :return: dict，包含domain、authauthorization、Origin、Referer
     """
     # 1. 解析domain
     domain_match = re.search(r"curl\s+'(https?://[^/]+)", curl_str)
@@ -73,9 +83,19 @@ def parse_curl_to_params_bet(curl_str):
     auth_match = re.search(r"-H\s+'Authorization:\s*([^']+)'", curl_str)
     authauthorization = auth_match.group(1) if auth_match else ""
 
+    # 3. 解析Origin
+    origin_match = re.search(r"-H\s+'Origin:\s*([^']+)'", curl_str, re.IGNORECASE)
+    domainOrigin = origin_match.group(1) if origin_match else ""
+
+    # 4. 解析Referer
+    referer_match = re.search(r"-H\s+'Referer:\s*([^']+)'", curl_str, re.IGNORECASE)
+    domainReferer = referer_match.group(1) if referer_match else ""
+
     return {
         "domain": domain,
-        "authauthorization": authauthorization
+        "authauthorization": authauthorization,
+        "Origin": domainOrigin,
+        "Referer": domainReferer
     }
 
 # 示例用法
