@@ -161,7 +161,7 @@ def save_soccer_data():
         connection.close()
         # logger.debug("数据库soccer_analysis连接已关闭")
 
-
+    bet_new_data_value= 28
     bet_new_data=[\
 # [1.75,3,0,'小',1.75,20],\
 # [2.25,5,0,'小',2.25,20],\
@@ -180,27 +180,28 @@ def save_soccer_data():
 
 #  这3个胜率比较大
 # [1.75,3,0,'小',1.75,15],\
-[2,20,1,'大',2.75,28],\
-[2,63,2,'大',2.75,28],\
-[2.5,30,1,'大',2.75,28],\
-[2.5,59,3,'小',4,28],\
-[2.75,67,2,'大',2.75,28],\
-[2.75,56,2,'小',3.25,28],\
+[2,20,1,'大',2.75,bet_new_data_value],\
+[2,63,2,'大',2.75,bet_new_data_value],\
+[2.5,30,1,'大',2.75,bet_new_data_value],\
+[2.5,59,3,'小',4,bet_new_data_value],\
+[2.75,67,2,'大',2.75,bet_new_data_value],\
+[2.75,56,2,'小',3.25,bet_new_data_value],\
 
 # [1.5,1,0,'小',1.5,35],\
 # [2.25,1,0,'小',2.25,35],\
 # [3,1,0,'小',3,35],\
 
                     ]
-    # 初盘、时间、总进球（没有盘口参数）
+#     bet_new_data_two_value = 10
+#     # 初盘、时间、总进球（没有盘口参数）
 #     bet_new_data_two=[\
 # #  这3个胜率比较大
-# [2,40,0,'大',25],\
-# [2.25,24,1,'小',25],\
-# [2.25,56,0,'大',25],\
-# [2.5,37,1,'大',25],\
-# [2.75,20,0,'大',25],\
-# [2.75,60,1,'大',25],\
+# [2,40,0,'大',bet_new_data_two_value],\
+# [2.25,24,1,'小',bet_new_data_two_value],\
+# [2.25,56,0,'大',bet_new_data_two_value],\
+# [2.5,37,1,'大',bet_new_data_two_value],\
+# [2.75,20,0,'大',bet_new_data_two_value],\
+# [2.75,60,1,'大',bet_new_data_two_value],\
 
 #                     ]
         # 下注
@@ -263,13 +264,13 @@ def save_soccer_data():
 
                 continue
         # [2.75,60,1,'大',50]            
-        # for bet_two in bet_new_data_two:
-        #     if st_value==bet_two[0] and values.get('c_time',0)==bet_two[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet_two[2] :
-        #         logger.debug("开始bet第2类型，开始盘口是: %s", str(st_value))
-        #         time.sleep(2)
-        #         threading.Thread(target=soccersave.save_bet_data,args=(values,bet_two[3],bet_two[4],domain_cookie)).start()
+        for bet_two in bet_new_data_two:
+            if st_value==bet_two[0] and values.get('c_time',0)==bet_two[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet_two[2] :
+                logger.debug("开始bet第2类型，开始盘口是: %s", str(st_value))
+                time.sleep(2)
+                threading.Thread(target=soccersave.save_bet_data,args=(values,bet_two[3],bet_two[4],domain_cookie)).start()
 
-        #         continue
+                continue
 
         
 
