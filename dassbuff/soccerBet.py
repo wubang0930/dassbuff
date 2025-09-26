@@ -323,7 +323,7 @@ def updateMyBetHistoryList(domain_cookie2,limit_page,page,page_size):
     soccersave.saveMyBetHistoryList(domain_cookie2=domain_cookie2, limit_page=limit_page, page=page, page_size=page_size)
 
     now_ts = int(time.time() * 1000)
-    begin_time = now_ts - 6 * 60 * 60 * 1000
+    begin_time = now_ts - 24 * 60 * 60 * 1000
     end_time = now_ts
     # 将时间戳转换为年月日时分秒格式
     begin_time_str = datetime.fromtimestamp(begin_time / 1000).strftime('%Y-%m-%d %H:%M:%S')
@@ -359,7 +359,11 @@ def startBetSoccer(domain_cookie):
 if __name__ == '__main__':
 # def start():    
     start_time=int(time.time())
-
+    domain_cookie = {
+        "domain": "https://a.8yx9.com",
+        "authauthorization": "tt_rp6gRvlEBxSeMjiNFVAO8MqZ2vZrBmI7.43a80eabde173dc16eaede62d22812d9"
+    }
+    updateMyBetHistoryList(domain_cookie,10,1,10)
     # # save_soccer_data()
     # logger.debug(str(datetime.now())+"  开始运行了")
     # # init_file()

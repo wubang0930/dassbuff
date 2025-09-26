@@ -193,8 +193,8 @@ def singlePass(singleBetList):
         # 设置请求头
         headers = {
             "Connection":"keep-alive",
-            "Origin":"https://p.9512230.com",
-            "Referer":"https://p.9512230.com/",
+            "Origin": domainOrigin,
+            "Referer": domainReferer,
             'accept': 'application/json, text/plain, */*',
             'accept-language': 'zh-CN,zh;q=0.9',
             'Authorization': authorization,
@@ -653,6 +653,8 @@ def saveMyBetHistoryList(domain_cookie2=None,limit_page=5,page=1,page_size=10):
                     datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     bet_history_victory(float(item['sat']),float(item['ops'][0]['bo']),float(item['uwl'])),
                     datetime.datetime.now().strftime('%Y-%m-%d'),
+                    item['ops'][0]['lid'],
+                    item.get('rjs', ''),
                 )
                 # logger.debug(bet_history_data)
                 insert_if_not_exists(item['id'], item['ops'][0]['mid'], bet_history_data)
@@ -704,8 +706,8 @@ def insert_if_not_exists(bet_id, soccer_id, insert_data):
             exists = cursor.fetchone()[0] > 0
             if not exists:
                 logger.debug("开始插入")
-                insert_query = "INSERT INTO `csgo`.`soccer_bet_history`(`bet_id`, `soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `odds_amount`, `goal_home_result`, `goal_guest_result`, `odds_amount_result`, `bet_time`, `start_time`, `create_time`, `result_flag`,`bet_time_day`) VALUES\
-                (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s)"
+                insert_query = "INSERT INTO `csgo`.`soccer_bet_history`(`bet_id`, `soccer_id`, `race_name`, `team_home`, `team_guest`, `team_cr`, `c_time`, `m_type`, `m_type_value`, `m_odds`, `goal_home`, `goal_guest`, `odds_amount`, `goal_home_result`, `goal_guest_result`, `odds_amount_result`, `bet_time`, `start_time`, `create_time`, `result_flag`,`bet_time_day`,`race_id`,`bet_result`) VALUES\
+                (%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s,%s,%s,%s)"
                 cursor.execute(insert_query, insert_data)
                 conn.commit()
             else:
@@ -823,8 +825,8 @@ def get_all_match_result_page(domain_cookie2, begin_time, end_time, match_type=2
         'Authorization': authorization,
         'Connection': 'keep-alive',
         'Content-Type': 'application/json;charset=UTF-8',
-        'Origin': 'https://c.e70cz.com',
-        'Referer': 'https://c.e70cz.com/',
+        'Origin': domainOrigin,
+        'Referer': domainReferer,
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
         'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"',
         'sec-ch-ua-mobile': '?0',
