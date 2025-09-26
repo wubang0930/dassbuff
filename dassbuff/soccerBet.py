@@ -264,13 +264,13 @@ def save_soccer_data():
 
                 continue
         # [2.75,60,1,'大',50]            
-        for bet_two in bet_new_data_two:
-            if st_value==bet_two[0] and values.get('c_time',0)==bet_two[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet_two[2] :
-                logger.debug("开始bet第2类型，开始盘口是: %s", str(st_value))
-                time.sleep(2)
-                threading.Thread(target=soccersave.save_bet_data,args=(values,bet_two[3],bet_two[4],domain_cookie)).start()
+        # for bet_two in bet_new_data_two:
+        #     if st_value==bet_two[0] and values.get('c_time',0)==bet_two[1] and (values.get('goal_home',0)+ values.get('goal_guest',0))==bet_two[2] :
+        #         logger.debug("开始bet第2类型，开始盘口是: %s", str(st_value))
+        #         time.sleep(2)
+        #         threading.Thread(target=soccersave.save_bet_data,args=(values,bet_two[3],bet_two[4],domain_cookie)).start()
 
-                continue
+        #         continue
 
         
 
