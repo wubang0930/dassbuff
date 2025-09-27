@@ -161,7 +161,7 @@ def save_soccer_data():
         connection.close()
         # logger.debug("数据库soccer_analysis连接已关闭")
 
-    bet_new_data_value= 68
+    bet_new_data_value= 56
     bet_new_data=[\
 # [1.75,3,0,'小',1.75,20],\
 # [2.25,5,0,'小',2.25,20],\
